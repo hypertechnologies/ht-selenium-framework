@@ -1,6 +1,5 @@
 package basicjava;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class linkedlist {
@@ -69,17 +68,6 @@ public class linkedlist {
         // Remove the last item from the list
         cars.removeLast();
         System.out.println("Nissan should be removed from the list: " + cars);
-
-
-
-
-
-
-
-
-
-
-
     }
 
-    }
+}
