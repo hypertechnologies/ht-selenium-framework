@@ -1,4 +1,4 @@
-package java_objects;
+package basicjava.java_objects;
 
 public class cars2 {
 

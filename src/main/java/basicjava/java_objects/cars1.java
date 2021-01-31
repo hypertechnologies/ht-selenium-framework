@@ -1,9 +1,10 @@
-package java_objects;
+package basicjava.java_objects;
 
 public class cars1 {
 
     String name = "Toyota";
     String color = "Black";
+    String x;
 
     public void myMethod(){
         System.out.println("I am a method from cars1");
