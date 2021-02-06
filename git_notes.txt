@@ -1,0 +1,9 @@
+git status = to check the changes or new code that we wrote.
+git diff = shows the actual code that you changed
+git add . = will add all the changes for committing
+git add SPECIFIC_FILE = will add a specific file
+git commit -m "ANY_MESSAGE" = it will commit everything that you added before push
+git push = pushes and saves everything to github
+
+git checkout -b NAME_OF_THE_BRANCH = This is to create a new branch and switch to that branch
+git checkout NAME_OF_THE_BRANCH = Switch to a branch
