@@ -1,0 +1,43 @@
+Different ways to find element on the page -
+
+xPath
+cssSelector
+id
+name
+tagName
+linkText
+partialLinkText
+
+=============
+xPath rules:
+1. Starts with //
+2. tagName
+3. inside square bracket @AttributeName='value'
+
+Example: //input[@id='txtUsername']
+
+Regular Expression - //*[@id='txtUsername']
+Contains - //input[contains(@id,'Username')]
+starts-with - //input[starts-with(@id,'txtUser')]
+or - //input[@id='txtUsername' or @name='txtUsername']
+and - //input[@id='txtUsername' and @name='txtUsername']
+matching by text for a link - //a[contains(text(),'Forgot your password?')]
+matching by text for a div - //div[contains(text(),'LOGIN Panel')]
+matching by href - //a[contains(@href,'requestPasswordResetCode')]
+
+================
+cssSelector rules
+1. Can start with tagName, className, id
+2. Need a . (dot) before className
+3. Need a # (hash) before id -
+
+Examples:
+tagName and id - input#txtUsername
+tagName and name - input[name='txtUsername']
+tagName and class - input.button
+tagName,class and id - input.button#btnLogin
+Regex - *.button#btnLogin
+parent-child - #divUsername .form-hint
+direct parent-child - #divUsername > .form-hint
+
+

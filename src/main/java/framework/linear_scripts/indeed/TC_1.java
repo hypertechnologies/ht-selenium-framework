@@ -3,6 +3,7 @@ package framework.linear_scripts.indeed;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.bonigarcia.wdm.config.DriverManagerType;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -21,6 +22,10 @@ public class TC_1 {
 
         // Enter "New York" into Where field
         driver.findElement(By.name("l")).sendKeys("New York");
+//        driver.findElement(By.name("l")).sendKeys("");
+//        driver.findElement(By.name("l")).sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
+        driver.findElement(By.name("l")).clear();
+        driver.findElement(By.name("l")).sendKeys("Boston");
 
         // Click on Find Jobs button
         driver.findElement(By.cssSelector(".icl-WhatWhere-buttonWrapper button")).click();
