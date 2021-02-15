@@ -1,0 +1,17 @@
+WebDriver Wait
+
+1. Hard Wait / Sleep
+2. Implicit Wait
+3. Explicit Wait
+4. Fluent Wait
+
+
+1. Hard Wait / Sleep: Waiting for fixed amount of time before you continue with next line of code.
+2. Implicit Wait: It is used to tell the driver to wait for an element for certain amount of time
+before it throws a "no such element" exception. Default time is 0. Once you define implicit wait,
+it will be valid for life of the webdriver.
+3. Explicit Wait: It is to tell the WebDriver to wait for certain condition to happen or maximum time exceeded
+before giving "ElementNotVisible" exception.
+4. Fluent Wait: It is to define maximum time for the webdriver to wait and as well as the frequency in which
+we want to check the condition before it gives "ElementNotVisible" exception. It is used for elements that take
+really long time to load.
