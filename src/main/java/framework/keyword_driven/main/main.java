@@ -25,30 +25,13 @@ import java.util.concurrent.TimeUnit;
 
 import static java.lang.System.exit;
 
-public class main {
+public class main extends base{
     static WebDriver driver;
 
     public static void main(String[] args) throws InterruptedException {
+        keywords kw = new keywords();
 
-        // Read properties file
-        File file = new File("src/main/java/framework/keyword_driven/config/configs.properties");
-
-        FileInputStream fileInput = null;
-        try {
-            fileInput = new FileInputStream(file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        Properties prop = new Properties();
-        try {
-            prop.load(fileInput);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println(prop.getProperty("key"));
-        System.out.println(prop.getProperty("test_cases_path"));
+        Properties prop = getProperties();
 
         String test_cases_path = prop.getProperty("test_cases_path").trim();
         String ts_sheet_name_prefix = prop.getProperty("ts_sheet_name_prefix").trim();
@@ -134,21 +117,7 @@ public class main {
                     //todo make TC_keyword lower case
                     switch (TC_keyword.toLowerCase()){
                         case "openbrowser":
-                            System.out.println("Open a browser: " + TC_test_data);
-
-                            if(TC_test_data.equalsIgnoreCase("chrome")){
-                                WebDriverManager.getInstance(DriverManagerType.CHROME).setup();
-                                ChromeOptions options = new ChromeOptions();
-                                options.addArguments("ignore-certificate-errors");
-                                driver = new ChromeDriver(options);
-                            }else if(TC_test_data.equalsIgnoreCase("firefox")){
-                                WebDriverManager.getInstance(DriverManagerType.FIREFOX).setup();
-                                driver = new FirefoxDriver();
-                            }else if(TC_test_data.equalsIgnoreCase("safari")){
-                                WebDriverManager.getInstance(DriverManagerType.SAFARI).setup();
-                                driver = new SafariDriver();
-                            }
-                            driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+                            kw.openBrowser(driver, TC_test_data);
                             break;
                         case "gotourl":
                             System.out.println("Open this url: " + TC_test_data);
@@ -277,6 +246,9 @@ public class main {
         }
 
     }
+
+
+
 
     public static By getLocator (String selector_type, String selector_value){
         By by;
