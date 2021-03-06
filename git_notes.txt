@@ -7,3 +7,4 @@ git push = pushes and saves everything to github
 
 git checkout -b NAME_OF_THE_BRANCH = This is to create a new branch and switch to that branch
 git checkout NAME_OF_THE_BRANCH = Switch to a branch
+git branch = to see list of local branches
