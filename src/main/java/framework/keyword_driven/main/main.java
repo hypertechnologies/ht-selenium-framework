@@ -16,20 +16,16 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.Select;
 
 import java.awt.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.System.exit;
 
 public class main extends base{
-    static WebDriver driver;
+    public static boolean tc_failed = false;
 
-    public static void main(String[] args) throws InterruptedException {
-        keywords kw = new keywords();
+    public static void main(String[] args) throws InterruptedException, IOException {
 
         Properties prop = getProperties();
 
@@ -71,6 +67,8 @@ public class main extends base{
 
         // Reading info from Test Scenario sheet
         for (int i = 1; i < TS_row_num; i++){
+            tc_failed = false;
+
             System.out.println(i + " hello "+TS_row_num);
             int TSID = (int) TS_sheet.getRow(i).getCell(ts_id_column_index).getNumericCellValue();
             String TS_name = TS_sheet.getRow(i).getCell(ts_name_column_index).getStringCellValue();
@@ -91,6 +89,9 @@ public class main extends base{
                 int tc_selector_type_column_index = Integer.parseInt(prop.getProperty("tc_selector_type_column_index").trim());
                 int tc_selector_value_column_index = Integer.parseInt(prop.getProperty("tc_selector_value_column_index").trim());
                 int tc_test_data_column_index = Integer.parseInt(prop.getProperty("tc_test_data_column_index").trim());
+                int tc_result_column_index = Integer.parseInt(prop.getProperty("tc_result_column_index").trim());
+                int tc_comment_column_index = Integer.parseInt(prop.getProperty("tc_comment_column_index").trim());
+
 
                 int TC_row_num = TC_sheet.getLastRowNum() + 1;
 
@@ -107,132 +108,58 @@ public class main extends base{
 //                    System.out.println("Keyword is: " + TC_keyword);
 //                    System.out.println("TC_test_data is: " + TC_test_data);
 
-                    if(TC_keyword.equals("")){
+                    if(TC_keyword.equals("") || tc_failed){
                         break;
                     }
 
                     By locator;
                     WebElement element;
                     Select dropdown;
-                    //todo make TC_keyword lower case
                     switch (TC_keyword.toLowerCase()){
                         case "openbrowser":
-                            kw.openBrowser(driver, TC_test_data);
+                            keywords.openBrowser(TC_test_data);
                             break;
                         case "gotourl":
-                            System.out.println("Open this url: " + TC_test_data);
-                            driver.navigate().to(TC_test_data);
+                            keywords.gotToURL(TC_test_data);
                             break;
                         case "type":
-                            System.out.println("Enter " + TC_test_data + " into an element with " + TC_selector_type + " and " + TC_selector_value);
-
-                            locator = getLocator(TC_selector_type, TC_selector_value);
-                            driver.findElement(locator).sendKeys(TC_test_data);
-
+                            keywords.type(TC_selector_type, TC_selector_value, TC_test_data, tc_result_column_index, tc_comment_column_index, j, TC_sheet);
                             break;
                         case "click":
-                            System.out.println("Click on an element with " +  TC_selector_type + " and " + TC_selector_value);
-
-                            locator = getLocator(TC_selector_type, TC_selector_value);
-                            driver.findElement(locator).click();
+                            keywords.click(TC_selector_type, TC_selector_value);
                             break;
                         case "asserttext":
-                            System.out.println("Verify " + TC_test_data + "exist on an element with " +  TC_selector_type + " and " + TC_selector_value);
-
-                            locator = getLocator(TC_selector_type, TC_selector_value);
-                            String text = driver.findElement(locator).getText();
-                            System.out.println(text);
-                            System.out.println(TC_test_data);
-
-                            if(text.trim().contains(TC_test_data.trim())){
-                                System.out.println("Text is matching");
-                            }else {
-                                System.out.println("Text is not matching");
-                            }
+                            keywords.assertText(TC_selector_type, TC_selector_value, TC_test_data);
                             break;
-
                         case "asserttitle":
-                            System.out.println("Check page title contains: " + TC_test_data);
-                            String title = driver.getTitle();
-                            if(title.trim().contains(TC_test_data.trim())){
-                                System.out.println("Title is matching");
-                            }else {
-                                System.out.println("Title is NOT matching");
-                            }
+                            keywords.assertTitle(TC_test_data);
                             break;
                         case "refreshpage":
-                            System.out.println("Refresh the page");
-                            driver.navigate().refresh();
+                            keywords.refreshPage();
                             break;
                         case "checkvisibility":
-                            System.out.println("Check visibility of an element with " + TC_selector_type + " and " + TC_selector_value);
-                            locator = getLocator(TC_selector_type, TC_selector_value);
-                            element = driver.findElement(locator);
-
-                            if(element.isDisplayed()){
-                                System.out.println("Passing: Element is displayed");
-                            }else {
-                                System.out.println("Failing: Element is NOT displayed");
-                            }
+                            keywords.checkVisibility(TC_selector_type, TC_selector_value);
                             break;
                         case "checknotvisible":
-                            System.out.println("Check invisibility of an element with " + TC_selector_type + " and " + TC_selector_value);
-                            locator = getLocator(TC_selector_type, TC_selector_value);
-                            element = driver.findElement(locator);
-                            if(element.isDisplayed()){
-                                System.out.println("Failing: Element is displayed");
-                            }else {
-                                System.out.println("Passing: Element is NOT displayed");
-                            }
+                            keywords.checkNotVisible(TC_selector_type, TC_selector_value);
                             break;
                         case "selectbyvisibletext":
-                            System.out.println("Select from dropdown by visible text: " + TC_test_data);
-                            locator = getLocator(TC_selector_type, TC_selector_value);
-                            element = driver.findElement(locator);
-
-                            dropdown = new Select(element);
-                            dropdown.selectByVisibleText(TC_test_data);
+                            keywords.selectByVisibleText(TC_selector_type, TC_selector_value, TC_test_data);
                             break;
                         case "selectbyindex":
-                            System.out.println("Select from dropdown by index: " + TC_test_data);
-                            locator = getLocator(TC_selector_type, TC_selector_value);
-                            element = driver.findElement(locator);
-
-                            dropdown = new Select(element);
-                            dropdown.selectByIndex(Integer.parseInt(TC_test_data));
+                            keywords.selectByIndex(TC_selector_type, TC_selector_value, TC_test_data);
                             break;
                         case "enablecheckbox":
-                            System.out.println("Enable a checkbox");
-                            locator = getLocator(TC_selector_type, TC_selector_value);
-                            element = driver.findElement(locator);
-                            if(element.isSelected()){
-                                System.out.println("Passed: Element is already selected");
-                            }else {
-                                element.click();
-                            }
+                            keywords.enableCheckBox(TC_selector_type, TC_selector_value);
                             break;
                         case "disablecheckbox":
-                            System.out.println("Disable a checkbox");
-                            locator = getLocator(TC_selector_type, TC_selector_value);
-                            element = driver.findElement(locator);
-                            if(element.isSelected()){
-                                element.click();
-                            }else {
-                                System.out.println("Passed: Element is already unselected");
-                            }
+                            keywords.disableCheckBox(TC_selector_type, TC_selector_value);
                             break;
                         case "asserturl":
-                            System.out.println("Check URL contains: " + TC_test_data);
-                            String url = driver.getCurrentUrl();
-                            if(url.trim().contains(TC_test_data.trim())){
-                                System.out.println("Passing: url matches");
-                            }else {
-                                System.out.println("Failing: URl does not match");
-                            }
+                            keywords.assertURL(TC_test_data);
                             break;
                         case "closebrowser":
-                            System.out.println("Close the browser");
-                            driver.quit();
+                            keywords.closeBrowser();
                             break;
                         default:
                             System.out.println("Keyword named " + TC_keyword + " is not recognized!");
@@ -240,6 +167,11 @@ public class main extends base{
                     }
 
                 }
+
+                File file = new File(test_cases_path);
+                FileOutputStream fout= new FileOutputStream(file);
+                workbook.write(fout);
+                workbook.close();
 
             }
 
@@ -250,33 +182,5 @@ public class main extends base{
 
 
 
-    public static By getLocator (String selector_type, String selector_value){
-        By by;
-        switch (selector_type){
-            case "xpath":
-                by = By.xpath(selector_value);
-                break;
-            case "cssSelector":
-                by = By.cssSelector(selector_value);
-                break;
-            case "id":
-                by = By.id(selector_value);
-                break;
-            case "name":
-                by = By.name(selector_value);
-                break;
-            case "linkText":
-                by = By.linkText(selector_value);
-                break;
-            case "partialLinkText":
-                by = By.partialLinkText(selector_value);
-                break;
-            default:
-                by = null;
-                System.out.println("Invalid selector type: " + selector_type);
-                break;
-        }
-        return by;
-    }
 
 }
