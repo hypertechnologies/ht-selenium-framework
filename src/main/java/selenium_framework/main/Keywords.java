@@ -12,6 +12,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.Select;
 
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 public class Keywords {
@@ -172,24 +173,22 @@ public class Keywords {
         driver.findElement(locator).click();
     }
 
-    protected static void type(String TC_selector_type, String TC_selector_value, String TC_test_data, int tc_result_column_index, int tc_comment_column_index, int row, XSSFSheet TC_sheet) {
+    protected static void type(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
         try {
             By locator;
-            System.out.println("Enter " + TC_test_data + " into an element with " + TC_selector_type + " and " + TC_selector_value);
-
-            locator = getLocator(TC_selector_type, TC_selector_value);
-            driver.findElement(locator).sendKeys(TC_test_data);
+            locator = getLocator(selectorType, selectorValue);
+            driver.findElement(locator).sendKeys(testData);
             //Send pass result to Result column
-            TC_sheet.getRow(row).createCell(tc_result_column_index).setCellValue("Passed");
+            tcSheet.getRow(row).createCell(tcResultColumnIndex).setCellValue("Passed");
 
         }catch (Exception e){
             Main.tc_failed = true;
 
             System.out.println("I found an error: " + e.getMessage());
             //Send fail result to Result column
-            TC_sheet.getRow(row).createCell(tc_result_column_index).setCellValue("Failed");
+            tcSheet.getRow(row).createCell(tcResultColumnIndex).setCellValue("Failed");
             //Send error message to Comment column
-            TC_sheet.getRow(row).createCell(tc_comment_column_index).setCellValue(e.getMessage());
+            tcSheet.getRow(row).createCell(tcCommentColumnIndex).setCellValue(e.getMessage());
 
 
         }
