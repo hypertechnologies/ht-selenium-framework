@@ -50,12 +50,14 @@ public class Main extends Base {
         // Reading Workbook
         XSSFWorkbook workbook = null;
         try {
+            assert excelFileStream != null;
             workbook = new XSSFWorkbook(excelFileStream);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         // Getting Scenarios Sheet
+        assert workbook != null;
         XSSFSheet TS_sheet = workbook.getSheet(tsSheetName);
 
         // Reading info from Test Scenario sheet

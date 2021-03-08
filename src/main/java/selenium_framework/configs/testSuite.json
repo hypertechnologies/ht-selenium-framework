@@ -1,6 +1,6 @@
 {
-  "Name" : "",
-  "Description": "",
+  "Name" : "Selenium Hybrid Framework",
+  "Description": "This suite is to run test suite & test cases in multiple browsers",
   "browsers": ["chrome"],
   "Suite" : [
     {
