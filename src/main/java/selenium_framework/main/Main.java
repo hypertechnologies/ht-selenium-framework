@@ -5,9 +5,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
 import java.io.*;
 import java.util.Properties;
 
@@ -17,6 +14,14 @@ public class Main extends Base {
 
     public static void main(String[] args) throws InterruptedException, IOException {
         JSONArray suite = getSuite();
+        for (Object browser : getBrowsers()) {
+            Keywords.openBrowser(browser.toString());
+            runTestSuite(suite);
+            Keywords.closeBrowser();
+        }
+    }
+
+    private static void runTestSuite(JSONArray suite) {
         for (Object o : suite) {
             JSONObject testCaseObj = (JSONObject) o;
             testCaseFilePath = (String) testCaseObj.get("path");
@@ -32,7 +37,6 @@ public class Main extends Base {
 
         String tsSheetName = prop.getProperty("tsSheetName").trim();
         int tsIdColumnIndex = Integer.parseInt(prop.getProperty("tsIdColumnIndex").trim());
-        int tsNameColumnIndex = Integer.parseInt(prop.getProperty("tsNameColumnIndex").trim());
         int tsSkipColumnIndex = Integer.parseInt(prop.getProperty("tsSkipColumnIndex").trim());
 
         // Read Excel file
@@ -99,12 +103,9 @@ public class Main extends Base {
         }
         saveResultFile(workbook, testCaseFilePath);
     }
-    
+
     private static void runTestSteps(String keyword, String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
         switch (keyword.toLowerCase()){
-            case "openbrowser":
-                Keywords.openBrowser(testData);
-                break;
             case "gotourl":
                 Keywords.gotToURL(testData);
                 break;

@@ -12,24 +12,21 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.Select;
 
-import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 public class Keywords {
     static WebDriver driver;
 
-    protected static void openBrowser(String TC_test_data) {
-        System.out.println("Open a browser: " + TC_test_data);
-
-        if(TC_test_data.equalsIgnoreCase("chrome")){
+    protected static void openBrowser(String browser) {
+        if(browser.equalsIgnoreCase("chrome")){
             WebDriverManager.getInstance(DriverManagerType.CHROME).setup();
             ChromeOptions options = new ChromeOptions();
             options.addArguments("ignore-certificate-errors");
             driver = new ChromeDriver(options);
-        }else if(TC_test_data.equalsIgnoreCase("firefox")){
+        }else if(browser.equalsIgnoreCase("firefox")){
             WebDriverManager.getInstance(DriverManagerType.FIREFOX).setup();
             driver = new FirefoxDriver();
-        }else if(TC_test_data.equalsIgnoreCase("safari")){
+        }else if(browser.equalsIgnoreCase("safari")){
             WebDriverManager.getInstance(DriverManagerType.SAFARI).setup();
             driver = new SafariDriver();
         }
@@ -180,6 +177,7 @@ public class Keywords {
             driver.findElement(locator).sendKeys(testData);
             //Send pass result to Result column
             tcSheet.getRow(row).createCell(tcResultColumnIndex).setCellValue("Passed");
+            tcSheet.getRow(row).createCell(tcCommentColumnIndex).setCellValue("");
 
         }catch (Exception e){
             Main.tc_failed = true;
@@ -189,6 +187,7 @@ public class Keywords {
             tcSheet.getRow(row).createCell(tcResultColumnIndex).setCellValue("Failed");
             //Send error message to Comment column
             tcSheet.getRow(row).createCell(tcCommentColumnIndex).setCellValue(e.getMessage());
+            closeBrowser();
 
 
         }

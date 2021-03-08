@@ -4,22 +4,33 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.*;
 import org.json.simple.parser.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Properties;
 
 public class Base {
-    protected static JSONArray getSuite() {
+    protected static JSONObject getSuiteConfigs() {
         Properties prop = getProperties();
         String tsConfigFilePath = prop.getProperty("tsConfigFilePath").trim();
         JSONParser parser = new JSONParser();
-        JSONArray suite = new JSONArray();
+        JSONObject configs = new JSONObject();
         try {
             Object obj = parser.parse(new FileReader(tsConfigFilePath));
-            JSONObject jsonObject = (JSONObject) obj;
-            suite = (JSONArray) jsonObject.get("Suite");
+            configs = (JSONObject) obj;
         } catch (ParseException | IOException e) {
             e.printStackTrace();
         }
-        return suite;
+        return configs;
+    }
+
+    protected static JSONArray getBrowsers() {
+        JSONObject jsonObject = getSuiteConfigs();
+        return (JSONArray) jsonObject.get("browsers");
+    }
+
+    protected static JSONArray getSuite() {
+        JSONObject jsonObject = getSuiteConfigs();
+        return (JSONArray) jsonObject.get("Suite");
     }
 
     protected static Properties getProperties() {

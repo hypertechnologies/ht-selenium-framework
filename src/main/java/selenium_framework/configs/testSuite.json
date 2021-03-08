@@ -1,6 +1,7 @@
 {
   "Name" : "",
   "Description": "",
+  "browsers": ["chrome"],
   "Suite" : [
     {
       "path": "src/main/java/selenium_framework/test_cases/HyperTech_Automation_Test_Case.xlsx",
