@@ -1,7 +1,5 @@
 package homework;
 
-import basicjava.java_objects.cars1;
-
 import java.util.HashMap;
 import java.util.HashSet;
 
