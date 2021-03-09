@@ -58,11 +58,11 @@ public class Base {
 
     protected static void saveResultFile(XSSFWorkbook workbook, String testCaseFilePath, String runID) {
         String testResultFileName = new File(testCaseFilePath).getName();
-        File testResultDir = new File((testCaseFilePath.split(testResultFileName)[0]) + "/results"+ "/" + runID);
+        File testResultDir = new File((testCaseFilePath.split(testResultFileName)[0]) + "/reports"+ "/" + runID);
         if (!testResultDir.exists()){
             testResultDir.mkdirs();
         }
-        String testResultPath = testResultDir +"/"+ testResultFileName;
+        String testResultPath = testResultDir +"/"+ "Report_" + testResultFileName;
 
         FileOutputStream fout= null;
         try {
