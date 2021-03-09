@@ -4,12 +4,12 @@
   "browsers": ["chrome"],
   "Suite" : [
     {
-      "path": "src/main/java/selenium_framework/test_cases/HyperTech_Automation_Test_Case.xlsx",
+      "path": "src/main/java/selenium_framework/test_cases/OSPOS_Automation_Test_Case.xlsx",
       "skip": false
     },
     {
-      "path": "src/main/java/selenium_framework/test_cases/OSPOS_Automation_Test_Case.xlsx",
-      "skip": true
+      "path": "src/main/java/selenium_framework/test_cases/HyperTech_Automation_Test_Case.xlsx",
+      "skip": false
     }
   ]
 }

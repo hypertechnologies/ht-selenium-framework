@@ -68,6 +68,13 @@ public class Base {
         try {
             fout = new FileOutputStream(testResultPath);
             workbook.write(fout);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected static void closeWorkBook(XSSFWorkbook workbook) {
+        try {
             workbook.close();
         } catch (IOException e) {
             e.printStackTrace();

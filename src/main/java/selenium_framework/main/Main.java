@@ -1,7 +1,6 @@
 package selenium_framework.main;
 
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -19,24 +18,22 @@ public class Main extends Base {
         runID = getCurrentDateTime();
         JSONArray suite = getSuite();
         for (Object browser : getBrowsers()) {
-            Keywords.openBrowser(browser.toString());
-            runTestSuite(suite);
-            Keywords.closeBrowser();
+            runTestSuite(suite,  browser.toString());
         }
     }
 
-    private static void runTestSuite(JSONArray suite) {
+    private static void runTestSuite(JSONArray suite, String browser) {
         for (Object o : suite) {
             JSONObject testCaseObj = (JSONObject) o;
             testCaseFilePath = (String) testCaseObj.get("path");
             Boolean testCaseSkip = (Boolean) testCaseObj.get("skip");
             if(!testCaseSkip){
-                runTestScenarios(testCaseFilePath.trim());
+                runTestScenarios(testCaseFilePath.trim(), browser);
             }
         }
     }
 
-    private static void runTestScenarios(String testCaseFilePath) {
+    private static void runTestScenarios(String testCaseFilePath, String browser) {
         Properties prop = getProperties();
 
         String tsSheetName = prop.getProperty("tsSheetName").trim();
@@ -81,9 +78,12 @@ public class Main extends Base {
 
             // !TS_skip = TS_skip is not true or TS_skip is false
             if(!tsSkip){
+                Keywords.openBrowser(browser);
                 runTestCases(tsId, workbook, prop);
+                Keywords.closeBrowser();
             }
         }
+        closeWorkBook(workbook);
     }
 
     private static void runTestCases(int tsId, XSSFWorkbook workbook, Properties prop) {
