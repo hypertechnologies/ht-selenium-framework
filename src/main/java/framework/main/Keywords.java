@@ -1,4 +1,4 @@
-package selenium_framework.main;
+package framework.main;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.bonigarcia.wdm.config.DriverManagerType;

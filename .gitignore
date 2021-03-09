@@ -1,4 +1,4 @@
 .idea/
 target/
 ai.hypertech.automation.iml
-src/main/java/selenium_framework/test_cases/reports
+src/main/java/framework/reports

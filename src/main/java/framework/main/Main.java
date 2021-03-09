@@ -1,4 +1,4 @@
-package selenium_framework.main;
+package framework.main;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -7,15 +7,16 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.io.*;
+import java.util.List;
 import java.util.Properties;
 
 public class Main extends Base {
     public static boolean tc_failed = false;
     private static String testCaseFilePath;
-    private static String runID;
+    private static String sessionId;
 
     public static void main(String[] args) throws InterruptedException, IOException {
-        runID = getCurrentDateTime();
+        sessionId = getCurrentDateTime();
         JSONArray suite = getSuite();
         for (Object browser : getBrowsers()) {
             runTestSuite(suite,  browser.toString());
@@ -25,15 +26,20 @@ public class Main extends Base {
     private static void runTestSuite(JSONArray suite, String browser) {
         for (Object o : suite) {
             JSONObject testCaseObj = (JSONObject) o;
-            testCaseFilePath = (String) testCaseObj.get("path");
-            Boolean testCaseSkip = (Boolean) testCaseObj.get("skip");
-            if(!testCaseSkip){
-                runTestScenarios(testCaseFilePath.trim(), browser);
+            String testCaseDir = (String) testCaseObj.get("directory");
+            Boolean testCaseDirSkip = (Boolean) testCaseObj.get("skip");
+            List<File> testCasePaths = getAllTestCaseFilePaths(testCaseDir);
+
+            if(!testCaseDirSkip){
+                for (File path : testCasePaths) {
+                    testCaseFilePath = path.toString();
+                    runTestScenarios(browser);
+                }
             }
         }
     }
 
-    private static void runTestScenarios(String testCaseFilePath, String browser) {
+    private static void runTestScenarios(String browser) {
         Properties prop = getProperties();
 
         String tsSheetName = prop.getProperty("tsSheetName").trim();
@@ -119,7 +125,7 @@ public class Main extends Base {
                 runTestSteps(keyword, selectorType, selectorValue, testData, j, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
             }
         }
-        saveResultFile(workbook, testCaseFilePath, runID);
+        saveResultFile(workbook, testCaseFilePath, sessionId);
     }
 
     private static void runTestSteps(String keyword, String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {

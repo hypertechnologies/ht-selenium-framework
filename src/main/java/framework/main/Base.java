@@ -1,4 +1,4 @@
-package selenium_framework.main;
+package framework.main;
 
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.*;
@@ -6,6 +6,9 @@ import org.json.simple.parser.*;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 public class Base {
@@ -35,7 +38,7 @@ public class Base {
 
     protected static Properties getProperties() {
         // Set path of the properties file
-        File file = new File("src/main/java/selenium_framework/configs/configs.properties");
+        File file = new File("src/main/java/framework/configs/configs.properties");
 
         // Create input stream of the properties file
         FileInputStream fileInput = null;
@@ -56,9 +59,9 @@ public class Base {
         return prop;
     }
 
-    protected static void saveResultFile(XSSFWorkbook workbook, String testCaseFilePath, String runID) {
+    protected static void saveResultFile(XSSFWorkbook workbook, String testCaseFilePath, String sessionId) {
         String testResultFileName = new File(testCaseFilePath).getName();
-        File testResultDir = new File((testCaseFilePath.split(testResultFileName)[0]) + "/reports"+ "/" + runID);
+        File testResultDir = new File((testCaseFilePath.split(testResultFileName)[0]) + "../../reports"+ "/" + sessionId);
         if (!testResultDir.exists()){
             testResultDir.mkdirs();
         }
@@ -79,6 +82,23 @@ public class Base {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    protected static List<File> getAllTestCaseFilePaths(String directoryName) {
+        File directory = new File(directoryName);
+
+        List<File> resultList = new ArrayList<File>();
+
+        // get all the files from a directory
+        File[] fList = directory.listFiles();
+        resultList.addAll(Arrays.asList(fList));
+        for (File file : fList) {
+            if (file.isFile()) {
+            } else if (file.isDirectory()) {
+                resultList.addAll(getAllTestCaseFilePaths(file.getAbsolutePath()));
+            }
+        }
+        return resultList;
     }
 
     protected static String getCurrentDateTime() {
