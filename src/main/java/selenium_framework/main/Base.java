@@ -33,11 +33,6 @@ public class Base {
         return (JSONArray) jsonObject.get("Suite");
     }
 
-    protected static String getTestResultDir() {
-        JSONObject jsonObject = getSuiteConfigs();
-        return String.valueOf(jsonObject.get("testResultDir"));
-    }
-
     protected static Properties getProperties() {
         // Set path of the properties file
         File file = new File("src/main/java/selenium_framework/configs/configs.properties");
@@ -63,11 +58,11 @@ public class Base {
 
     protected static void saveResultFile(XSSFWorkbook workbook, String testCaseFilePath, String runID) {
         String testResultFileName = new File(testCaseFilePath).getName();
-        File newDir = new File(getTestResultDir() + "/" + runID);
-        if (!newDir.exists()){
-            newDir.mkdirs();
+        File testResultDir = new File((testCaseFilePath.split(testResultFileName)[0]) + "/results"+ "/" + runID);
+        if (!testResultDir.exists()){
+            testResultDir.mkdirs();
         }
-        String testResultPath = getTestResultDir() + "/" + runID +"/"+ testResultFileName;
+        String testResultPath = testResultDir +"/"+ testResultFileName;
 
         FileOutputStream fout= null;
         try {
@@ -78,8 +73,6 @@ public class Base {
             e.printStackTrace();
         }
     }
-
-
 
     protected static String getCurrentDateTime() {
         LocalDateTime myDateObj = LocalDateTime.now();

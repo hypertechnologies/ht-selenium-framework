@@ -2,7 +2,6 @@
   "Name" : "Selenium Hybrid Framework",
   "Description": "This suite is to run test suite & test cases in multiple browsers",
   "browsers": ["chrome"],
-  "testResultDir": "src/main/java/selenium_framework/test_results",
   "Suite" : [
     {
       "path": "src/main/java/selenium_framework/test_cases/HyperTech_Automation_Test_Case.xlsx",
