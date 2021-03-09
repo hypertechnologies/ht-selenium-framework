@@ -31,7 +31,6 @@ public class Keywords {
             driver = new SafariDriver();
         }
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-
     }
 
     protected static void gotToURL(String TC_test_data) {

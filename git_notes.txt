@@ -1,10 +1,17 @@
+git init = To convert and existing project to a git project
+git clone /PATH/TO/REMOTE/REPOSITORY = to clone remote repository to local machine
+
 git status = to check the changes or new code that we wrote.
 git diff = shows the actual code that you changed
+git diff RELATIVE/FILE/PATH= shows the actual code that you changed on that specific file
 git add . = will add all the changes for committing
 git add SPECIFIC_FILE = will add a specific file
 git commit -m "ANY_MESSAGE" = it will commit everything that you added before push
 git push = pushes and saves everything to github
 
+git branch = to see list of local branches
 git checkout -b NAME_OF_THE_BRANCH = This is to create a new branch and switch to that branch
 git checkout NAME_OF_THE_BRANCH = Switch to a branch
-git branch = to see list of local branches
+
+git fetch = to download all remote changes including file, commits & branches
+git remote add origin /PATH/TO/REMOTE/REPOSITORY = To connect your local git project to remote repository
