@@ -4,6 +4,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.*;
 import org.json.simple.parser.*;
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
 public class Base {
@@ -31,6 +33,11 @@ public class Base {
         return (JSONArray) jsonObject.get("Suite");
     }
 
+    protected static String getTestResultDir() {
+        JSONObject jsonObject = getSuiteConfigs();
+        return String.valueOf(jsonObject.get("testResultDir"));
+    }
+
     protected static Properties getProperties() {
         // Set path of the properties file
         File file = new File("src/main/java/selenium_framework/configs/configs.properties");
@@ -54,15 +61,29 @@ public class Base {
         return prop;
     }
 
-    protected static void saveResultFile(XSSFWorkbook workbook, String testCaseFilePath) {
-        File file = new File(testCaseFilePath);
+    protected static void saveResultFile(XSSFWorkbook workbook, String testCaseFilePath, String runID) {
+        String testResultFileName = new File(testCaseFilePath).getName();
+        File newDir = new File(getTestResultDir() + "/" + runID);
+        if (!newDir.exists()){
+            newDir.mkdirs();
+        }
+        String testResultPath = getTestResultDir() + "/" + runID +"/"+ testResultFileName;
+
         FileOutputStream fout= null;
         try {
-            fout = new FileOutputStream(file);
+            fout = new FileOutputStream(testResultPath);
             workbook.write(fout);
             workbook.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+
+    protected static String getCurrentDateTime() {
+        LocalDateTime myDateObj = LocalDateTime.now();
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("hh:mm:ss:a_MM-dd-yyyy");
+        return myDateObj.format(myFormatObj);
     }
 }

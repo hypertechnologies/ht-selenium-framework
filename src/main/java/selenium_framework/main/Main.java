@@ -13,8 +13,10 @@ import java.util.Properties;
 public class Main extends Base {
     public static boolean tc_failed = false;
     private static String testCaseFilePath;
+    private static String runID;
 
     public static void main(String[] args) throws InterruptedException, IOException {
+        runID = getCurrentDateTime();
         JSONArray suite = getSuite();
         for (Object browser : getBrowsers()) {
             Keywords.openBrowser(browser.toString());
@@ -117,7 +119,7 @@ public class Main extends Base {
                 runTestSteps(keyword, selectorType, selectorValue, testData, j, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
             }
         }
-        saveResultFile(workbook, testCaseFilePath);
+        saveResultFile(workbook, testCaseFilePath, runID);
     }
 
     private static void runTestSteps(String keyword, String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
