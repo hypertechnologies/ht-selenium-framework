@@ -1,4 +1,5 @@
 .idea/
+.DS_Store
 target/
-ai.hypertech.automation.iml
 src/main/java/framework/reports
+ai.hypertech.automation.iml

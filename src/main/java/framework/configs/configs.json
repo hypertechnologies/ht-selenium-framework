@@ -8,7 +8,7 @@
       "skip": false
     },
     {
-      "directory": "src/main/java/framework/suite/ui",
+      "directory": "src/main/java/framework/suite/smoke",
       "skip": false
     }
   ]
