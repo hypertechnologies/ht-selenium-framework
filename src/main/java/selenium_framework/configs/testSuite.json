@@ -5,11 +5,11 @@
   "Suite" : [
     {
       "path": "src/main/java/selenium_framework/test_cases/HyperTech_Automation_Test_Case.xlsx",
-      "enabled": true
+      "skip": false
     },
     {
       "path": "src/main/java/selenium_framework/test_cases/OSPOS_Automation_Test_Case.xlsx",
-      "enabled": false
+      "skip": true
     }
   ]
 }

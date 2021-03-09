@@ -1,5 +1,7 @@
 package selenium_framework.main;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -25,8 +27,8 @@ public class Main extends Base {
         for (Object o : suite) {
             JSONObject testCaseObj = (JSONObject) o;
             testCaseFilePath = (String) testCaseObj.get("path");
-            Boolean testCaseEnabled = (Boolean) testCaseObj.get("enabled");
-            if(testCaseEnabled){
+            Boolean testCaseSkip = (Boolean) testCaseObj.get("skip");
+            if(!testCaseSkip){
                 runTestScenarios(testCaseFilePath.trim());
             }
         }
@@ -58,21 +60,27 @@ public class Main extends Base {
 
         // Getting Scenarios Sheet
         assert workbook != null;
-        XSSFSheet TS_sheet = workbook.getSheet(tsSheetName);
+        XSSFSheet tsSheet = workbook.getSheet(tsSheetName);
 
         // Reading info from Test Scenario sheet
-        for (int i = 1; i < TS_sheet.getLastRowNum() + 1; i++){
+        for (int i = 1; i < tsSheet.getLastRowNum() + 1; i++){
             tc_failed = false;
 
+            Cell tsIdCell = tsSheet.getRow(i).getCell(tsIdColumnIndex);
+            Cell tsSkipCell = tsSheet.getRow(i).getCell(tsSkipColumnIndex);
+
+            if(tsIdCell == null || tsIdCell.toString().equalsIgnoreCase("")){
+                break;
+            }
+
             DataFormatter formatter = new DataFormatter();
-            int tsId = Integer.parseInt(formatter.formatCellValue(TS_sheet.getRow(i).getCell(tsIdColumnIndex)));
-            boolean tsSkip = Boolean.parseBoolean(formatter.formatCellValue(TS_sheet.getRow(i).getCell(tsSkipColumnIndex)));
+            int tsId = Integer.parseInt(formatter.formatCellValue(tsIdCell));
+            boolean tsSkip = Boolean.parseBoolean(formatter.formatCellValue(tsSkipCell));
 
             // !TS_skip = TS_skip is not true or TS_skip is false
             if(!tsSkip){
                 runTestCases(tsId, workbook, prop);
             }
-
         }
     }
 
@@ -89,19 +97,25 @@ public class Main extends Base {
         int tcTestDataColumnIndex = Integer.parseInt(prop.getProperty("tcTestDataColumnIndex").trim());
         int tcResultColumnIndex = Integer.parseInt(prop.getProperty("tcResultColumnIndex").trim());
         int tcCommentColumnIndex = Integer.parseInt(prop.getProperty("tcCommentColumnIndex").trim());
+        int tcSkipIndex = Integer.parseInt(prop.getProperty("tcSkipIndex").trim());
 
         DataFormatter formatter = new DataFormatter();
         for(int j = 1; j < tcSheet.getLastRowNum() + 1; j++){
+            Cell tcKeyword = tcSheet.getRow(j).getCell(tcKeywordColumnIndex);
+
+            if(tcKeyword == null || tcKeyword.toString().equalsIgnoreCase("") || tc_failed){
+                break;
+            }
             // Convert all cell values to string
-            String keyword = formatter.formatCellValue(tcSheet.getRow(j).getCell(tcKeywordColumnIndex));
+            String keyword = formatter.formatCellValue(tcKeyword);
             String selectorType = formatter.formatCellValue(tcSheet.getRow(j).getCell(tcSelectorTypeColumnIndex));
             String selectorValue = formatter.formatCellValue(tcSheet.getRow(j).getCell(tcSelectorValueColumnIndex));
             String testData = formatter.formatCellValue(tcSheet.getRow(j).getCell(tcTestDataColumnIndex));
+            boolean skip = Boolean.parseBoolean(formatter.formatCellValue(tcSheet.getRow(j).getCell(tcSkipIndex)));
 
-            if(keyword.equals("") || tc_failed){
-                break;
+            if(!skip){
+                runTestSteps(keyword, selectorType, selectorValue, testData, j, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
             }
-            runTestSteps(keyword, selectorType, selectorValue, testData, j, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
         }
         saveResultFile(workbook, testCaseFilePath);
     }
