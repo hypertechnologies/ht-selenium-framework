@@ -14,7 +14,7 @@ import java.util.Properties;
 public class Base {
     protected static JSONObject getSuiteConfigs() {
         Properties prop = getProperties();
-        String tsConfigFilePath = prop.getProperty("tsConfigFilePath").trim();
+        String tsConfigFilePath = prop.getProperty("testSuiteConfigFilePath").trim();
         JSONParser parser = new JSONParser();
         JSONObject configs = new JSONObject();
         try {
