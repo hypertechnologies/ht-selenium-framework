@@ -46,22 +46,7 @@ public class Main extends Base {
         int tsIdColumnIndex = Integer.parseInt(prop.getProperty("tsIdColumnIndex").trim());
         int tsSkipColumnIndex = Integer.parseInt(prop.getProperty("tsSkipColumnIndex").trim());
 
-        // Read Excel file
-        FileInputStream excelFileStream = null;
-        try {
-            excelFileStream = new FileInputStream(testCaseFilePath);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        // Reading Workbook
-        XSSFWorkbook workbook = null;
-        try {
-            assert excelFileStream != null;
-            workbook = new XSSFWorkbook(excelFileStream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        XSSFWorkbook workbook = getWorkbook(testCaseFilePath);
 
         // Getting Scenarios Sheet
         assert workbook != null;

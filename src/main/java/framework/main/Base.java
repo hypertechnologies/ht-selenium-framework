@@ -59,6 +59,26 @@ public class Base {
         return prop;
     }
 
+    protected static XSSFWorkbook getWorkbook(String testCaseFilePath) {
+        // Read Excel file
+        FileInputStream excelFileStream = null;
+        try {
+            excelFileStream = new FileInputStream(testCaseFilePath);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        // Reading Workbook
+        XSSFWorkbook workbook = null;
+        try {
+            assert excelFileStream != null;
+            workbook = new XSSFWorkbook(excelFileStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return workbook;
+    }
+
     protected static void saveResultFile(XSSFWorkbook workbook, String testCaseFilePath, String sessionId) {
         String testResultFileName = new File(testCaseFilePath).getName();
         File testResultDir = new File((testCaseFilePath.split(testResultFileName)[0]) + "../../reports"+ "/" + sessionId);
