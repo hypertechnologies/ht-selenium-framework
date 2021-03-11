@@ -10,12 +10,15 @@ import java.io.*;
 import java.util.List;
 import java.util.Properties;
 
+import static framework.main.Keywords.closeBrowser;
+
 public class Main extends Base {
     public static boolean tc_failed = false;
     private static String testCaseFilePath;
     private static String sessionId;
 
     public static void main(String[] args) throws InterruptedException, IOException {
+        suiteConfigs = getSuiteConfigs();
         sessionId = getCurrentDateTime();
         JSONArray suite = getSuite();
         for (Object browser : getBrowsers()) {
@@ -71,7 +74,7 @@ public class Main extends Base {
             if(!tsSkip){
                 Keywords.openBrowser(browser);
                 runTestCases(tsId, workbook, prop);
-                Keywords.closeBrowser();
+                closeBrowser();
             }
         }
         closeWorkBook(workbook);
@@ -97,6 +100,7 @@ public class Main extends Base {
             Cell tcKeyword = tcSheet.getRow(j).getCell(tcKeywordColumnIndex);
 
             if(tcKeyword == null || tcKeyword.toString().equalsIgnoreCase("") || tc_failed){
+                closeBrowser();
                 break;
             }
             // Convert all cell values to string
@@ -155,7 +159,7 @@ public class Main extends Base {
                 Keywords.assertURL(testData);
                 break;
             case "closebrowser":
-                Keywords.closeBrowser();
+                closeBrowser();
                 break;
             default:
                 System.out.println("Keyword named " + keyword + " is not recognized!");

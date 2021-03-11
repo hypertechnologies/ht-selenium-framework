@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Properties;
 
 public class Base {
+    protected static JSONObject suiteConfigs;
+
     protected static JSONObject getSuiteConfigs() {
         Properties prop = getProperties();
         String tsConfigFilePath = prop.getProperty("testSuiteConfigFilePath").trim();
@@ -27,13 +29,11 @@ public class Base {
     }
 
     protected static JSONArray getBrowsers() {
-        JSONObject jsonObject = getSuiteConfigs();
-        return (JSONArray) jsonObject.get("browsers");
+        return (JSONArray) suiteConfigs.get("browsers");
     }
 
     protected static JSONArray getSuite() {
-        JSONObject jsonObject = getSuiteConfigs();
-        return (JSONArray) jsonObject.get("Suite");
+        return (JSONArray) suiteConfigs.get("Suite");
     }
 
     protected static Properties getProperties() {

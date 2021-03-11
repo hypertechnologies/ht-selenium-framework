@@ -2,6 +2,9 @@
   "Name" : "Selenium Hybrid Framework",
   "Description": "This suite is to run test suite & test cases in multiple browsers",
   "browsers": ["chrome"],
+  "implicitWaitTimeout": 5000,
+  "explicitWaitTimeout": 5000,
+  "ignoreCertificateError": true,
   "Suite" : [
     {
       "directory": "src/main/java/framework/suite/regression",
