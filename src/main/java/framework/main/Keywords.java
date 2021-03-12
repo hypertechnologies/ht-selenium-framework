@@ -77,6 +77,7 @@ public class Keywords extends Base{
             By locator;
             WebElement element;
             locator = getLocator(selectorType, selectorValue);
+            waitForVisible(locator);
             element = driver.findElement(locator);
             if(element.isSelected()){
                 element.click();
@@ -93,6 +94,7 @@ public class Keywords extends Base{
             By locator;
             WebElement element;
             locator = getLocator(selectorType, selectorValue);
+            waitForVisible(locator);
             element = driver.findElement(locator);
             if(!element.isSelected()){
                 element.click();
@@ -110,6 +112,7 @@ public class Keywords extends Base{
             WebElement element;
             Select dropdown;
             locator = getLocator(selectorType, selectorValue);
+            waitForVisible(locator);
             element = driver.findElement(locator);
 
             dropdown = new Select(element);
@@ -128,6 +131,7 @@ public class Keywords extends Base{
             WebElement element;
             Select dropdown;
             locator = getLocator(selectorType, selectorValue);
+            waitForVisible(locator);
             element = driver.findElement(locator);
 
             dropdown = new Select(element);
@@ -145,6 +149,7 @@ public class Keywords extends Base{
             By locator;
             WebElement element;
             locator = getLocator(selectorType, selectorValue);
+            waitForNotVisible(locator);
             element = driver.findElement(locator);
             if(element.isDisplayed()){
                 sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, "Expected element to be NOT visible on the page but it's still visible!");
@@ -162,6 +167,7 @@ public class Keywords extends Base{
             By locator;
             WebElement element;
             locator = getLocator(selectorType, selectorValue);
+            waitForVisible(locator);
             element = driver.findElement(locator);
 
             if(element.isDisplayed()){
@@ -203,6 +209,7 @@ public class Keywords extends Base{
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
+            waitForVisible(locator);
             String text = driver.findElement(locator).getText();
             if(text.trim().contains(testData.trim())){
                 sendPassedResult(row, tcResultColumnIndex, tcSheet);
@@ -247,11 +254,11 @@ public class Keywords extends Base{
 
     private static By getLocator (String selector_type, String selector_value){
         By by;
-        switch (selector_type){
+        switch (selector_type.toLowerCase()){
             case "xpath":
                 by = By.xpath(selector_value);
                 break;
-            case "cssSelector":
+            case "cssselector":
                 by = By.cssSelector(selector_value);
                 break;
             case "id":
@@ -260,18 +267,31 @@ public class Keywords extends Base{
             case "name":
                 by = By.name(selector_value);
                 break;
-            case "linkText":
+            case "classname":
+                by = By.className(selector_value);
+                break;
+            case "tagname":
+                by = By.tagName(selector_value);
+                break;
+            case "linktext":
                 by = By.linkText(selector_value);
                 break;
-            case "partialLinkText":
+            case "partiallinktext":
                 by = By.partialLinkText(selector_value);
                 break;
             default:
                 by = null;
-                System.out.println("Invalid selector type: " + selector_type);
+                System.out.println("Invalid selector type provided: " + selector_type +
+                        ". Selector type must be one of xpath, CssSelector, id, name, ClassName, TagName, LinkText or PartialLinkText");
                 break;
         }
         return by;
+    }
+
+    private static void waitForNotVisible(By locator) {
+        int explicitWaitTimeout = (int) (long) suiteConfigs.get("explicitWaitTimeout");
+        WebDriverWait wait = new WebDriverWait(driver,explicitWaitTimeout/1000);
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
     }
 
     private static void waitForVisible(By locator) {
