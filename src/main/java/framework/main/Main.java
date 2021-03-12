@@ -100,7 +100,6 @@ public class Main extends Base {
             Cell tcKeyword = tcSheet.getRow(j).getCell(tcKeywordColumnIndex);
 
             if(tcKeyword == null || tcKeyword.toString().equalsIgnoreCase("") || tc_failed){
-                closeBrowser();
                 break;
             }
             // Convert all cell values to string
@@ -118,7 +117,7 @@ public class Main extends Base {
     }
 
     private static void runTestSteps(String keyword, String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        switch (keyword.toLowerCase()){
+        switch (keyword.trim().toLowerCase()){
             case "gotourl":
                 Keywords.gotToURL(testData, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
                 break;
@@ -162,7 +161,7 @@ public class Main extends Base {
                 closeBrowser();
                 break;
             default:
-                System.out.println("Keyword named " + keyword + " is not recognized!");
+                System.out.println("Keyword named \"" + keyword + "\" is not recognized!");
                 break;
         }
     }

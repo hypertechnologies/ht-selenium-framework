@@ -8,7 +8,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.opera.OperaDriver;
+import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -19,22 +24,60 @@ public class Keywords extends Base{
     static WebDriver driver;
 
     protected static void openBrowser(String browser) {
-        if(browser.equalsIgnoreCase("chrome")){
-            WebDriverManager.getInstance(DriverManagerType.CHROME).setup();
-            ChromeOptions options = new ChromeOptions();
-            boolean ignoreCertificateError = (boolean) suiteConfigs.get("ignoreCertificateError");
-            if(ignoreCertificateError){
-                options.addArguments("ignore-certificate-errors");
-            }
-            driver = new ChromeDriver(options);
-        }else if(browser.equalsIgnoreCase("firefox")){
-            WebDriverManager.getInstance(DriverManagerType.FIREFOX).setup();
-            driver = new FirefoxDriver();
-        }else if(browser.equalsIgnoreCase("safari")){
-            WebDriverManager.getInstance(DriverManagerType.SAFARI).setup();
-            driver = new SafariDriver();
-        }
+        System.out.println("Open " + browser + " browser");
+        boolean ignoreCertificateError = (boolean) suiteConfigs.get("ignoreCertificateError");
+        String screenSize = (String) suiteConfigs.get("screenSize");
         int implicitWaitTimeout = (int) (long) suiteConfigs.get("implicitWaitTimeout");
+
+        switch (browser.trim().toLowerCase()){
+            case "chrome":
+                WebDriverManager.getInstance(DriverManagerType.CHROME).setup();
+                ChromeOptions chromeOptions = new ChromeOptions();
+                if(ignoreCertificateError){
+                    chromeOptions.addArguments("ignore-certificate-errors");
+                }
+                chromeOptions.addArguments("--window-size=" + screenSize);
+                driver = new ChromeDriver(chromeOptions);
+                break;
+
+            case "firefox":
+                WebDriverManager.getInstance(DriverManagerType.FIREFOX).setup();
+                FirefoxOptions firefoxOptions = new FirefoxOptions();
+                if(ignoreCertificateError){
+                    firefoxOptions.addArguments("ignore-certificate-errors");
+                }
+                firefoxOptions.addArguments("--window-size=" + screenSize);
+                driver = new FirefoxDriver(firefoxOptions);
+                break;
+
+            case "safari":
+                WebDriverManager.getInstance(DriverManagerType.SAFARI).setup();
+                driver = new SafariDriver();
+                break;
+
+            case "edge":
+                WebDriverManager.getInstance(DriverManagerType.EDGE).setup();
+                driver = new EdgeDriver();
+                break;
+
+            case "ieexplorer":
+                WebDriverManager.getInstance(DriverManagerType.IEXPLORER).setup();
+                driver = new InternetExplorerDriver();
+                break;
+
+            case "opera":
+                WebDriverManager.getInstance(DriverManagerType.OPERA).setup();
+                OperaOptions operaOptions = new OperaOptions();
+                if(ignoreCertificateError){
+                    operaOptions.addArguments("ignore-certificate-errors");
+                }
+                operaOptions.addArguments("--window-size=" + screenSize);
+                driver = new OperaDriver(operaOptions);
+                break;
+
+            default:
+                System.out.println("Browser name \"" + browser + "\" is not recognized!");
+        }
         driver.manage().timeouts().implicitlyWait(implicitWaitTimeout, TimeUnit.MILLISECONDS);
     }
 
@@ -46,7 +89,7 @@ public class Keywords extends Base{
     }
 
     protected static void gotToURL(String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Navigate to: " + testData);
+        System.out.println("Navigate to \"" + testData + "\"");
         try {
             driver.navigate().to(testData);
             // Sending pass result to result column
@@ -58,7 +101,7 @@ public class Keywords extends Base{
     }
 
     protected static void assertURL(String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Check URL contains: " + testData);
+        System.out.println("Check URL contains \"" + testData + "\"");
         try {
             String url = driver.getCurrentUrl();
             if(url.trim().contains(testData.trim())){
@@ -72,7 +115,7 @@ public class Keywords extends Base{
     }
 
     protected static void disableCheckBox(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Disable a checkbox with an element with " + selectorType + " and " + selectorValue);
+        System.out.println("Disable a checkbox with an element with  selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             WebElement element;
@@ -89,7 +132,7 @@ public class Keywords extends Base{
     }
 
     protected static void enableCheckBox(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Enable a checkbox with an element with " + selectorType + " and " + selectorValue);
+        System.out.println("Enable a checkbox with an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             WebElement element;
@@ -106,7 +149,7 @@ public class Keywords extends Base{
     }
 
     protected static void selectByIndex(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Select from dropdown by index: " + testData);
+        System.out.println("Select index \"" + testData + "\" item from a dropdown with an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             WebElement element;
@@ -125,7 +168,7 @@ public class Keywords extends Base{
     }
 
     protected static void selectByVisibleText(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Select from dropdown by visible text: " + testData);
+        System.out.println("Select \"" + testData + "\" from dropdown with an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             WebElement element;
@@ -144,7 +187,7 @@ public class Keywords extends Base{
     }
 
     protected static void checkNotVisible(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Check invisibility of an element with " + selectorType + " and " + selectorValue);
+        System.out.println("Check invisibility of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             WebElement element;
@@ -162,7 +205,7 @@ public class Keywords extends Base{
     }
 
     protected static void checkVisibility(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Check visibility of an element with " + selectorType + " and " + selectorValue);
+        System.out.println("Check visibility of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             WebElement element;
@@ -191,7 +234,7 @@ public class Keywords extends Base{
     }
 
     protected static void assertTitle(String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Check page title contains: " + testData);
+        System.out.println("Check page title contains \"" + testData + "\"");
         try {
             String title = driver.getTitle();
             if(title.trim().contains(testData.trim())){
@@ -205,7 +248,7 @@ public class Keywords extends Base{
     }
 
     protected static void assertText(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Verify " + testData + "exist on an element with " + selectorType + " and " + selectorValue);
+        System.out.println("Verify \"" + testData + "\" exist on an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
@@ -222,7 +265,7 @@ public class Keywords extends Base{
     }
 
     protected static void click(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Click on an element with " + selectorType + " and " + selectorValue);
+        System.out.println("Click on an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
@@ -237,7 +280,7 @@ public class Keywords extends Base{
     }
 
     protected static void type(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Enter " + testData + " into an element with " + selectorType + " and " + selectorValue);
+        System.out.println("Enter \"" + testData + "\" into an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
@@ -254,7 +297,7 @@ public class Keywords extends Base{
 
     private static By getLocator (String selector_type, String selector_value){
         By by;
-        switch (selector_type.toLowerCase()){
+        switch (selector_type.trim().toLowerCase()){
             case "xpath":
                 by = By.xpath(selector_value);
                 break;
@@ -281,8 +324,8 @@ public class Keywords extends Base{
                 break;
             default:
                 by = null;
-                System.out.println("Invalid selector type provided: " + selector_type +
-                        ". Selector type must be one of xpath, CssSelector, id, name, ClassName, TagName, LinkText or PartialLinkText");
+                System.out.println("Invalid selector type provided: \"" + selector_type +
+                        "\". Selector type must be one of xpath, CssSelector, id, name, ClassName, TagName, LinkText or PartialLinkText");
                 break;
         }
         return by;
@@ -307,11 +350,14 @@ public class Keywords extends Base{
     }
     
     private static void sendFailedResult(int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet, String errorMsg) {
-        System.out.println("Error found: \n" + errorMsg);
+        System.out.println("=== Error found == \n" + errorMsg);
         
         // Mark test case as failed
         Main.tc_failed = true;
-        
+
+        // Close browser
+        closeBrowser();
+
         //Send fail result to Result column
         tcSheet.getRow(row).createCell(tcResultColumnIndex).setCellValue("Failed");
         //Send error message to Comment column
@@ -321,6 +367,5 @@ public class Keywords extends Base{
     private static void sendPassedResult(int row, int tcResultColumnIndex, XSSFSheet tcSheet) {
         tcSheet.getRow(row).createCell(tcResultColumnIndex).setCellValue("Passed");
     }
-
 
 }

@@ -5,6 +5,7 @@
   "implicitWaitTimeout": 5000,
   "explicitWaitTimeout": 5000,
   "ignoreCertificateError": true,
+  "screenSize": "1920,1080",
   "Suite" : [
     {
       "directory": "src/main/java/framework/suite/regression",
