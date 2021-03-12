@@ -1,10 +1,10 @@
 {
   "Name" : "Selenium Hybrid Framework",
   "Description": "This suite is to run test suite & test cases in multiple browsers",
-  "browsers": ["chrome"],
   "implicitWaitTimeout": 5000,
   "explicitWaitTimeout": 5000,
   "ignoreCertificateError": true,
+  "browsers": ["chrome"],
   "screenSize": "1920,1080",
   "Suite" : [
     {
@@ -15,5 +15,18 @@
       "directory": "src/main/java/framework/suite/smoke",
       "skip": false
     }
-  ]
+  ],
+  "excelIndexes": {
+      "tsSheetName": "TS",
+      "tsIdColumnIndex": 0,
+      "tsSkipColumnIndex": 1,
+      "tcSheetNamePrefix": "TC-",
+      "tcKeywordColumnIndex": 2,
+      "tcSelectorTypeColumnIndex": 3,
+      "tcSelectorValueColumnIndex": 4,
+      "tcTestDataColumnIndex": 5,
+      "tcResultColumnIndex": 6,
+      "tcCommentColumnIndex": 7,
+      "tcSkipIndex": 8
+    }
 }

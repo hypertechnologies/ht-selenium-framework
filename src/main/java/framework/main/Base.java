@@ -15,8 +15,7 @@ public class Base {
     protected static JSONObject suiteConfigs;
 
     protected static JSONObject getSuiteConfigs() {
-        Properties prop = getProperties();
-        String tsConfigFilePath = prop.getProperty("testSuiteConfigFilePath").trim();
+        String tsConfigFilePath = "src/main/java/framework/configs/testSuiteConfigs.json";
         JSONParser parser = new JSONParser();
         JSONObject configs = new JSONObject();
         try {
@@ -36,9 +35,15 @@ public class Base {
         return (JSONArray) suiteConfigs.get("Suite");
     }
 
+    protected static JSONObject getExcelIndexes() {
+        return (JSONObject) suiteConfigs.get("excelIndexes");
+    }
+
+    // Not in use
     protected static Properties getProperties() {
         // Set path of the properties file
-        File file = new File("src/main/java/framework/configs/configs.properties");
+        String propertiesFilePath = "src/main/java/framework/configs/configs.properties";
+        File file = new File(propertiesFilePath);
 
         // Create input stream of the properties file
         FileInputStream fileInput = null;

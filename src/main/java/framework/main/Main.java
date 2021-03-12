@@ -8,7 +8,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.io.*;
 import java.util.List;
-import java.util.Properties;
 
 import static framework.main.Keywords.closeBrowser;
 
@@ -43,11 +42,10 @@ public class Main extends Base {
     }
 
     private static void runTestScenarios(String browser) {
-        Properties prop = getProperties();
-
-        String tsSheetName = prop.getProperty("tsSheetName").trim();
-        int tsIdColumnIndex = Integer.parseInt(prop.getProperty("tsIdColumnIndex").trim());
-        int tsSkipColumnIndex = Integer.parseInt(prop.getProperty("tsSkipColumnIndex").trim());
+        // Getting indexes for test scenario sheet
+        String tsSheetName = (String) getExcelIndexes().get("tsSheetName");
+        int tsIdColumnIndex = (int) (long) getExcelIndexes().get("tsIdColumnIndex");
+        int tsSkipColumnIndex = (int) (long) getExcelIndexes().get("tsSkipColumnIndex");
 
         XSSFWorkbook workbook = getWorkbook(testCaseFilePath);
 
@@ -73,27 +71,27 @@ public class Main extends Base {
             // !TS_skip = TS_skip is not true or TS_skip is false
             if(!tsSkip){
                 Keywords.openBrowser(browser);
-                runTestCases(tsId, workbook, prop);
+                runTestCases(tsId, workbook);
                 closeBrowser();
             }
         }
         closeWorkBook(workbook);
     }
 
-    private static void runTestCases(int tsId, XSSFWorkbook workbook, Properties prop) {
-        String tcSheetNamePrefix = prop.getProperty("tcSheetNamePrefix").trim();
+    private static void runTestCases(int tsId, XSSFWorkbook workbook) {
+        String tcSheetNamePrefix = (String) getExcelIndexes().get("tcSheetNamePrefix");
 
         // Getting TC sheet
         XSSFSheet tcSheet = workbook.getSheet(tcSheetNamePrefix + tsId);
 
-        // Getting properties for Test Case sheet
-        int tcKeywordColumnIndex = Integer.parseInt(prop.getProperty("tcKeywordColumnIndex").trim());
-        int tcSelectorTypeColumnIndex = Integer.parseInt(prop.getProperty("tcSelectorTypeColumnIndex").trim());
-        int tcSelectorValueColumnIndex = Integer.parseInt(prop.getProperty("tcSelectorValueColumnIndex").trim());
-        int tcTestDataColumnIndex = Integer.parseInt(prop.getProperty("tcTestDataColumnIndex").trim());
-        int tcResultColumnIndex = Integer.parseInt(prop.getProperty("tcResultColumnIndex").trim());
-        int tcCommentColumnIndex = Integer.parseInt(prop.getProperty("tcCommentColumnIndex").trim());
-        int tcSkipIndex = Integer.parseInt(prop.getProperty("tcSkipIndex").trim());
+        // Getting indexes for Test Case sheet
+        int tcKeywordColumnIndex = (int) (long) getExcelIndexes().get("tcKeywordColumnIndex");
+        int tcSelectorTypeColumnIndex = (int) (long) getExcelIndexes().get("tcSelectorTypeColumnIndex");
+        int tcSelectorValueColumnIndex = (int) (long) getExcelIndexes().get("tcSelectorValueColumnIndex");
+        int tcTestDataColumnIndex = (int) (long) getExcelIndexes().get("tcTestDataColumnIndex");
+        int tcResultColumnIndex = (int) (long) getExcelIndexes().get("tcResultColumnIndex");
+        int tcCommentColumnIndex = (int) (long) getExcelIndexes().get("tcCommentColumnIndex");
+        int tcSkipIndex = (int) (long) getExcelIndexes().get("tcSkipIndex");
 
         DataFormatter formatter = new DataFormatter();
         for(int j = 1; j < tcSheet.getLastRowNum() + 1; j++){
