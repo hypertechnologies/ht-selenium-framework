@@ -120,43 +120,43 @@ public class Main extends Base {
     private static void runTestSteps(String keyword, String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
         switch (keyword.toLowerCase()){
             case "gotourl":
-                Keywords.gotToURL(testData);
+                Keywords.gotToURL(testData, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
                 break;
             case "type":
                 Keywords.type(selectorType, selectorValue, testData, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
                 break;
             case "click":
-                Keywords.click(selectorType, selectorValue);
+                Keywords.click(selectorType, selectorValue, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
                 break;
             case "asserttext":
-                Keywords.assertText(selectorType, selectorValue, testData);
+                Keywords.assertText(selectorType, selectorValue, testData, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
                 break;
             case "asserttitle":
-                Keywords.assertTitle(testData);
+                Keywords.assertTitle(testData, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
                 break;
             case "refreshpage":
-                Keywords.refreshPage();
+                Keywords.refreshPage(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
                 break;
             case "checkvisibility":
-                Keywords.checkVisibility(selectorType, selectorValue);
+                Keywords.checkVisibility(selectorType, selectorValue, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
                 break;
             case "checknotvisible":
-                Keywords.checkNotVisible(selectorType, selectorValue);
+                Keywords.checkNotVisible(selectorType, selectorValue, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
                 break;
             case "selectbyvisibletext":
-                Keywords.selectByVisibleText(selectorType, selectorValue, testData);
+                Keywords.selectByVisibleText(selectorType, selectorValue, testData, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
                 break;
             case "selectbyindex":
-                Keywords.selectByIndex(selectorType, selectorValue, testData);
+                Keywords.selectByIndex(selectorType, selectorValue, testData, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
                 break;
             case "enablecheckbox":
-                Keywords.enableCheckBox(selectorType, selectorValue);
+                Keywords.enableCheckBox(selectorType, selectorValue, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
                 break;
             case "disablecheckbox":
-                Keywords.disableCheckBox(selectorType, selectorValue);
+                Keywords.disableCheckBox(selectorType, selectorValue, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
                 break;
             case "asserturl":
-                Keywords.assertURL(testData);
+                Keywords.assertURL(testData, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
                 break;
             case "closebrowser":
                 closeBrowser();

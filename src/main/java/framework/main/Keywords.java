@@ -3,8 +3,6 @@ package framework.main;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.bonigarcia.wdm.config.DriverManagerType;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -15,8 +13,6 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.xml.sax.Locator;
-
 import java.util.concurrent.TimeUnit;
 
 public class Keywords extends Base{
@@ -42,11 +38,6 @@ public class Keywords extends Base{
         driver.manage().timeouts().implicitlyWait(implicitWaitTimeout, TimeUnit.MILLISECONDS);
     }
 
-    protected static void gotToURL(String TC_test_data) {
-        System.out.println("Navigate to: " + TC_test_data);
-        driver.navigate().to(TC_test_data);
-    }
-
     protected static void closeBrowser() {
         System.out.println("Close the browser");
         if(driver != null){
@@ -54,133 +45,192 @@ public class Keywords extends Base{
         }
     }
 
-    protected static void assertURL(String TC_test_data) {
-        System.out.println("Check URL contains: " + TC_test_data);
-        String url = driver.getCurrentUrl();
-        if(url.trim().contains(TC_test_data.trim())){
-            System.out.println("Passing: url matches");
-        }else {
-            System.out.println("Failing: URl does not match");
+    protected static void gotToURL(String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
+        System.out.println("Navigate to: " + testData);
+        try {
+            driver.navigate().to(testData);
+            // Sending pass result to result column
+            sendPassedResult(row, tcResultColumnIndex, tcSheet);
+        }catch (Exception e){
+            // Sending pass result to result column and error message to comment column
+            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
         }
     }
 
-    protected static void disableCheckBox(String TC_selector_type, String TC_selector_value) {
-        By locator;
-        WebElement element;
-        System.out.println("Disable a checkbox");
-        locator = getLocator(TC_selector_type, TC_selector_value);
-        element = driver.findElement(locator);
-        if(element.isSelected()){
-            element.click();
-        }else {
-            System.out.println("Passed: Element is already unselected");
+    protected static void assertURL(String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
+        System.out.println("Check URL contains: " + testData);
+        try {
+            String url = driver.getCurrentUrl();
+            if(url.trim().contains(testData.trim())){
+                sendPassedResult(row, tcResultColumnIndex, tcSheet);
+            }else {
+                sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, "Expected url to contain: " + testData + "\nBut found: " + url);
+            }
+        }catch (Exception e){
+            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
         }
     }
 
-    protected static void enableCheckBox(String TC_selector_type, String TC_selector_value) {
-        By locator;
-        WebElement element;
-        System.out.println("Enable a checkbox");
-        locator = getLocator(TC_selector_type, TC_selector_value);
-        element = driver.findElement(locator);
-        if(element.isSelected()){
-            System.out.println("Passed: Element is already selected");
-        }else {
-            element.click();
+    protected static void disableCheckBox(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
+        System.out.println("Disable a checkbox with an element with " + selectorType + " and " + selectorValue);
+        try {
+            By locator;
+            WebElement element;
+            locator = getLocator(selectorType, selectorValue);
+            element = driver.findElement(locator);
+            if(element.isSelected()){
+                element.click();
+            }
+            sendPassedResult(row, tcResultColumnIndex, tcSheet);
+        }catch (Exception e){
+            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
         }
     }
 
-    protected static void selectByIndex(String TC_selector_type, String TC_selector_value, String TC_test_data) {
-        By locator;
-        WebElement element;
-        Select dropdown;
-        System.out.println("Select from dropdown by index: " + TC_test_data);
-        locator = getLocator(TC_selector_type, TC_selector_value);
-        element = driver.findElement(locator);
-
-        dropdown = new Select(element);
-        dropdown.selectByIndex(Integer.parseInt(TC_test_data));
-    }
-
-    protected static void selectByVisibleText(String TC_selector_type, String TC_selector_value, String TC_test_data) {
-        By locator;
-        WebElement element;
-        Select dropdown;
-        System.out.println("Select from dropdown by visible text: " + TC_test_data);
-        locator = getLocator(TC_selector_type, TC_selector_value);
-        element = driver.findElement(locator);
-
-        dropdown = new Select(element);
-        dropdown.selectByVisibleText(TC_test_data);
-    }
-
-    protected static void checkNotVisible(String TC_selector_type, String TC_selector_value) {
-        By locator;
-        WebElement element;
-        System.out.println("Check invisibility of an element with " + TC_selector_type + " and " + TC_selector_value);
-        locator = getLocator(TC_selector_type, TC_selector_value);
-        element = driver.findElement(locator);
-        if(element.isDisplayed()){
-            System.out.println("Failing: Element is displayed");
-        }else {
-            System.out.println("Passing: Element is NOT displayed");
+    protected static void enableCheckBox(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
+        System.out.println("Enable a checkbox with an element with " + selectorType + " and " + selectorValue);
+        try {
+            By locator;
+            WebElement element;
+            locator = getLocator(selectorType, selectorValue);
+            element = driver.findElement(locator);
+            if(!element.isSelected()){
+                element.click();
+            }
+            sendPassedResult(row, tcResultColumnIndex, tcSheet);
+        }catch (Exception e){
+            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
         }
     }
 
-    protected static void checkVisibility(String TC_selector_type, String TC_selector_value) {
-        By locator;
-        WebElement element;
-        System.out.println("Check visibility of an element with " + TC_selector_type + " and " + TC_selector_value);
-        locator = getLocator(TC_selector_type, TC_selector_value);
-        element = driver.findElement(locator);
+    protected static void selectByIndex(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
+        System.out.println("Select from dropdown by index: " + testData);
+        try {
+            By locator;
+            WebElement element;
+            Select dropdown;
+            locator = getLocator(selectorType, selectorValue);
+            element = driver.findElement(locator);
 
-        if(element.isDisplayed()){
-            System.out.println("Passing: Element is displayed");
-        }else {
-            System.out.println("Failing: Element is NOT displayed");
+            dropdown = new Select(element);
+            dropdown.selectByIndex(Integer.parseInt(testData));
+
+            sendPassedResult(row, tcResultColumnIndex, tcSheet);
+        }catch (Exception e){
+            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
         }
     }
 
-    protected static void refreshPage() {
+    protected static void selectByVisibleText(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
+        System.out.println("Select from dropdown by visible text: " + testData);
+        try {
+            By locator;
+            WebElement element;
+            Select dropdown;
+            locator = getLocator(selectorType, selectorValue);
+            element = driver.findElement(locator);
+
+            dropdown = new Select(element);
+            dropdown.selectByVisibleText(testData);
+
+            sendPassedResult(row, tcResultColumnIndex, tcSheet);
+        }catch (Exception e){
+            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+        }
+    }
+
+    protected static void checkNotVisible(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
+        System.out.println("Check invisibility of an element with " + selectorType + " and " + selectorValue);
+        try {
+            By locator;
+            WebElement element;
+            locator = getLocator(selectorType, selectorValue);
+            element = driver.findElement(locator);
+            if(element.isDisplayed()){
+                sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, "Expected element to be NOT visible on the page but it's still visible!");
+            }else {
+                sendPassedResult(row, tcResultColumnIndex, tcSheet);
+            }
+        }catch (Exception e){
+            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+        }
+    }
+
+    protected static void checkVisibility(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
+        System.out.println("Check visibility of an element with " + selectorType + " and " + selectorValue);
+        try {
+            By locator;
+            WebElement element;
+            locator = getLocator(selectorType, selectorValue);
+            element = driver.findElement(locator);
+
+            if(element.isDisplayed()){
+                sendPassedResult(row, tcResultColumnIndex, tcSheet);
+            }else {
+                sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, "Expected element to be visible on the page but it's is not visible!");
+            }
+        }catch (Exception e){
+            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+        }
+    }
+
+    protected static void refreshPage(int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
         System.out.println("Refresh the page");
-        driver.navigate().refresh();
-    }
-
-    protected static void assertTitle(String TC_test_data) {
-        System.out.println("Check page title contains: " + TC_test_data);
-        String title = driver.getTitle();
-        if(title.trim().contains(TC_test_data.trim())){
-            System.out.println("Title is matching");
-        }else {
-            System.out.println("Title is NOT matching");
+        try {
+            driver.navigate().refresh();
+            sendPassedResult(row, tcResultColumnIndex, tcSheet);
+        }catch (Exception e){
+            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
         }
     }
 
-    protected static void assertText(String TC_selector_type, String TC_selector_value, String TC_test_data) {
-        By locator;
-        System.out.println("Verify " + TC_test_data + "exist on an element with " + TC_selector_type + " and " + TC_selector_value);
-
-        locator = getLocator(TC_selector_type, TC_selector_value);
-        String text = driver.findElement(locator).getText();
-        System.out.println(text);
-        System.out.println(TC_test_data);
-
-        if(text.trim().contains(TC_test_data.trim())){
-            System.out.println("Text is matching");
-        }else {
-            System.out.println("Text is not matching");
+    protected static void assertTitle(String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
+        System.out.println("Check page title contains: " + testData);
+        try {
+            String title = driver.getTitle();
+            if(title.trim().contains(testData.trim())){
+                sendPassedResult(row, tcResultColumnIndex, tcSheet);
+            }else {
+                sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, "Expected title: " + testData + "\nBut found: " + title);
+            }
+        }catch (Exception e){
+            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
         }
     }
 
-    protected static void click(String TC_selector_type, String TC_selector_value) {
-        By locator;
-        System.out.println("Click on an element with " + TC_selector_type + " and " + TC_selector_value);
+    protected static void assertText(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
+        System.out.println("Verify " + testData + "exist on an element with " + selectorType + " and " + selectorValue);
+        try {
+            By locator;
+            locator = getLocator(selectorType, selectorValue);
+            String text = driver.findElement(locator).getText();
+            if(text.trim().contains(testData.trim())){
+                sendPassedResult(row, tcResultColumnIndex, tcSheet);
+            }else {
+                sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, "Expected text: " + testData + "\nBut found: " + text);
+            }
+        }catch (Exception e){
+            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+        }
+    }
 
-        locator = getLocator(TC_selector_type, TC_selector_value);
-        driver.findElement(locator).click();
+    protected static void click(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
+        System.out.println("Click on an element with " + selectorType + " and " + selectorValue);
+        try {
+            By locator;
+            locator = getLocator(selectorType, selectorValue);
+            waitForVisible(locator);
+            waitForClickable(locator);
+            driver.findElement(locator).click();
+            
+            sendPassedResult(row, tcResultColumnIndex, tcSheet);
+        }catch (Exception e){
+            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+        }
     }
 
     protected static void type(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
+        System.out.println("Enter " + testData + " into an element with " + selectorType + " and " + selectorValue);
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
@@ -188,22 +238,14 @@ public class Keywords extends Base{
             driver.findElement(locator).sendKeys(testData);
 
             //Send pass result to Result column
-            tcSheet.getRow(row).createCell(tcResultColumnIndex).setCellValue("Passed");
+            sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
-            Main.tc_failed = true;
-
-            System.out.println("I found an error: " + e.getMessage());
             //Send fail result to Result column
-            tcSheet.getRow(row).createCell(tcResultColumnIndex).setCellValue("Failed");
-            //Send error message to Comment column
-            tcSheet.getRow(row).createCell(tcCommentColumnIndex).setCellValue(e.getMessage());
-
-
-
+            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
         }
     }
 
-    public static By getLocator (String selector_type, String selector_value){
+    private static By getLocator (String selector_type, String selector_value){
         By by;
         switch (selector_type){
             case "xpath":
@@ -232,18 +274,33 @@ public class Keywords extends Base{
         return by;
     }
 
-    protected static void waitForVisible(By locator) {
+    private static void waitForVisible(By locator) {
         int explicitWaitTimeout = (int) (long) suiteConfigs.get("explicitWaitTimeout");
         WebDriverWait wait = new WebDriverWait(driver,explicitWaitTimeout/1000);
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
-    protected static void waitForClickable(By locator) {
+    private static void waitForClickable(By locator) {
         int explicitWaitTimeout = (int) (long) suiteConfigs.get("explicitWaitTimeout");
         WebDriverWait wait = new WebDriverWait(driver,explicitWaitTimeout/1000);
         wait.until(ExpectedConditions.elementToBeClickable(locator));
     }
+    
+    private static void sendFailedResult(int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet, String errorMsg) {
+        System.out.println("Error found: \n" + errorMsg);
+        
+        // Mark test case as failed
+        Main.tc_failed = true;
+        
+        //Send fail result to Result column
+        tcSheet.getRow(row).createCell(tcResultColumnIndex).setCellValue("Failed");
+        //Send error message to Comment column
+        tcSheet.getRow(row).createCell(tcCommentColumnIndex).setCellValue(errorMsg);
+    }
 
+    private static void sendPassedResult(int row, int tcResultColumnIndex, XSSFSheet tcSheet) {
+        tcSheet.getRow(row).createCell(tcResultColumnIndex).setCellValue("Passed");
+    }
 
 
 }
