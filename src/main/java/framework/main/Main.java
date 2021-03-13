@@ -158,6 +158,21 @@ public class Main extends Base {
             case "switchtodefaultframe":
                 Keywords.switchToDefaultFrame(testData, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
                 break;
+            case "switchtab":
+                Keywords.switchTab(testData, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
+                break;
+            case "browserforward":
+                Keywords.browserForward(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
+                break;
+            case "browserbackward":
+                Keywords.browserBackward(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
+                break;
+            case "draganddrop":
+                Keywords.dragAndDrop(selectorType, selectorValue, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
+                break;
+            case "wait":
+                Keywords.wait(testData, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
+                break;
             case "closebrowser":
                 Keywords.closeBrowser();
                 break;

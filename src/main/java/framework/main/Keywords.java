@@ -4,6 +4,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.bonigarcia.wdm.config.DriverManagerType;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -12,12 +13,15 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
@@ -276,7 +280,7 @@ public class Keywords extends Base{
     protected static void switchToiFrame( String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
         System.out.println("Switch to an iFrame with ID \"" + testData + "\"");
         try {
-            waitForiFrame(testData);
+            waitForiFrameToBeAvailable(testData);
             driver.switchTo().frame(testData);
             sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
@@ -288,6 +292,80 @@ public class Keywords extends Base{
         System.out.println("Switch to default frame");
         try {
             driver.switchTo().defaultContent();
+            sendPassedResult(row, tcResultColumnIndex, tcSheet);
+        }catch (Exception e){
+            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+        }
+    }
+
+    protected static void switchTab( String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
+        System.out.println("Switch browser tab to index \"" + testData + "\"");
+        try {
+            ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
+            driver.switchTo().window(tabs.get(Integer.parseInt(testData)));
+            sendPassedResult(row, tcResultColumnIndex, tcSheet);
+        }catch (Exception e){
+            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+        }
+    }
+
+    protected static void browserForward(int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
+        System.out.println("Hit browser forward button");
+        try {
+            driver.navigate().forward();
+            sendPassedResult(row, tcResultColumnIndex, tcSheet);
+        }catch (Exception e){
+            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+        }
+    }
+
+    protected static void browserBackward(int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
+        System.out.println("Hit browser backward button");
+        try {
+            driver.navigate().back();
+            sendPassedResult(row, tcResultColumnIndex, tcSheet);
+        }catch (Exception e){
+            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+        }
+    }
+
+    protected static void dragAndDrop(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
+        System.out.println("Drag and drop two elements");
+        String errMsg = "To dragAndDrop there should be two comma separated selector_type and two comma separated selector_value";
+        if(selectorType.split(",").length < 2 || selectorValue.split(",").length < 2){
+            System.out.println(errMsg);
+            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, errMsg);
+        }else {
+            String sourceSelectorType = selectorType.split(",")[0];
+            String sourceSelectorValue = selectorValue.split(",")[0];
+
+            String targetSelectorType = selectorType.split(",")[1];
+            String targetSelectorValue = selectorValue.split(",")[1];
+            try {
+                By sourceLocator;
+                By targetLocator;
+                WebElement sourceElement;
+                WebElement targetElement;
+                sourceLocator = getLocator(sourceSelectorType, sourceSelectorValue);
+                targetLocator = getLocator(targetSelectorType, targetSelectorValue);
+                waitForVisible(sourceLocator);
+                waitForVisible(targetLocator);
+                sourceElement = driver.findElement(sourceLocator);
+                targetElement = driver.findElement(targetLocator);
+
+                (new Actions(driver)).dragAndDrop(sourceElement, targetElement).perform();
+
+                sendPassedResult(row, tcResultColumnIndex, tcSheet);
+            }catch (Exception e){
+                sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+            }
+        }
+    }
+
+    protected static void wait( String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
+        System.out.println("Hard wait \"" + testData + "\" milliseconds");
+        try {
+            Thread.sleep(Long.parseLong(testData));
             sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
             sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
@@ -360,7 +438,7 @@ public class Keywords extends Base{
         wait.until(ExpectedConditions.textMatches(locator, Pattern.compile(testData.trim())));
     }
 
-    private static void waitForiFrame(String testData) {
+    private static void waitForiFrameToBeAvailable(String testData) {
         WebDriverWait wait = new WebDriverWait(driver,explicitWaitTimeout/1000);
         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(testData));
     }
