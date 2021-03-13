@@ -444,7 +444,7 @@ public class Keywords extends Base{
     }
     
     private static void sendFailedResult(int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet, String errorMsg) {
-        System.out.println("=== Error found == \n" + errorMsg);
+        System.out.println("\n\n >>>>> Below error found <<<<< \n\n" + errorMsg +"\n\n");
         
         // Mark test case as failed
         Main.tc_failed = true;
