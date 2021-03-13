@@ -19,7 +19,8 @@
   "excelIndexes": {
       "tsSheetName": "TS",
       "tsIdColumnIndex": 0,
-      "tsSkipColumnIndex": 1,
+      "tsNameColumnIndex": 1,
+      "tsSkipColumnIndex": 4,
       "tcSheetNamePrefix": "TC-",
       "tcKeywordColumnIndex": 2,
       "tcSelectorTypeColumnIndex": 3,

@@ -19,6 +19,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 public class Keywords extends Base{
     static WebDriver driver;
@@ -103,12 +104,8 @@ public class Keywords extends Base{
     protected static void assertURL(String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
         System.out.println("Check URL contains \"" + testData + "\"");
         try {
-            String url = driver.getCurrentUrl();
-            if(url.trim().contains(testData.trim())){
-                sendPassedResult(row, tcResultColumnIndex, tcSheet);
-            }else {
-                sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, "Expected url to contain: " + testData + "\nBut found: " + url);
-            }
+            waitForUrlToContainText(testData);
+            sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
             sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
         }
@@ -190,15 +187,10 @@ public class Keywords extends Base{
         System.out.println("Check invisibility of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
-            WebElement element;
             locator = getLocator(selectorType, selectorValue);
             waitForNotVisible(locator);
-            element = driver.findElement(locator);
-            if(element.isDisplayed()){
-                sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, "Expected element to be NOT visible on the page but it's still visible!");
-            }else {
-                sendPassedResult(row, tcResultColumnIndex, tcSheet);
-            }
+
+            sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
             sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
         }
@@ -208,16 +200,10 @@ public class Keywords extends Base{
         System.out.println("Check visibility of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
-            WebElement element;
             locator = getLocator(selectorType, selectorValue);
             waitForVisible(locator);
-            element = driver.findElement(locator);
 
-            if(element.isDisplayed()){
-                sendPassedResult(row, tcResultColumnIndex, tcSheet);
-            }else {
-                sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, "Expected element to be visible on the page but it's is not visible!");
-            }
+            sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
             sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
         }
@@ -227,6 +213,7 @@ public class Keywords extends Base{
         System.out.println("Refresh the page");
         try {
             driver.navigate().refresh();
+
             sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
             sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
@@ -236,12 +223,9 @@ public class Keywords extends Base{
     protected static void assertTitle(String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
         System.out.println("Check page title contains \"" + testData + "\"");
         try {
-            String title = driver.getTitle();
-            if(title.trim().contains(testData.trim())){
-                sendPassedResult(row, tcResultColumnIndex, tcSheet);
-            }else {
-                sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, "Expected title: " + testData + "\nBut found: " + title);
-            }
+            waitForTitleToContainText(testData);
+
+            sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
             sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
         }
@@ -253,12 +237,9 @@ public class Keywords extends Base{
             By locator;
             locator = getLocator(selectorType, selectorValue);
             waitForVisible(locator);
-            String text = driver.findElement(locator).getText();
-            if(text.trim().contains(testData.trim())){
-                sendPassedResult(row, tcResultColumnIndex, tcSheet);
-            }else {
-                sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, "Expected text: " + testData + "\nBut found: " + text);
-            }
+            waitForTextToMatch(locator, testData);
+
+            sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
             sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
         }
@@ -287,10 +268,8 @@ public class Keywords extends Base{
             waitForVisible(locator);
             driver.findElement(locator).sendKeys(testData);
 
-            //Send pass result to Result column
             sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
-            //Send fail result to Result column
             sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
         }
     }
@@ -347,6 +326,24 @@ public class Keywords extends Base{
         int explicitWaitTimeout = (int) (long) suiteConfigs.get("explicitWaitTimeout");
         WebDriverWait wait = new WebDriverWait(driver,explicitWaitTimeout/1000);
         wait.until(ExpectedConditions.elementToBeClickable(locator));
+    }
+
+    private static void waitForUrlToContainText(String testData) {
+        int explicitWaitTimeout = (int) (long) suiteConfigs.get("explicitWaitTimeout");
+        WebDriverWait wait = new WebDriverWait(driver,explicitWaitTimeout/1000);
+        wait.until(ExpectedConditions.urlContains(testData));
+    }
+
+    private static void waitForTitleToContainText(String testData) {
+        int explicitWaitTimeout = (int) (long) suiteConfigs.get("explicitWaitTimeout");
+        WebDriverWait wait = new WebDriverWait(driver,explicitWaitTimeout/1000);
+        wait.until(ExpectedConditions.titleContains(testData));
+    }
+
+    private static void waitForTextToMatch(By locator, String testData) {
+        int explicitWaitTimeout = (int) (long) suiteConfigs.get("explicitWaitTimeout");
+        WebDriverWait wait = new WebDriverWait(driver,explicitWaitTimeout/1000);
+        wait.until(ExpectedConditions.textMatches(locator, Pattern.compile(testData.trim())));
     }
     
     private static void sendFailedResult(int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet, String errorMsg) {

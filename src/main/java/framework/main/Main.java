@@ -9,14 +9,12 @@ import org.json.simple.JSONObject;
 import java.io.*;
 import java.util.List;
 
-import static framework.main.Keywords.closeBrowser;
-
 public class Main extends Base {
     public static boolean tc_failed = false;
     private static String testCaseFilePath;
     private static String sessionId;
 
-    public static void main(String[] args) throws InterruptedException, IOException {
+    public static void main(String[] args) {
         suiteConfigs = getSuiteConfigs();
         sessionId = getCurrentDateTime();
         JSONArray suite = getSuite();
@@ -45,6 +43,7 @@ public class Main extends Base {
         // Getting indexes for test scenario sheet
         String tsSheetName = (String) getExcelIndexes().get("tsSheetName");
         int tsIdColumnIndex = (int) (long) getExcelIndexes().get("tsIdColumnIndex");
+        int tsNameColumnIndex = (int) (long) getExcelIndexes().get("tsNameColumnIndex");
         int tsSkipColumnIndex = (int) (long) getExcelIndexes().get("tsSkipColumnIndex");
 
         XSSFWorkbook workbook = getWorkbook(testCaseFilePath);
@@ -58,6 +57,7 @@ public class Main extends Base {
             tc_failed = false;
 
             Cell tsIdCell = tsSheet.getRow(i).getCell(tsIdColumnIndex);
+            Cell tsNameCell = tsSheet.getRow(i).getCell(tsNameColumnIndex);
             Cell tsSkipCell = tsSheet.getRow(i).getCell(tsSkipColumnIndex);
 
             if(tsIdCell == null || tsIdCell.toString().equalsIgnoreCase("")){
@@ -66,13 +66,15 @@ public class Main extends Base {
 
             DataFormatter formatter = new DataFormatter();
             int tsId = Integer.parseInt(formatter.formatCellValue(tsIdCell));
+            String tsName = formatter.formatCellValue(tsNameCell);
             boolean tsSkip = Boolean.parseBoolean(formatter.formatCellValue(tsSkipCell));
 
             // !TS_skip = TS_skip is not true or TS_skip is false
             if(!tsSkip){
+                System.out.println("Running Scenario: " + tsName);
                 Keywords.openBrowser(browser);
                 runTestCases(tsId, workbook);
-                closeBrowser();
+                Keywords.closeBrowser();
             }
         }
         closeWorkBook(workbook);
@@ -156,7 +158,7 @@ public class Main extends Base {
                 Keywords.assertURL(testData, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
                 break;
             case "closebrowser":
-                closeBrowser();
+                Keywords.closeBrowser();
                 break;
             default:
                 System.out.println("Keyword named \"" + keyword + "\" is not recognized!");
