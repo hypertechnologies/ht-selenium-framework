@@ -1,1 +1,1 @@
-# hypertech-selenium-framework
+# ht-selenium-framework
