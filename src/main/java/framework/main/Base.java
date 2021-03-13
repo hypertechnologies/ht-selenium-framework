@@ -13,6 +13,18 @@ import java.util.Properties;
 
 public class Base {
     protected static JSONObject suiteConfigs;
+    protected static int implicitWaitTimeout;
+    protected static int explicitWaitTimeout;
+    protected static String testCaseFilePath;
+    protected static String sessionId;
+    protected static boolean tc_failed = false;
+
+    protected static void setUp() {
+        suiteConfigs = getSuiteConfigs();
+        sessionId = getCurrentDateTime();
+        implicitWaitTimeout = (int) (long) suiteConfigs.get("implicitWaitTimeout");
+        explicitWaitTimeout = (int) (long) suiteConfigs.get("explicitWaitTimeout");
+    }
 
     protected static JSONObject getSuiteConfigs() {
         String tsConfigFilePath = "src/main/java/framework/configs/testSuiteConfigs.json";

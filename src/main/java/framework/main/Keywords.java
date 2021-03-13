@@ -28,7 +28,6 @@ public class Keywords extends Base{
         System.out.println("Open " + browser + " browser");
         boolean ignoreCertificateError = (boolean) suiteConfigs.get("ignoreCertificateError");
         String screenSize = (String) suiteConfigs.get("screenSize");
-        int implicitWaitTimeout = (int) (long) suiteConfigs.get("implicitWaitTimeout");
 
         switch (browser.trim().toLowerCase()){
             case "chrome":
@@ -311,37 +310,31 @@ public class Keywords extends Base{
     }
 
     private static void waitForNotVisible(By locator) {
-        int explicitWaitTimeout = (int) (long) suiteConfigs.get("explicitWaitTimeout");
         WebDriverWait wait = new WebDriverWait(driver,explicitWaitTimeout/1000);
         wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
     }
 
     private static void waitForVisible(By locator) {
-        int explicitWaitTimeout = (int) (long) suiteConfigs.get("explicitWaitTimeout");
         WebDriverWait wait = new WebDriverWait(driver,explicitWaitTimeout/1000);
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
     private static void waitForClickable(By locator) {
-        int explicitWaitTimeout = (int) (long) suiteConfigs.get("explicitWaitTimeout");
         WebDriverWait wait = new WebDriverWait(driver,explicitWaitTimeout/1000);
         wait.until(ExpectedConditions.elementToBeClickable(locator));
     }
 
     private static void waitForUrlToContainText(String testData) {
-        int explicitWaitTimeout = (int) (long) suiteConfigs.get("explicitWaitTimeout");
         WebDriverWait wait = new WebDriverWait(driver,explicitWaitTimeout/1000);
         wait.until(ExpectedConditions.urlContains(testData));
     }
 
     private static void waitForTitleToContainText(String testData) {
-        int explicitWaitTimeout = (int) (long) suiteConfigs.get("explicitWaitTimeout");
         WebDriverWait wait = new WebDriverWait(driver,explicitWaitTimeout/1000);
         wait.until(ExpectedConditions.titleContains(testData));
     }
 
     private static void waitForTextToMatch(By locator, String testData) {
-        int explicitWaitTimeout = (int) (long) suiteConfigs.get("explicitWaitTimeout");
         WebDriverWait wait = new WebDriverWait(driver,explicitWaitTimeout/1000);
         wait.until(ExpectedConditions.textMatches(locator, Pattern.compile(testData.trim())));
     }

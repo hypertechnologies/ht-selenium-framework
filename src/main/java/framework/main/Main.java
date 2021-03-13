@@ -10,13 +10,8 @@ import java.io.*;
 import java.util.List;
 
 public class Main extends Base {
-    public static boolean tc_failed = false;
-    private static String testCaseFilePath;
-    private static String sessionId;
-
     public static void main(String[] args) {
-        suiteConfigs = getSuiteConfigs();
-        sessionId = getCurrentDateTime();
+        setUp();
         JSONArray suite = getSuite();
         for (Object browser : getBrowsers()) {
             runTestSuite(suite,  browser.toString());
