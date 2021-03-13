@@ -273,6 +273,27 @@ public class Keywords extends Base{
         }
     }
 
+    protected static void switchToiFrame( String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
+        System.out.println("Switch to an iFrame with ID \"" + testData + "\"");
+        try {
+            waitForiFrame(testData);
+            driver.switchTo().frame(testData);
+            sendPassedResult(row, tcResultColumnIndex, tcSheet);
+        }catch (Exception e){
+            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+        }
+    }
+
+    protected static void switchToDefaultFrame( String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
+        System.out.println("Switch to default frame");
+        try {
+            driver.switchTo().defaultContent();
+            sendPassedResult(row, tcResultColumnIndex, tcSheet);
+        }catch (Exception e){
+            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+        }
+    }
+
     private static By getLocator (String selector_type, String selector_value){
         By by;
         switch (selector_type.trim().toLowerCase()){
@@ -337,6 +358,11 @@ public class Keywords extends Base{
     private static void waitForTextToMatch(By locator, String testData) {
         WebDriverWait wait = new WebDriverWait(driver,explicitWaitTimeout/1000);
         wait.until(ExpectedConditions.textMatches(locator, Pattern.compile(testData.trim())));
+    }
+
+    private static void waitForiFrame(String testData) {
+        WebDriverWait wait = new WebDriverWait(driver,explicitWaitTimeout/1000);
+        wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(testData));
     }
     
     private static void sendFailedResult(int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet, String errorMsg) {

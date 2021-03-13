@@ -152,6 +152,12 @@ public class Main extends Base {
             case "asserturl":
                 Keywords.assertURL(testData, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
                 break;
+            case "switchtoiframe":
+                Keywords.switchToiFrame(testData, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
+                break;
+            case "switchtodefaultframe":
+                Keywords.switchToDefaultFrame(testData, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
+                break;
             case "closebrowser":
                 Keywords.closeBrowser();
                 break;
