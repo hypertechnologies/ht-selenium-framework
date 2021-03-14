@@ -1,4 +1,4 @@
-package framework.main;
+package framework;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -29,7 +29,9 @@ public class Main extends Base {
             if(!testCaseDirSkip){
                 for (File path : testCasePaths) {
                     testCaseFilePath = path.toString();
-                    if(!ignoreTestCases.contains(new File(testCaseFilePath).getName())){
+                    String testCaseFileName = new File(testCaseFilePath).getName();
+                    if(!ignoreTestCases.contains(testCaseFileName)){
+                        System.out.println("\n>>>>> Executing Test Case File: " + testCaseFileName);
                         runTestScenarios(browser);
                     }
                 }
@@ -73,7 +75,7 @@ public class Main extends Base {
 
             // !TS_skip = TS_skip is not true or TS_skip is false
             if(!tsSkip){
-                System.out.println("Running Scenario: " + tsName);
+                System.out.println("\nScenario #"+tsId+": " + tsName +"\n");
                 Keywords.openBrowser(browser);
                 runTestCases(tsId, workbook, browser);
                 Keywords.closeBrowser();

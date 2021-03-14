@@ -1,4 +1,4 @@
-package framework.main;
+package framework;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.bonigarcia.wdm.config.DriverManagerType;
@@ -91,7 +91,7 @@ public class Keywords extends Base{
     }
 
     protected static void gotToURL(String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Navigate to \"" + testData + "\"");
+        System.out.println(row + ". Navigate to \"" + testData + "\"");
         try {
             driver.navigate().to(testData);
             // Sending pass result to result column
@@ -103,7 +103,7 @@ public class Keywords extends Base{
     }
 
     protected static void assertURL(String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Check URL contains \"" + testData + "\"");
+        System.out.println(row + ". Check URL contains \"" + testData + "\"");
         try {
             waitForUrlToContainText(testData);
             sendPassedResult(row, tcResultColumnIndex, tcSheet);
@@ -113,7 +113,7 @@ public class Keywords extends Base{
     }
 
     protected static void disableCheckBox(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Disable a checkbox with an element with  selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+        System.out.println(row + ". Disable a checkbox with an element with  selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             WebElement element;
@@ -130,7 +130,7 @@ public class Keywords extends Base{
     }
 
     protected static void enableCheckBox(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Enable a checkbox with an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+        System.out.println(row + ". Enable a checkbox with an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             WebElement element;
@@ -147,7 +147,7 @@ public class Keywords extends Base{
     }
 
     protected static void selectByIndex(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Select index \"" + testData + "\" item from a dropdown with an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+        System.out.println(row + ". Select index \"" + testData + "\" item from a dropdown with an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             WebElement element;
@@ -166,7 +166,7 @@ public class Keywords extends Base{
     }
 
     protected static void selectByVisibleText(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Select \"" + testData + "\" from dropdown with an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+        System.out.println(row + ". Select \"" + testData + "\" from dropdown with an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             WebElement element;
@@ -185,7 +185,7 @@ public class Keywords extends Base{
     }
 
     protected static void checkNotVisible(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Check invisibility of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+        System.out.println(row + ". Check invisibility of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
@@ -198,7 +198,7 @@ public class Keywords extends Base{
     }
 
     protected static void checkVisibility(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Check visibility of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+        System.out.println(row + ". Check visibility of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
@@ -211,7 +211,7 @@ public class Keywords extends Base{
     }
 
     protected static void refreshPage(int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Refresh the page");
+        System.out.println(row + ". Refresh the page");
         try {
             driver.navigate().refresh();
 
@@ -222,7 +222,7 @@ public class Keywords extends Base{
     }
 
     protected static void assertTitle(String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Check page title contains \"" + testData + "\"");
+        System.out.println(row + ". Check page title contains \"" + testData + "\"");
         try {
             waitForTitleToContainText(testData);
 
@@ -233,7 +233,7 @@ public class Keywords extends Base{
     }
 
     protected static void assertText(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Verify \"" + testData + "\" exist on an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+        System.out.println(row + ". Verify \"" + testData + "\" exist on an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
@@ -247,7 +247,7 @@ public class Keywords extends Base{
     }
 
     protected static void click(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Click on an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+        System.out.println(row + ". Click on an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
@@ -262,7 +262,7 @@ public class Keywords extends Base{
     }
 
     protected static void type(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Enter \"" + testData + "\" into an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+        System.out.println(row + ". Enter \"" + testData + "\" into an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
@@ -276,7 +276,7 @@ public class Keywords extends Base{
     }
 
     protected static void switchToiFrame( String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Switch to an iFrame with ID \"" + testData + "\"");
+        System.out.println(row + ". Switch to an iFrame with ID \"" + testData + "\"");
         try {
             waitForiFrameToBeAvailable(testData);
             driver.switchTo().frame(testData);
@@ -287,7 +287,7 @@ public class Keywords extends Base{
     }
 
     protected static void switchToDefaultFrame( String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Switch to default frame");
+        System.out.println(row + ". Switch to default frame");
         try {
             driver.switchTo().defaultContent();
             sendPassedResult(row, tcResultColumnIndex, tcSheet);
@@ -297,7 +297,7 @@ public class Keywords extends Base{
     }
 
     protected static void switchTab( String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Switch browser tab to index \"" + testData + "\"");
+        System.out.println(row + ". Switch browser tab to index \"" + testData + "\"");
         try {
             ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
             driver.switchTo().window(tabs.get(Integer.parseInt(testData)));
@@ -308,7 +308,7 @@ public class Keywords extends Base{
     }
 
     protected static void browserForward(int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Hit browser forward button");
+        System.out.println(row + ". Hit browser forward button");
         try {
             driver.navigate().forward();
             sendPassedResult(row, tcResultColumnIndex, tcSheet);
@@ -318,7 +318,7 @@ public class Keywords extends Base{
     }
 
     protected static void browserBackward(int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Hit browser backward button");
+        System.out.println(row + ". Hit browser backward button");
         try {
             driver.navigate().back();
             sendPassedResult(row, tcResultColumnIndex, tcSheet);
@@ -328,7 +328,7 @@ public class Keywords extends Base{
     }
 
     protected static void dragAndDrop(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Drag and drop two elements");
+        System.out.println(row + ". Drag and drop two elements");
         String errMsg = "To dragAndDrop there should be two comma separated selector_type and two comma separated selector_value";
         if(selectorType.split(",").length < 2 || selectorValue.split(",").length < 2){
             System.out.println(errMsg);
@@ -361,7 +361,7 @@ public class Keywords extends Base{
     }
 
     protected static void wait( String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println("Hard wait \"" + testData + "\" milliseconds");
+        System.out.println(row + ". Hard wait \"" + testData + "\" milliseconds");
         try {
             Thread.sleep(Long.parseLong(testData));
             sendPassedResult(row, tcResultColumnIndex, tcSheet);

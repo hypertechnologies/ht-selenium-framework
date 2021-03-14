@@ -1,4 +1,4 @@
-package framework.main;
+package framework;
 
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.*;
@@ -27,7 +27,7 @@ public class Base {
     }
 
     protected static JSONObject getSuiteConfigs() {
-        String tsConfigFilePath = "src/main/java/framework/configs/testSuiteConfigs.json";
+        String tsConfigFilePath = "src/main/java/configs/testSuiteConfigs.json";
         JSONParser parser = new JSONParser();
         JSONObject configs = new JSONObject();
         try {

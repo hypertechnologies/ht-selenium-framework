@@ -6,15 +6,15 @@
   "ignoreCertificateError": true,
   "browsers": ["chrome"],
   "screenSize": "1920,1080",
-  "suiteDir": "src/main/java/framework/suites",
+  "suiteDir": "src/main/java/suites",
   "suites" : [
     {
-      "directory": "src/main/java/framework/suites/regression",
+      "directory": "src/main/java/suites/regression",
       "ignoreTestCases": ["OSPOS_Automation_Test_Case.xlsx"],
       "skip": false
     },
     {
-      "directory": "src/main/java/framework/suites/smoke",
+      "directory": "src/main/java/suites/smoke",
       "ignoreTestCases": [],
       "skip": false
     }
