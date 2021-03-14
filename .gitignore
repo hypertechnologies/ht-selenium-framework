@@ -2,4 +2,4 @@
 .DS_Store
 target/
 src/main/java/framework/reports
-ai.hypertech.automation.iml
+ht-selenium-framework.iml
