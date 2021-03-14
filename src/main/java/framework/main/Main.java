@@ -42,6 +42,8 @@ public class Main extends Base {
         String tsSheetName = (String) getExcelIndexes().get("tsSheetName");
         int tsIdColumnIndex = (int) (long) getExcelIndexes().get("tsIdColumnIndex");
         int tsNameColumnIndex = (int) (long) getExcelIndexes().get("tsNameColumnIndex");
+        int tsResultColumnIndex = (int) (long) getExcelIndexes().get("tsResultColumnIndex");
+        int tsCommentColumnIndex = (int) (long) getExcelIndexes().get("tsCommentColumnIndex");
         int tsSkipColumnIndex = (int) (long) getExcelIndexes().get("tsSkipColumnIndex");
 
         XSSFWorkbook workbook = getWorkbook(testCaseFilePath);
@@ -52,12 +54,14 @@ public class Main extends Base {
 
         // Reading info from Test Scenario sheet
         for (int i = 1; i < tsSheet.getLastRowNum() + 1; i++){
+            // Resetting tc_failed before another scenario run
             tc_failed = false;
 
             Cell tsIdCell = tsSheet.getRow(i).getCell(tsIdColumnIndex);
             Cell tsNameCell = tsSheet.getRow(i).getCell(tsNameColumnIndex);
             Cell tsSkipCell = tsSheet.getRow(i).getCell(tsSkipColumnIndex);
 
+            // Skipping running a scenario if no tsId is defined
             if(tsIdCell == null || tsIdCell.toString().equalsIgnoreCase("")){
                 break;
             }
@@ -74,8 +78,15 @@ public class Main extends Base {
                 runTestCases(tsId, workbook, browser);
                 Keywords.closeBrowser();
             }
+            // Setting scenario result
+            if (tc_failed){
+                tsSheet.getRow(i).createCell(tsResultColumnIndex).setCellValue("Failed");
+                tsSheet.getRow(i).createCell(tsCommentColumnIndex).setCellValue("At least one of the test cases has failed!");
+            }else {
+                tsSheet.getRow(i).createCell(tsResultColumnIndex).setCellValue("Passed");
+            }
         }
-        closeWorkBook(workbook);
+        saveAndCloseResultFile(workbook, testCaseFilePath, sessionId, browser);
     }
 
     private static void runTestCases(int tsId, XSSFWorkbook workbook, String browser) {
@@ -111,7 +122,6 @@ public class Main extends Base {
                 runTestSteps(keyword, selectorType, selectorValue, testData, j, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
             }
         }
-        saveResultFile(workbook, testCaseFilePath, sessionId, browser);
     }
 
     private static void runTestSteps(String keyword, String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {

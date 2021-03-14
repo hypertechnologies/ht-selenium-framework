@@ -96,7 +96,7 @@ public class Base {
         return workbook;
     }
 
-    protected static void saveResultFile(XSSFWorkbook workbook, String testCaseFilePath, String sessionId, String browser) {
+    protected static void saveAndCloseResultFile(XSSFWorkbook workbook, String testCaseFilePath, String sessionId, String browser) {
         String testResultFileName = new File(testCaseFilePath).getName();
         File dirFromSuite = new File((testCaseFilePath.split(testResultFileName)[0]).split(suiteConfigs.get("suiteDir").toString())[1]);
         File testResultDir = new File((testCaseFilePath.split(testResultFileName)[0]) + "../../reports"+ "/" + sessionId + "/" + browser + "/" + dirFromSuite);
@@ -109,13 +109,6 @@ public class Base {
         try {
             fout = new FileOutputStream(testResultPath);
             workbook.write(fout);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    protected static void closeWorkBook(XSSFWorkbook workbook) {
-        try {
             workbook.close();
         } catch (IOException e) {
             e.printStackTrace();
