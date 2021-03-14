@@ -1,18 +1,21 @@
 {
-  "Name" : "Selenium Hybrid Framework",
-  "Description": "This suite is to run test suite & test cases in multiple browsers",
+  "name" : "Selenium Hybrid Framework",
+  "description": "This suite is to run test suite & test cases in multiple browsers",
   "implicitWaitTimeout": 5000,
   "explicitWaitTimeout": 5000,
   "ignoreCertificateError": true,
   "browsers": ["chrome"],
   "screenSize": "1920,1080",
-  "Suite" : [
+  "suiteDir": "src/main/java/framework/suites",
+  "suites" : [
     {
-      "directory": "src/main/java/framework/suite/regression",
+      "directory": "src/main/java/framework/suites/regression",
+      "ignoreTestCases": ["OSPOS_Automation_Test_Case.xlsx"],
       "skip": false
     },
     {
-      "directory": "src/main/java/framework/suite/smoke",
+      "directory": "src/main/java/framework/suites/smoke",
+      "ignoreTestCases": [],
       "skip": false
     }
   ],

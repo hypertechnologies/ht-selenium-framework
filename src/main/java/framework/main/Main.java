@@ -7,6 +7,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main extends Base {
@@ -22,13 +23,16 @@ public class Main extends Base {
         for (Object o : suite) {
             JSONObject testCaseObj = (JSONObject) o;
             String testCaseDir = (String) testCaseObj.get("directory");
+            JSONArray ignoreTestCases = (JSONArray) testCaseObj.get("ignoreTestCases");
             Boolean testCaseDirSkip = (Boolean) testCaseObj.get("skip");
             List<File> testCasePaths = getAllTestCaseFilePaths(testCaseDir);
 
             if(!testCaseDirSkip){
                 for (File path : testCasePaths) {
                     testCaseFilePath = path.toString();
-                    runTestScenarios(browser);
+                    if(!ignoreTestCases.contains(new File(testCaseFilePath).getName())){
+                        runTestScenarios(browser);
+                    }
                 }
             }
         }
@@ -68,14 +72,14 @@ public class Main extends Base {
             if(!tsSkip){
                 System.out.println("Running Scenario: " + tsName);
                 Keywords.openBrowser(browser);
-                runTestCases(tsId, workbook);
+                runTestCases(tsId, workbook, browser);
                 Keywords.closeBrowser();
             }
         }
         closeWorkBook(workbook);
     }
 
-    private static void runTestCases(int tsId, XSSFWorkbook workbook) {
+    private static void runTestCases(int tsId, XSSFWorkbook workbook, String browser) {
         String tcSheetNamePrefix = (String) getExcelIndexes().get("tcSheetNamePrefix");
 
         // Getting TC sheet
@@ -108,7 +112,7 @@ public class Main extends Base {
                 runTestSteps(keyword, selectorType, selectorValue, testData, j, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
             }
         }
-        saveResultFile(workbook, testCaseFilePath, sessionId);
+        saveResultFile(workbook, testCaseFilePath, sessionId, browser);
     }
 
     private static void runTestSteps(String keyword, String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {

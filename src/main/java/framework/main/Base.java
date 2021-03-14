@@ -44,7 +44,7 @@ public class Base {
     }
 
     protected static JSONArray getSuite() {
-        return (JSONArray) suiteConfigs.get("Suite");
+        return (JSONArray) suiteConfigs.get("suites");
     }
 
     protected static JSONObject getExcelIndexes() {
@@ -96,9 +96,10 @@ public class Base {
         return workbook;
     }
 
-    protected static void saveResultFile(XSSFWorkbook workbook, String testCaseFilePath, String sessionId) {
+    protected static void saveResultFile(XSSFWorkbook workbook, String testCaseFilePath, String sessionId, String browser) {
         String testResultFileName = new File(testCaseFilePath).getName();
-        File testResultDir = new File((testCaseFilePath.split(testResultFileName)[0]) + "../../reports"+ "/" + sessionId);
+        File dirFromSuite = new File((testCaseFilePath.split(testResultFileName)[0]).split(suiteConfigs.get("suiteDir").toString())[1]);
+        File testResultDir = new File((testCaseFilePath.split(testResultFileName)[0]) + "../../reports"+ "/" + sessionId + "/" + browser + "/" + dirFromSuite);
         if (!testResultDir.exists()){
             testResultDir.mkdirs();
         }
@@ -140,7 +141,7 @@ public class Base {
 
     protected static String getCurrentDateTime() {
         LocalDateTime myDateObj = LocalDateTime.now();
-        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("hh:mm:ss:a_MM-dd-yyyy");
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("hh.mm.ss.a_MM-dd-yyyy");
         return myDateObj.format(myFormatObj);
     }
 }
