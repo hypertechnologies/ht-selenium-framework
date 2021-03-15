@@ -6,7 +6,7 @@
   "ignoreCertificateError": true,
   "browsers": ["chrome"],
   "screenSize": "1920,1080",
-  "suiteDir": "src/main/java/suites",
+  "suitesDir": "src/main/java/suites",
   "suites" : [
     {
       "directory": "src/main/java/suites/regression",
