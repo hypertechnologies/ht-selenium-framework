@@ -114,11 +114,11 @@ public class Main extends Base {
                 break;
             }
             // Convert all cell values to string
-            String keyword = formatter.formatCellValue(tcKeyword);
-            String selectorType = formatter.formatCellValue(tcSheet.getRow(j).getCell(tcSelectorTypeColumnIndex));
-            String selectorValue = formatter.formatCellValue(tcSheet.getRow(j).getCell(tcSelectorValueColumnIndex));
-            String testData = formatter.formatCellValue(tcSheet.getRow(j).getCell(tcTestDataColumnIndex));
-            boolean skip = Boolean.parseBoolean(formatter.formatCellValue(tcSheet.getRow(j).getCell(tcSkipIndex)));
+            String keyword = formatter.formatCellValue(tcKeyword).trim();
+            String selectorType = formatter.formatCellValue(tcSheet.getRow(j).getCell(tcSelectorTypeColumnIndex)).trim();
+            String selectorValue = formatter.formatCellValue(tcSheet.getRow(j).getCell(tcSelectorValueColumnIndex)).trim();
+            String testData = formatter.formatCellValue(tcSheet.getRow(j).getCell(tcTestDataColumnIndex)).trim();
+            boolean skip = Boolean.parseBoolean(formatter.formatCellValue(tcSheet.getRow(j).getCell(tcSkipIndex)).trim());
 
             if(!skip){
                 runTestSteps(keyword, selectorType, selectorValue, testData, j, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
@@ -127,7 +127,7 @@ public class Main extends Base {
     }
 
     private static void runTestSteps(String keyword, String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        switch (keyword.trim().toLowerCase()){
+        switch (keyword.toLowerCase()){
             case "gotourl":
                 Keywords.gotToURL(testData, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
                 break;
