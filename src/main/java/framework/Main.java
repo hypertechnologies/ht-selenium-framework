@@ -140,6 +140,12 @@ public class Main extends Base {
             case "asserttext":
                 Keywords.assertText(selectorType, selectorValue, testData, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
                 break;
+            case "assertattribute":
+                Keywords.assertAttribute(selectorType, selectorValue, testData, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
+                break;
+            case "assertcssvalue":
+                Keywords.assertCssValue(selectorType, selectorValue, testData, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
+                break;
             case "asserttitle":
                 Keywords.assertTitle(testData, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
                 break;

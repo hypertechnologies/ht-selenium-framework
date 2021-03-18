@@ -246,6 +246,46 @@ public class Keywords extends Base{
         }
     }
 
+    protected static void assertAttribute(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
+        System.out.println(row + ". Verify \"" + testData + "\" exist on an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+
+        String attrName = testData.split(",")[0];
+        String attrValue = testData.split(",")[1];
+
+        try {
+            By locator;
+            locator = getLocator(selectorType, selectorValue);
+            waitForVisible(locator);
+            waitForAttributeToMatch(locator, attrName, attrValue);
+
+            sendPassedResult(row, tcResultColumnIndex, tcSheet);
+        }catch (Exception e){
+            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+        }
+    }
+
+    protected static void assertCssValue(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
+        System.out.println(row + ". Verify \"" + testData + "\" exist on an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+
+        String cssName = testData.split(",")[0];
+        String expectedCssValue = testData.split(",")[1];
+
+        try {
+            By locator;
+            locator = getLocator(selectorType, selectorValue);
+            waitForVisible(locator);
+
+            String actualCssValue = driver.findElement(locator).getCssValue(cssName);
+            if(actualCssValue.contains(expectedCssValue)){
+                sendPassedResult(row, tcResultColumnIndex, tcSheet);
+            }else {
+                sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, "Expected Css value of \""+cssName +"\" to be : \"" + expectedCssValue + "\" but found: \"" + actualCssValue + "\"");
+            }
+        }catch (Exception e){
+            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+        }
+    }
+
     protected static void click(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
         System.out.println(row + ". Click on an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
@@ -434,6 +474,11 @@ public class Keywords extends Base{
     private static void waitForTextToMatch(By locator, String testData) {
         WebDriverWait wait = new WebDriverWait(driver,explicitWaitTimeout/1000);
         wait.until(ExpectedConditions.textMatches(locator, Pattern.compile(testData.trim())));
+    }
+
+    private static void waitForAttributeToMatch(By locator, String attrName, String attrValue) {
+        WebDriverWait wait = new WebDriverWait(driver,explicitWaitTimeout/1000);
+        wait.until(ExpectedConditions.attributeContains(locator, attrName, attrValue));
     }
 
     private static void waitForiFrameToBeAvailable(String testData) {
