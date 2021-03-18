@@ -249,8 +249,8 @@ public class Keywords extends Base{
     protected static void assertAttribute(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
         System.out.println(row + ". Verify \"" + testData + "\" exist on an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
 
-        String attrName = testData.split(",")[0].trim();
-        String attrValue = testData.split(",")[1].trim();
+        String attrName = testData.split("==")[0].trim();
+        String attrValue = testData.split("==")[1].trim();
 
         try {
             By locator;
@@ -267,8 +267,8 @@ public class Keywords extends Base{
     protected static void assertCssValue(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
         System.out.println(row + ". Verify \"" + testData + "\" exist on an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
 
-        String cssName = testData.split(",")[0].trim();
-        String expectedCssValue = testData.split(",")[1].trim();
+        String cssName = testData.split("==")[0].trim();
+        String expectedCssValue = testData.split("==")[1].trim();
 
         try {
             By locator;
