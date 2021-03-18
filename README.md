@@ -34,8 +34,37 @@ A framework to automate website using different action based keywords.
     * **Required params**:
 
       locator_type (E.g., cssSelector, xpath, id etc.)
-      
+
       locator_value (E.g., #header)
-      
+
       test_data (E.g., Contact Us)
+
+
+* **AssertAttribute** - To put assertion on an attributes (E.g., check if id of an element is xyz).
+
+    * **Required params**:
+
+      locator_type (E.g., cssSelector, xpath, id etc.)
+
+      locator_value (E.g., #header)
+
+      test_data (E.g., id==header)
+
+
+* **AssertCssValue** - To put assertion on a css value (E.g., check if color of a button is #000).
+
+    * **Required params**:
+
+      locator_type (E.g., cssSelector, xpath, id etc.)
+
+      locator_value (E.g., #btn)
+
+      test_data (E.g., color==#000)
+
+
+* **AssertTitle** - To put assertion on a page title.
+
+    * **Required params**:
+
+      test_data (E.g., Welcome to Amazon!)
 
