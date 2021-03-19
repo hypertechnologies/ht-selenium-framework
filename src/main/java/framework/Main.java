@@ -65,7 +65,7 @@ public class Main extends Base {
 
             // Skipping running a scenario if no tsId is defined
             if(tsIdCell == null || tsIdCell.toString().equalsIgnoreCase("")){
-                break;
+                continue;
             }
 
             DataFormatter formatter = new DataFormatter();
@@ -110,8 +110,14 @@ public class Main extends Base {
         for(int j = 1; j < tcSheet.getLastRowNum() + 1; j++){
             Cell tcKeyword = tcSheet.getRow(j).getCell(tcKeywordColumnIndex);
 
-            if(tcKeyword == null || tcKeyword.toString().equalsIgnoreCase("") || tc_failed){
+            // If any test step fails, exit the current scenario
+            if(tc_failed){
+                System.out.println("\nTest failed! Exiting... \n");
                 break;
+            }
+            // If keyword is not defined continue to next keyword
+            if(tcKeyword == null || tcKeyword.toString().equalsIgnoreCase("")){
+                continue;
             }
             // Convert all cell values to string
             String keyword = formatter.formatCellValue(tcKeyword).trim();
