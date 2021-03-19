@@ -68,3 +68,126 @@ A framework to automate website using different action based keywords.
 
       test_data (E.g., Welcome to Amazon!)
 
+
+* **RefreshPage** - To refresh or reload webpage.
+
+    * **Required params**:
+
+      none
+
+
+* **checkVisibility** - To check if an element is visible on the page.
+
+    * **Required params**:
+
+      locator_type (E.g., cssSelector, xpath, id etc.)
+
+      locator_value (E.g., #btn)
+
+
+* **CheckNotVisible** - To check if an element is NOT visible on the page.
+
+    * **Required params**:
+
+      locator_type (E.g., cssSelector, xpath, id etc.)
+
+      locator_value (E.g., #btn)
+
+
+* **SelectByVisibleText** - To select an item from dropdown by visible text (E.g., Select "New York" from the city dropdown)..
+
+    * **Required params**:
+
+      locator_type (E.g., cssSelector, xpath, id etc.)
+
+      locator_value (E.g., #selectCity)
+
+      test_data (E.g., New York)
+
+
+* **SelectByIndex** - To select an item from dropdown by index number (E.g., Select first item from the city dropdown).
+
+    * **Required params**:
+
+      locator_type (E.g., cssSelector, xpath, id etc.)
+
+      locator_value (E.g., #selectCity)
+
+      test_data (E.g., 0)
+
+
+* **EnableCheckBox** - To enable/check a checkbox (if the checkbox is already enabled it will just make sure that it's enabled).
+
+    * **Required params**:
+
+      locator_type (E.g., cssSelector, xpath, id etc.)
+
+      locator_value (E.g., #termsCheckbox)
+
+
+* **DisableCheckBox** - To disable/uncheck a checkbox (if the checkbox is already disabled it will just make sure that it's disabled).
+
+    * **Required params**:
+
+      locator_type (E.g., cssSelector, xpath, id etc.)
+
+      locator_value (E.g., #termsCheckbox)
+
+
+* **AssertURL** - To verify the url contains some text (E.g., Make sure url contains the login page path - /login.html).
+
+    * **Required params**:
+
+      test_data (E.g., /login.html)
+
+
+* **SwitchToiFrame** - To switch to an iFrame on the page.
+
+    * **Required params**:
+
+      test_data (E.g., #iFrameId)
+
+
+* **SwitchToDefaultFrame** - To switch to the default/main frame on the page.
+
+    * **Required params**:
+
+      none
+
+
+* **SwitchTab** - To switch to a different tab on the browser by index number (For example, a link opens a page in new tab and you want to test something on that new window, you need to switch to that tab).
+
+    * **Required params**:
+
+      test_data (E.g., 1 for second tab, 0 to go back to original/first tab)
+
+
+* **BrowserForward** - To click on the browser forward button.
+
+    * **Required params**:
+
+      none
+
+
+* **BrowserBackward** - To click on the browser backward button.
+
+    * **Required params**:
+
+      none
+
+
+* **DragAndDrop** - To drag one element into another element. It needs two comma separated locator_type and two comma separated locator_value for both elements.
+
+    * **Required params**:
+
+      locator_type (E.g., id,id)
+
+      locator_value (E.g., #element1,#element2)
+
+
+* **Wait** - To hard wait for certain milliseconds
+
+    * **Required params**:
+
+      test_data (E.g., 3000 to wait 3 seconds)
+

@@ -183,7 +183,7 @@ public class Main extends Base {
                 Keywords.switchToiFrame(testData, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
                 break;
             case "switchtodefaultframe":
-                Keywords.switchToDefaultFrame(testData, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
+                Keywords.switchToDefaultFrame(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
                 break;
             case "switchtab":
                 Keywords.switchTab(testData, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);

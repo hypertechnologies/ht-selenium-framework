@@ -326,7 +326,7 @@ public class Keywords extends Base{
         }
     }
 
-    protected static void switchToDefaultFrame( String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
+    protected static void switchToDefaultFrame(int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
         System.out.println(row + ". Switch to default frame");
         try {
             driver.switchTo().defaultContent();
