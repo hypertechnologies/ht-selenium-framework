@@ -77,6 +77,19 @@ public class Keywords extends Base{
                 driver = new OperaDriver(operaOptions);
                 break;
 
+            case "headless":
+                WebDriverManager.getInstance(DriverManagerType.CHROME).setup();
+                ChromeOptions headlessOptions = new ChromeOptions();
+                headlessOptions.addArguments("--no-sandbox");
+                headlessOptions.addArguments("--headless");
+                headlessOptions.addArguments("disable-gpu");
+                if(ignoreCertificateError){
+                    headlessOptions.addArguments("ignore-certificate-errors");
+                }
+                headlessOptions.addArguments("--window-size=" + screenSize);
+                driver = new ChromeDriver(headlessOptions);
+                break;
+
             default:
                 System.out.println("Browser name \"" + browser + "\" is not recognized!");
         }

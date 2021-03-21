@@ -4,7 +4,7 @@
   "implicitWaitTimeout": 5000,
   "explicitWaitTimeout": 5000,
   "ignoreCertificateError": true,
-  "browsers": ["chrome"],
+  "browsers": ["headless"],
   "screenSize": "1920,1080",
   "suitesDir": "src/main/java/suites",
   "suites" : [
