@@ -11,6 +11,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.opera.OperaDriver;
@@ -78,16 +79,7 @@ public class Keywords extends Base{
                 break;
 
             case "headless":
-                WebDriverManager.getInstance(DriverManagerType.CHROME).setup();
-                ChromeOptions headlessOptions = new ChromeOptions();
-                headlessOptions.addArguments("--no-sandbox");
-                headlessOptions.addArguments("--headless");
-                headlessOptions.addArguments("disable-gpu");
-                if(ignoreCertificateError){
-                    headlessOptions.addArguments("ignore-certificate-errors");
-                }
-                headlessOptions.addArguments("--window-size=" + screenSize);
-                driver = new ChromeDriver(headlessOptions);
+                driver = new HtmlUnitDriver();
                 break;
 
             default:
