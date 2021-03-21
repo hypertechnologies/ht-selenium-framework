@@ -78,7 +78,7 @@ public class Keywords extends Base{
                 driver = new OperaDriver(operaOptions);
                 break;
 
-            case "headless":
+            case "unit":
                 driver = new HtmlUnitDriver();
                 break;
 
