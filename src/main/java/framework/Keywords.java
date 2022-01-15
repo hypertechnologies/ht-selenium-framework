@@ -320,6 +320,36 @@ public class Keywords extends Base{
         }
     }
 
+    protected static void uploadFile(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
+        System.out.println(row + ". Upload a file located in \"" + testData + "\" into an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+        try {
+            By locator;
+            locator = getLocator(selectorType, selectorValue);
+            waitForVisible(locator);
+            driver.findElement(locator).sendKeys(System.getProperty("user.dir") + testData);
+
+            sendPassedResult(row, tcResultColumnIndex, tcSheet);
+        }catch (Exception e){
+            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+        }
+    }
+
+    protected static void mouseHover(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
+        System.out.println(row + ". Mouse hover on an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+        try {
+            By locator;
+            locator = getLocator(selectorType, selectorValue);
+            waitForVisible(locator);
+            WebElement element = driver.findElement(locator);
+            Actions action = new Actions(driver);
+            (new Actions(driver)).moveToElement(element).build().perform();
+
+            sendPassedResult(row, tcResultColumnIndex, tcSheet);
+        }catch (Exception e){
+            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+        }
+    }
+
     protected static void switchToiFrame( String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
         System.out.println(row + ". Switch to an iFrame with ID \"" + testData + "\"");
         try {

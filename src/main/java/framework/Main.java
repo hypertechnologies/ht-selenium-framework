@@ -140,6 +140,12 @@ public class Main extends Base {
             case "type":
                 Keywords.type(selectorType, selectorValue, testData, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
                 break;
+            case "uploadfile":
+                Keywords.uploadFile(selectorType, selectorValue, testData, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
+                break;
+            case "mousehover":
+                Keywords.mouseHover(selectorType, selectorValue, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
+                break;
             case "click":
                 Keywords.click(selectorType, selectorValue, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
                 break;
