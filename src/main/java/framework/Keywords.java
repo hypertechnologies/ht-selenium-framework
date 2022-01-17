@@ -190,7 +190,7 @@ public class Keywords extends Base{
     }
 
     protected static void checkPresence(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". Check visibility of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+        System.out.println(row + ". Check presence of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
