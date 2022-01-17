@@ -164,6 +164,9 @@ public class Main extends Base {
             case "refreshpage":
                 Keywords.refreshPage(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
                 break;
+            case "checkpresence":
+                Keywords.checkPresence(selectorType, selectorValue, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
+                break;
             case "checkvisibility":
                 Keywords.checkVisibility(selectorType, selectorValue, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
                 break;

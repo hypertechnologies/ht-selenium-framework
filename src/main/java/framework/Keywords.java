@@ -189,6 +189,19 @@ public class Keywords extends Base{
         }
     }
 
+    protected static void checkPresence(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
+        System.out.println(row + ". Check visibility of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+        try {
+            By locator;
+            locator = getLocator(selectorType, selectorValue);
+            waitForPresence(locator);
+
+            sendPassedResult(row, tcResultColumnIndex, tcSheet);
+        }catch (Exception e){
+            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+        }
+    }
+
     protected static void checkNotVisible(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
         System.out.println(row + ". Check invisibility of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
@@ -325,7 +338,7 @@ public class Keywords extends Base{
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
-            waitForVisible(locator);
+            waitForPresence(locator);
             driver.findElement(locator).sendKeys(System.getProperty("user.dir") + testData);
 
             sendPassedResult(row, tcResultColumnIndex, tcSheet);
@@ -479,6 +492,11 @@ public class Keywords extends Base{
                 break;
         }
         return by;
+    }
+
+    private static void waitForPresence(By locator) {
+        WebDriverWait wait = new WebDriverWait(driver,explicitWaitTimeout/1000);
+        wait.until(ExpectedConditions.presenceOfElementLocated(locator));
     }
 
     private static void waitForNotVisible(By locator) {
