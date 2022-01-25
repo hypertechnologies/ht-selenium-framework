@@ -20,7 +20,14 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
@@ -458,6 +465,80 @@ public class Keywords extends Base{
         }
     }
 
+    protected static void saveValue(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
+        System.out.println(row + ". Get value from an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\" and save under \"" + testData + "\" variable.");
+        try {
+            By locator;
+            locator = getLocator(selectorType, selectorValue);
+            waitForVisible(locator);
+            WebElement element = driver.findElement(locator);
+            String value = element.getText();
+
+            String path = "src/main/resources/tmp/data.properties";
+            File f = new File(path);
+            f.createNewFile();
+
+            Properties props = new Properties();
+            //Populating the properties file
+            props.put(testData, value);
+            FileOutputStream outputStrem = new FileOutputStream(path);
+            //Storing the properties file
+            props.store(outputStrem, "Temporary data");
+
+            sendPassedResult(row, tcResultColumnIndex, tcSheet);
+        }catch (Exception e){
+            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+        }
+    }
+
+    protected static void compareValueContains(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
+        System.out.println(row + ". The value of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\" should contain \"" + testData + "\".");
+        try {
+            By locator;
+            locator = getLocator(selectorType, selectorValue);
+            waitForVisible(locator);
+            WebElement element = driver.findElement(locator);
+            String newValue = element.getText();
+
+            Properties prop = getProperties("src/main/resources/tmp/data.properties");
+            String oldValue = prop.getProperty(testData);
+
+            if (newValue.contains(oldValue)) {
+                sendPassedResult(row, tcResultColumnIndex, tcSheet);
+            } else {
+                sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, "Expected \"" + newValue + "\" to contain \"" + oldValue + "\"");
+            }
+
+            sendPassedResult(row, tcResultColumnIndex, tcSheet);
+        }catch (Exception e){
+            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+        }
+    }
+
+    protected static void compareValueEquals(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
+        System.out.println(row + ". The value of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\" should contain \"" + testData + "\".");
+        try {
+            By locator;
+            locator = getLocator(selectorType, selectorValue);
+            waitForVisible(locator);
+            WebElement element = driver.findElement(locator);
+            String newValue = element.getText();
+
+            Properties prop = getProperties("src/main/resources/tmp/data.properties");
+            String oldValue = prop.getProperty(testData);
+
+            if (newValue.equals(oldValue)) {
+                sendPassedResult(row, tcResultColumnIndex, tcSheet);
+            } else {
+                sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, "Expected \"" + newValue + "\" to equal to \"" + oldValue + "\"");
+            }
+
+            sendPassedResult(row, tcResultColumnIndex, tcSheet);
+        }catch (Exception e){
+            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+        }
+    }
+
     private static By getLocator (String selector_type, String selector_value){
         By by;
         switch (selector_type.trim().toLowerCase()){
@@ -555,6 +636,10 @@ public class Keywords extends Base{
     }
 
     private static void sendPassedResult(int row, int tcResultColumnIndex, XSSFSheet tcSheet) {
+        tcSheet.getRow(row).createCell(tcResultColumnIndex).setCellValue("Passed");
+    }
+
+    private static void saveData(int row, int tcResultColumnIndex, XSSFSheet tcSheet) {
         tcSheet.getRow(row).createCell(tcResultColumnIndex).setCellValue("Passed");
     }
 
