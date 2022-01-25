@@ -635,9 +635,4 @@ public class Keywords extends Base{
     private static void sendPassedResult(int row, int tcResultColumnIndex, XSSFSheet tcSheet) {
         tcSheet.getRow(row).createCell(tcResultColumnIndex).setCellValue("Passed");
     }
-
-    private static void saveData(int row, int tcResultColumnIndex, XSSFSheet tcSheet) {
-        tcSheet.getRow(row).createCell(tcResultColumnIndex).setCellValue("Passed");
-    }
-
 }
