@@ -522,7 +522,7 @@ public class Keywords extends Base{
             Properties prop = getProperties("src/main/resources/tmp/data.properties");
             String oldValue = prop.getProperty(testData);
 
-            if (newValue.equals(oldValue)) {
+            if (oldValue.equals(newValue)) {
                 sendPassedResult(row, tcResultColumnIndex, tcSheet);
             } else {
                 sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, "Expected \"" + newValue + "\" to equal to \"" + oldValue + "\"");
