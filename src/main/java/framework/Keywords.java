@@ -511,7 +511,7 @@ public class Keywords extends Base{
     }
 
     protected static void compareValueEquals(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". The value of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\" should contain \"" + testData + "\".");
+        System.out.println(row + ". The value of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\" should contain the value from \"" + testData + "\".");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
