@@ -472,8 +472,8 @@ public class Keywords extends Base{
             String value = element.getText();
 
             String path = "src/main/resources/tmp/data.properties";
-            File f = new File(path);
-            f.createNewFile();
+//            File f = new File(path);
+//            f.createNewFile();
 
             Properties props = new Properties();
             //Populating the properties file
@@ -505,8 +505,6 @@ public class Keywords extends Base{
             } else {
                 sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, "Expected \"" + newValue + "\" to contain \"" + oldValue + "\"");
             }
-
-            sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
             sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
         }
@@ -529,8 +527,6 @@ public class Keywords extends Base{
             } else {
                 sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, "Expected \"" + newValue + "\" to equal to \"" + oldValue + "\"");
             }
-
-            sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
             sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
         }
