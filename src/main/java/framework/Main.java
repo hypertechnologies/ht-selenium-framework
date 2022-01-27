@@ -209,6 +209,15 @@ public class Main extends Base {
             case "wait":
                 Keywords.wait(testData, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
                 break;
+            case "savevalue":
+                Keywords.saveValue(selectorType, selectorValue, testData, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
+                break;
+            case "comparevaluecontains":
+                Keywords.compareValueContains(selectorType, selectorValue, testData, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
+                break;
+            case "comparevalueequals":
+                Keywords.compareValueEquals(selectorType, selectorValue, testData, row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet);
+                break;
             case "closebrowser":
                 Keywords.closeBrowser();
                 break;

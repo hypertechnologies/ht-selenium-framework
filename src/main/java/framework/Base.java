@@ -52,9 +52,8 @@ public class Base {
     }
 
     // Not in use
-    protected static Properties getProperties() {
+    protected static Properties getProperties(String propertiesFilePath) {
         // Set path of the properties file
-        String propertiesFilePath = "src/main/java/framework/configs/configs.properties";
         File file = new File(propertiesFilePath);
 
         // Create input stream of the properties file
