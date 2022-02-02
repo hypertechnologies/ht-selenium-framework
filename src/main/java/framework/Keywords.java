@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 public class Keywords extends Base{
     static WebDriver driver;
 
-    protected static void openBrowser(String browser) {
+    public static void openBrowser(String browser) {
         System.out.println("Open " + browser + " browser");
         boolean ignoreCertificateError = (boolean) suiteConfigs.get("ignoreCertificateError");
         String screenSize = (String) suiteConfigs.get("screenSize");
@@ -99,15 +99,15 @@ public class Keywords extends Base{
         }
     }
 
-    protected static void gotToURL(String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". Navigate to \"" + testData + "\"");
+    public static void gotToURL(String testData) {
+        System.out.println("row" + ". Navigate to \"" + testData + "\"");
         try {
             driver.navigate().to(testData);
             // Sending pass result to result column
-            sendPassedResult(row, tcResultColumnIndex, tcSheet);
+           // sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
             // Sending pass result to result column and error message to comment column
-            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+           // sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
         }
     }
 
