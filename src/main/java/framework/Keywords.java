@@ -370,8 +370,8 @@ public class Keywords extends Base{
     protected static void switchToiFrame( String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
         System.out.println(row + ". Switch to an iFrame with ID \"" + testData + "\"");
         try {
-            waitForiFrameToBeAvailable(testData);
-            driver.switchTo().frame(testData);
+            waitForiFrameToBeAvailableAndSwitchToIt(testData);
+            // driver.switchTo().frame(testData);
             sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
             sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
@@ -608,7 +608,7 @@ public class Keywords extends Base{
         wait.until(ExpectedConditions.attributeContains(locator, attrName, attrValue));
     }
 
-    private static void waitForiFrameToBeAvailable(String testData) {
+    private static void waitForiFrameToBeAvailableAndSwitchToIt(String testData) {
         WebDriverWait wait = new WebDriverWait(driver,explicitWaitTimeout/1000);
         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(testData));
     }
