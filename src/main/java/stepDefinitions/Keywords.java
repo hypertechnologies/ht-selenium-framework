@@ -1,5 +1,10 @@
-package framework;
+package stepDefinitions;
 
+import framework.Base;
+import framework.Main;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.bonigarcia.wdm.config.DriverManagerType;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -28,32 +33,22 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
-public class Keywords extends Base{
+public class Keywords extends Base {
     static WebDriver driver;
 
-    protected static void openBrowser(String browser) {
+    @Given("Open the {string}")
+    public static void openBrowser(String browser) {
         System.out.println("Open " + browser + " browser");
-        boolean ignoreCertificateError = (boolean) suiteConfigs.get("ignoreCertificateError");
-        String screenSize = (String) suiteConfigs.get("screenSize");
-
         switch (browser.trim().toLowerCase()){
             case "chrome":
                 WebDriverManager.getInstance(DriverManagerType.CHROME).setup();
                 ChromeOptions chromeOptions = new ChromeOptions();
-                if(ignoreCertificateError){
-                    chromeOptions.addArguments("ignore-certificate-errors");
-                }
-                chromeOptions.addArguments("--window-size=" + screenSize);
                 driver = new ChromeDriver(chromeOptions);
                 break;
 
             case "firefox":
                 WebDriverManager.getInstance(DriverManagerType.FIREFOX).setup();
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
-                if(ignoreCertificateError){
-                    firefoxOptions.addArguments("ignore-certificate-errors");
-                }
-                firefoxOptions.addArguments("--window-size=" + screenSize);
                 driver = new FirefoxDriver(firefoxOptions);
                 break;
 
@@ -75,10 +70,6 @@ public class Keywords extends Base{
             case "opera":
                 WebDriverManager.getInstance(DriverManagerType.OPERA).setup();
                 OperaOptions operaOptions = new OperaOptions();
-                if(ignoreCertificateError){
-                    operaOptions.addArguments("ignore-certificate-errors");
-                }
-                operaOptions.addArguments("--window-size=" + screenSize);
                 driver = new OperaDriver(operaOptions);
                 break;
 
@@ -92,22 +83,22 @@ public class Keywords extends Base{
         driver.manage().timeouts().implicitlyWait(implicitWaitTimeout, TimeUnit.MILLISECONDS);
     }
 
-    protected static void closeBrowser() {
+    @And("Close Browser")
+    public static void closeBrowser() {
         System.out.println("Close the browser");
         if(driver != null){
             driver.quit();
         }
     }
 
-    protected static void gotToURL(String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". Navigate to \"" + testData + "\"");
+    @And("Launch the url {string}")
+    public static void gotToURL(String url) {
+        System.out.println("Navigate to \"" + url + "\"");
         try {
-            driver.navigate().to(testData);
-            // Sending pass result to result column
-            sendPassedResult(row, tcResultColumnIndex, tcSheet);
+            driver.navigate().to(url);
         }catch (Exception e){
             // Sending pass result to result column and error message to comment column
-            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+            throw e;
         }
     }
 
@@ -308,32 +299,31 @@ public class Keywords extends Base{
         }
     }
 
-    protected static void click(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". Click on an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+    protected static void click(String selectorType, String selectorValue) {
+        System.out.println("row" + ". Click on an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
             waitForVisible(locator);
             waitForClickable(locator);
             driver.findElement(locator).click();
-            
-            sendPassedResult(row, tcResultColumnIndex, tcSheet);
+
         }catch (Exception e){
-            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+            throw e;
         }
     }
 
-    protected static void type(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". Enter \"" + testData + "\" into an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+    @Then("Click on an element with selector type {string} and selector value {string}")
+    public static void type(String selectorType, String selectorValue, String testData) {
+        System.out.println("row" + ". Enter \"" + testData + "\" into an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
             waitForVisible(locator);
             driver.findElement(locator).sendKeys(testData);
+            Thread.sleep(1000);
 
-            sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
-            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
         }
     }
 
@@ -452,13 +442,13 @@ public class Keywords extends Base{
         }
     }
 
-    protected static void wait( String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". Hard wait \"" + testData + "\" milliseconds");
+    @And("Wait for {string} milliseconds")
+    public static void wait( String testData) throws InterruptedException {
+        System.out.println("row" + ". Hard wait \"" + testData + "\" milliseconds");
         try {
             Thread.sleep(Long.parseLong(testData));
-            sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
-            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+            throw e;
         }
     }
 
@@ -612,10 +602,10 @@ public class Keywords extends Base{
         WebDriverWait wait = new WebDriverWait(driver,explicitWaitTimeout/1000);
         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(testData));
     }
-    
+
     private static void sendFailedResult(int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet, String errorMsg) {
         System.out.println("\n\n >>>>> Below error found <<<<< \n\n" + errorMsg +"\n\n");
-        
+
         // Mark test case as failed
         Main.tc_failed = true;
 
