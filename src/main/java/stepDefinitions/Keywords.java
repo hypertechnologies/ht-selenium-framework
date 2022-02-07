@@ -35,7 +35,6 @@ public class Keywords extends Base {
 
     @Given("Open the {string}")
     public static void openBrowser(String browser) {
-        System.out.println("Open " + browser + " browser");
         switch (browser.trim().toLowerCase()){
             case "chrome":
                 WebDriverManager.getInstance(DriverManagerType.CHROME).setup();
@@ -82,7 +81,6 @@ public class Keywords extends Base {
 
     @And("Close browser")
     public static void closeBrowser() {
-        System.out.println("Close the browser");
         if(driver != null){
             driver.quit();
         }
@@ -90,7 +88,6 @@ public class Keywords extends Base {
 
     @And("Navigate to the url {string}")
     public static void gotToURL(String url) {
-        System.out.println("Navigate to \"" + url + "\"");
         try {
             driver.navigate().to(url);
         }catch (Exception e){
@@ -100,7 +97,6 @@ public class Keywords extends Base {
 
     @And("Check URL contains {string}")
     public static void assertURL(String testData) {
-        System.out.println("Check URL contains \"" + testData + "\"");
         try {
             waitForUrlToContainText(testData);
         }catch (Exception e){
@@ -110,7 +106,6 @@ public class Keywords extends Base {
 
     @And("Disable a checkbox with an element with selector type {string} and selector value {string}")
     public static void disableCheckBox(String selectorType, String selectorValue) throws Exception {
-        System.out.println("Disable a checkbox with an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             WebElement element;
@@ -132,7 +127,6 @@ public class Keywords extends Base {
 
     @And("Enable a checkbox with an element with selector type {string} and selector value {string}")
     public static void enableCheckBox(String selectorType, String selectorValue) throws Exception {
-        System.out.println("Enable a checkbox with an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             WebElement element;
@@ -154,7 +148,6 @@ public class Keywords extends Base {
 
     @And("Select index {string} item from a dropdown with an element with selector type {string} and selector value {string}")
     public static void selectByIndex(String testData, String selectorType, String selectorValue) {
-        System.out.println("Select index \"" + testData + "\" item from a dropdown with an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             WebElement element;
@@ -172,7 +165,6 @@ public class Keywords extends Base {
 
     @And("Select {string} from dropdown with an element with selector type {string} and selector value {string}")
     public static void selectByVisibleTextString (String testData, String selectorType, String selectorValue) {
-        System.out.println("Select \"" + testData + "\" from dropdown with an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             WebElement element;
@@ -190,7 +182,6 @@ public class Keywords extends Base {
 
     @And("Check presence of an element with selector type {string} and selector value {string}")
     public static void checkPresence(String selectorType, String selectorValue) {
-        System.out.println("Check presence of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
@@ -202,7 +193,6 @@ public class Keywords extends Base {
 
     @And("Check invisibility of an element with selector type {string} and selector value {string}")
     public static void checkNotVisible(String selectorType, String selectorValue) {
-        System.out.println("Check invisibility of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
@@ -214,7 +204,6 @@ public class Keywords extends Base {
 
     @And("Check visibility of an element with selector type {string} and selector value {string}")
     public static void checkVisibility(String selectorType, String selectorValue) {
-        System.out.println("Check visibility of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
@@ -226,7 +215,6 @@ public class Keywords extends Base {
 
     @And("Refresh the page")
     public static void refreshPage() {
-        System.out.println("Refresh the page");
         try {
             driver.navigate().refresh();
         }catch (Exception e){
@@ -236,7 +224,6 @@ public class Keywords extends Base {
 
     @And("Check page title contains {string}")
     public static void assertTitle(String testData) {
-        System.out.println("Check page title contains \"" + testData + "\"");
         try {
             waitForTitleToContainText(testData);
         }catch (Exception e){
@@ -246,7 +233,6 @@ public class Keywords extends Base {
 
     @And("Verify text of on element with selector type {string} and selector value {string} is {string}")
     public static void assertText(String selectorType, String selectorValue, String testData) {
-        System.out.println("Verify text of on element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\" is \"" + testData+"\"");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
@@ -259,8 +245,6 @@ public class Keywords extends Base {
 
     @And("Verify attribute of on element with selector type {string} and selector value {string} is {string}")
     public static void assertAttribute(String selectorType, String selectorValue, String testData) {
-        System.out.println("Verify attribute of on element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\" is \"" + testData+"\"");
-
         String attrName = testData.split("==")[0].trim();
         String attrValue = testData.split("==")[1].trim();
 
@@ -276,8 +260,6 @@ public class Keywords extends Base {
 
     @And("Verify css of on element with selector type {string} and selector value {string} is {string}")
     public static void assertCssValue(String selectorType, String selectorValue, String testData) throws Exception {
-        System.out.println("Verify css of on element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\" is \"" + testData+"\"");
-
         String cssName = testData.split("==")[0].trim();
         String expectedCssValue = testData.split("==")[1].trim();
 
@@ -299,7 +281,6 @@ public class Keywords extends Base {
 
     @And("Click on an element with selector type {string} and selector value {string}")
     public static void click(String selectorType, String selectorValue) {
-        System.out.println("Click on an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
@@ -313,7 +294,6 @@ public class Keywords extends Base {
 
     @Then("Type {string} into an element with selector type {string} and selector value {string}")
     public static void type(String testData, String selectorType, String selectorValue) {
-        System.out.println("Enter \"" + testData + "\" into an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
@@ -325,7 +305,6 @@ public class Keywords extends Base {
 
     @Then("Upload a file located in {string} into an element with selector type {string} and selector value {string}")
     public static void uploadFile(String testData, String selectorType, String selectorValue) {
-        System.out.println("Upload a file located in \"" + testData + "\" into an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
@@ -338,7 +317,6 @@ public class Keywords extends Base {
 
     @Then("Mouse hover on an element with selector type {string} and selector value {string}")
     public static void mouseHover(String selectorType, String selectorValue) {
-        System.out.println("Mouse hover on an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
@@ -353,7 +331,6 @@ public class Keywords extends Base {
 
     @Then("Switch to an iFrame with ID {string}")
     public static void switchToiFrame( String testData) {
-        System.out.println("Switch to an iFrame with ID \"" + testData + "\"");
         try {
             waitForiFrameToBeAvailableAndSwitchToIt(testData);
         }catch (Exception e){
@@ -363,7 +340,6 @@ public class Keywords extends Base {
 
     @Then("Switch to default frame")
     public static void switchToDefaultFrame() {
-        System.out.println("Switch to default frame");
         try {
             driver.switchTo().defaultContent();
         }catch (Exception e){
@@ -373,7 +349,6 @@ public class Keywords extends Base {
 
     @Then("Switch browser tab to index {string}")
     public static void switchTab( String testData) {
-        System.out.println("Switch browser tab to index \"" + testData + "\"");
         try {
             ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
             driver.switchTo().window(tabs.get(Integer.parseInt(testData)));
@@ -384,7 +359,6 @@ public class Keywords extends Base {
 
     @Then("Hit browser forward button")
     public static void browserForward() {
-        System.out.println("Hit browser forward button");
         try {
             driver.navigate().forward();
         }catch (Exception e){
@@ -394,7 +368,6 @@ public class Keywords extends Base {
 
     @Then("Hit browser backward button")
     public static void browserBackward() {
-        System.out.println("Hit browser backward button");
         try {
             driver.navigate().back();
         }catch (Exception e){
@@ -404,7 +377,6 @@ public class Keywords extends Base {
 
     @Then("Drag and drop two elements with selector type {string} and selector value {string}")
     public static void dragAndDrop(String selectorType, String selectorValue) throws Exception {
-        System.out.println("Drag and drop two elements");
         String errMsg = "To dragAndDrop there should be two comma separated selector_type and two comma separated selector_value";
         if(selectorType.split(",").length < 2 || selectorValue.split(",").length < 2){
             throw new Exception(errMsg);
@@ -435,7 +407,6 @@ public class Keywords extends Base {
 
     @And("Wait for {string} milliseconds")
     public static void wait( String testData) throws InterruptedException {
-        System.out.println("row" + ". Hard wait \"" + testData + "\" milliseconds");
         try {
             Thread.sleep(Long.parseLong(testData));
         }catch (Exception e){
@@ -445,7 +416,6 @@ public class Keywords extends Base {
 
     @Then("Get value from an element with selector type {string} and selector value {string} and save under {string} variable")
     public static void saveValue(String selectorType, String selectorValue, String testData) throws IOException {
-        System.out.println("Get value from an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\" and save under \"" + testData + "\" variable.");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
@@ -470,7 +440,6 @@ public class Keywords extends Base {
 
     @Then("The value of an element with selector type {string} and selector value {string} should contain {string}")
     public static void compareValueContains(String selectorType, String selectorValue, String testData) throws Exception {
-        System.out.println("The value of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\" should contain \"" + testData + "\".");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
@@ -493,7 +462,6 @@ public class Keywords extends Base {
 
     @Then("The value of an element with selector type {string} and selector value {string} should EQUAL the value from {string}")
     public static void compareValueEquals(String selectorType, String selectorValue, String testData) throws Exception {
-        System.out.println("The value of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\" should EQUAL the value from \"" + testData + "\".");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);

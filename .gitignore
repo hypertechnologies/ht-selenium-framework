@@ -2,4 +2,5 @@
 .DS_Store
 target/
 src/main/java/reports
+src/main/java/htmlReport
 ht-selenium-framework.iml
