@@ -1,13 +1,11 @@
 package stepDefinitions;
 
 import framework.Base;
-import framework.Main;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.bonigarcia.wdm.config.DriverManagerType;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -25,9 +23,8 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -83,7 +80,7 @@ public class Keywords extends Base {
         driver.manage().timeouts().implicitlyWait(implicitWaitTimeout, TimeUnit.MILLISECONDS);
     }
 
-    @And("Close Browser")
+    @And("Close browser")
     public static void closeBrowser() {
         System.out.println("Close the browser");
         if(driver != null){
@@ -91,29 +88,29 @@ public class Keywords extends Base {
         }
     }
 
-    @And("Launch the url {string}")
+    @And("Navigate to the url {string}")
     public static void gotToURL(String url) {
         System.out.println("Navigate to \"" + url + "\"");
         try {
             driver.navigate().to(url);
         }catch (Exception e){
-            // Sending pass result to result column and error message to comment column
             throw e;
         }
     }
 
-    protected static void assertURL(String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". Check URL contains \"" + testData + "\"");
+    @And("Check URL contains {string}")
+    public static void assertURL(String testData) {
+        System.out.println("Check URL contains \"" + testData + "\"");
         try {
             waitForUrlToContainText(testData);
-            sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
-            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+            throw e;
         }
     }
 
-    protected static void disableCheckBox(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". Disable a checkbox with an element with  selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+    @And("Disable a checkbox with an element with selector type {string} and selector value {string}")
+    public static void disableCheckBox(String selectorType, String selectorValue) throws Exception {
+        System.out.println("Disable a checkbox with an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             WebElement element;
@@ -123,14 +120,19 @@ public class Keywords extends Base {
             if(element.isSelected()){
                 element.click();
             }
-            sendPassedResult(row, tcResultColumnIndex, tcSheet);
+
+            //Double check and fail if it was not disabled
+            if(element.isSelected()){
+                throw new Exception("Element is expected to be disabled but it is found enabled!");
+            }
         }catch (Exception e){
-            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+            throw e;
         }
     }
 
-    protected static void enableCheckBox(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". Enable a checkbox with an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+    @And("Enable a checkbox with an element with selector type {string} and selector value {string}")
+    public static void enableCheckBox(String selectorType, String selectorValue) throws Exception {
+        System.out.println("Enable a checkbox with an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             WebElement element;
@@ -140,14 +142,19 @@ public class Keywords extends Base {
             if(!element.isSelected()){
                 element.click();
             }
-            sendPassedResult(row, tcResultColumnIndex, tcSheet);
+
+            //Double check and fail if it was not enabled
+            if(!element.isSelected()){
+                throw new Exception("Element is expected to be enabled but it is found disabled!");
+            }
         }catch (Exception e){
-            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+            throw e;
         }
     }
 
-    protected static void selectByIndex(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". Select index \"" + testData + "\" item from a dropdown with an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+    @And("Select index {string} item from a dropdown with an element with selector type {string} and selector value {string}")
+    public static void selectByIndex(String testData, String selectorType, String selectorValue) {
+        System.out.println("Select index \"" + testData + "\" item from a dropdown with an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             WebElement element;
@@ -158,15 +165,14 @@ public class Keywords extends Base {
 
             dropdown = new Select(element);
             dropdown.selectByIndex(Integer.parseInt(testData));
-
-            sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
-            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+            throw e;
         }
     }
 
-    protected static void selectByVisibleText(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". Select \"" + testData + "\" from dropdown with an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+    @And("Select {string} from dropdown with an element with selector type {string} and selector value {string}")
+    public static void selectByVisibleTextString (String testData, String selectorType, String selectorValue) {
+        System.out.println("Select \"" + testData + "\" from dropdown with an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             WebElement element;
@@ -177,90 +183,83 @@ public class Keywords extends Base {
 
             dropdown = new Select(element);
             dropdown.selectByVisibleText(testData);
-
-            sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
-            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+            throw e;
         }
     }
 
-    protected static void checkPresence(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". Check presence of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+    @And("Check presence of an element with selector type {string} and selector value {string}")
+    public static void checkPresence(String selectorType, String selectorValue) {
+        System.out.println("Check presence of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
             waitForPresence(locator);
-
-            sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
-            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+            throw e;
         }
     }
 
-    protected static void checkNotVisible(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". Check invisibility of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+    @And("Check invisibility of an element with selector type {string} and selector value {string}")
+    public static void checkNotVisible(String selectorType, String selectorValue) {
+        System.out.println("Check invisibility of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
             waitForNotVisible(locator);
-
-            sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
-            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+            throw e;
         }
     }
 
-    protected static void checkVisibility(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". Check visibility of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+    @And("Check visibility of an element with selector type {string} and selector value {string}")
+    public static void checkVisibility(String selectorType, String selectorValue) {
+        System.out.println("Check visibility of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
             waitForVisible(locator);
-
-            sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
-            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+            throw e;
         }
     }
 
-    protected static void refreshPage(int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". Refresh the page");
+    @And("Refresh the page")
+    public static void refreshPage() {
+        System.out.println("Refresh the page");
         try {
             driver.navigate().refresh();
-
-            sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
-            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+            throw e;
         }
     }
 
-    protected static void assertTitle(String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". Check page title contains \"" + testData + "\"");
+    @And("Check page title contains {string}")
+    public static void assertTitle(String testData) {
+        System.out.println("Check page title contains \"" + testData + "\"");
         try {
             waitForTitleToContainText(testData);
-
-            sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
-            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+            throw e;
         }
     }
 
-    protected static void assertText(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". Verify \"" + testData + "\" exist on an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+    @And("Verify text of on element with selector type {string} and selector value {string} is {string}")
+    public static void assertText(String selectorType, String selectorValue, String testData) {
+        System.out.println("Verify text of on element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\" is \"" + testData+"\"");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
             waitForVisible(locator);
             waitForTextToMatch(locator, testData);
-
-            sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
-            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+            throw e;
         }
     }
 
-    protected static void assertAttribute(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". Verify \"" + testData + "\" exist on an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+    @And("Verify attribute of on element with selector type {string} and selector value {string} is {string}")
+    public static void assertAttribute(String selectorType, String selectorValue, String testData) {
+        System.out.println("Verify attribute of on element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\" is \"" + testData+"\"");
 
         String attrName = testData.split("==")[0].trim();
         String attrValue = testData.split("==")[1].trim();
@@ -270,15 +269,14 @@ public class Keywords extends Base {
             locator = getLocator(selectorType, selectorValue);
             waitForVisible(locator);
             waitForAttributeToMatch(locator, attrName, attrValue);
-
-            sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
-            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+            throw e;
         }
     }
 
-    protected static void assertCssValue(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". Verify \"" + testData + "\" exist on an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+    @And("Verify css of on element with selector type {string} and selector value {string} is {string}")
+    public static void assertCssValue(String selectorType, String selectorValue, String testData) throws Exception {
+        System.out.println("Verify css of on element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\" is \"" + testData+"\"");
 
         String cssName = testData.split("==")[0].trim();
         String expectedCssValue = testData.split("==")[1].trim();
@@ -290,59 +288,57 @@ public class Keywords extends Base {
 
             String actualCssValue = driver.findElement(locator).getCssValue(cssName);
             if(actualCssValue.contains(expectedCssValue)){
-                sendPassedResult(row, tcResultColumnIndex, tcSheet);
+                // pass, nothing to do
             }else {
-                sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, "Expected Css value of \""+cssName +"\" to be : \"" + expectedCssValue + "\" but found: \"" + actualCssValue + "\"");
+                throw new Exception("Expected Css value of \""+cssName +"\" to be : \"" + expectedCssValue + "\" but found: \"" + actualCssValue + "\"");
             }
         }catch (Exception e){
-            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+            throw e;
         }
     }
 
-    protected static void click(String selectorType, String selectorValue) {
-        System.out.println("row" + ". Click on an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+    @And("Click on an element with selector type {string} and selector value {string}")
+    public static void click(String selectorType, String selectorValue) {
+        System.out.println("Click on an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
             waitForVisible(locator);
             waitForClickable(locator);
             driver.findElement(locator).click();
-
         }catch (Exception e){
             throw e;
         }
     }
 
-    @Then("Click on an element with selector type {string} and selector value {string}")
-    public static void type(String selectorType, String selectorValue, String testData) {
-        System.out.println("row" + ". Enter \"" + testData + "\" into an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+    @Then("Type {string} into an element with selector type {string} and selector value {string}")
+    public static void type(String testData, String selectorType, String selectorValue) {
+        System.out.println("Enter \"" + testData + "\" into an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
             waitForVisible(locator);
             driver.findElement(locator).sendKeys(testData);
-            Thread.sleep(1000);
-
         }catch (Exception e){
         }
     }
 
-    protected static void uploadFile(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". Upload a file located in \"" + testData + "\" into an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+    @Then("Upload a file located in {string} into an element with selector type {string} and selector value {string}")
+    public static void uploadFile(String testData, String selectorType, String selectorValue) {
+        System.out.println("Upload a file located in \"" + testData + "\" into an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
             waitForPresence(locator);
             driver.findElement(locator).sendKeys(System.getProperty("user.dir") + testData);
-
-            sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
-            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+            throw e;
         }
     }
 
-    protected static void mouseHover(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". Mouse hover on an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
+    @Then("Mouse hover on an element with selector type {string} and selector value {string}")
+    public static void mouseHover(String selectorType, String selectorValue) {
+        System.out.println("Mouse hover on an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\"");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
@@ -350,71 +346,68 @@ public class Keywords extends Base {
             WebElement element = driver.findElement(locator);
             Actions action = new Actions(driver);
             (new Actions(driver)).moveToElement(element).build().perform();
-
-            sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
-            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+            throw e;
         }
     }
 
-    protected static void switchToiFrame( String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". Switch to an iFrame with ID \"" + testData + "\"");
+    @Then("Switch to an iFrame with ID {string}")
+    public static void switchToiFrame( String testData) {
+        System.out.println("Switch to an iFrame with ID \"" + testData + "\"");
         try {
             waitForiFrameToBeAvailableAndSwitchToIt(testData);
-            // driver.switchTo().frame(testData);
-            sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
-            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+            throw e;
         }
     }
 
-    protected static void switchToDefaultFrame(int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". Switch to default frame");
+    @Then("Switch to default frame")
+    public static void switchToDefaultFrame() {
+        System.out.println("Switch to default frame");
         try {
             driver.switchTo().defaultContent();
-            sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
-            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+            throw e;
         }
     }
 
-    protected static void switchTab( String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". Switch browser tab to index \"" + testData + "\"");
+    @Then("Switch browser tab to index {string}")
+    public static void switchTab( String testData) {
+        System.out.println("Switch browser tab to index \"" + testData + "\"");
         try {
             ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
             driver.switchTo().window(tabs.get(Integer.parseInt(testData)));
-            sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
-            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+            throw e;
         }
     }
 
-    protected static void browserForward(int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". Hit browser forward button");
+    @Then("Hit browser forward button")
+    public static void browserForward() {
+        System.out.println("Hit browser forward button");
         try {
             driver.navigate().forward();
-            sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
-            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+            throw e;
         }
     }
 
-    protected static void browserBackward(int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". Hit browser backward button");
+    @Then("Hit browser backward button")
+    public static void browserBackward() {
+        System.out.println("Hit browser backward button");
         try {
             driver.navigate().back();
-            sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
-            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+            throw e;
         }
     }
 
-    protected static void dragAndDrop(String selectorType, String selectorValue, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". Drag and drop two elements");
+    @Then("Drag and drop two elements with selector type {string} and selector value {string}")
+    public static void dragAndDrop(String selectorType, String selectorValue) throws Exception {
+        System.out.println("Drag and drop two elements");
         String errMsg = "To dragAndDrop there should be two comma separated selector_type and two comma separated selector_value";
         if(selectorType.split(",").length < 2 || selectorValue.split(",").length < 2){
-            System.out.println(errMsg);
-            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, errMsg);
+            throw new Exception(errMsg);
         }else {
             String sourceSelectorType = selectorType.split(",")[0].trim();
             String sourceSelectorValue = selectorValue.split(",")[0].trim();
@@ -434,10 +427,8 @@ public class Keywords extends Base {
                 targetElement = driver.findElement(targetLocator);
 
                 (new Actions(driver)).dragAndDrop(sourceElement, targetElement).perform();
-
-                sendPassedResult(row, tcResultColumnIndex, tcSheet);
             }catch (Exception e){
-                sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+                throw e;
             }
         }
     }
@@ -452,8 +443,9 @@ public class Keywords extends Base {
         }
     }
 
-    protected static void saveValue(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". Get value from an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\" and save under \"" + testData + "\" variable.");
+    @Then("Get value from an element with selector type {string} and selector value {string} and save under {string} variable")
+    public static void saveValue(String selectorType, String selectorValue, String testData) throws IOException {
+        System.out.println("Get value from an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\" and save under \"" + testData + "\" variable.");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
@@ -471,15 +463,14 @@ public class Keywords extends Base {
             FileOutputStream outputStrem = new FileOutputStream(path);
             //Storing the properties file
             props.store(outputStrem, "Temporary data");
-
-            sendPassedResult(row, tcResultColumnIndex, tcSheet);
         }catch (Exception e){
-            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+            throw e;
         }
     }
 
-    protected static void compareValueContains(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". The value of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\" should contain \"" + testData + "\".");
+    @Then("The value of an element with selector type {string} and selector value {string} should contain {string}")
+    public static void compareValueContains(String selectorType, String selectorValue, String testData) throws Exception {
+        System.out.println("The value of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\" should contain \"" + testData + "\".");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
@@ -491,17 +482,18 @@ public class Keywords extends Base {
             String oldValue = prop.getProperty(testData);
 
             if (newValue.contains(oldValue)) {
-                sendPassedResult(row, tcResultColumnIndex, tcSheet);
+                // pass, nothing to do
             } else {
-                sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, "Expected \"" + newValue + "\" to contain \"" + oldValue + "\"");
+                throw new Exception("Expected \"" + newValue + "\" to contain \"" + oldValue + "\"");
             }
         }catch (Exception e){
-            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+            throw e;
         }
     }
 
-    protected static void compareValueEquals(String selectorType, String selectorValue, String testData, int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet) {
-        System.out.println(row + ". The value of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\" should contain the value from \"" + testData + "\".");
+    @Then("The value of an element with selector type {string} and selector value {string} should EQUAL the value from {string}")
+    public static void compareValueEquals(String selectorType, String selectorValue, String testData) throws Exception {
+        System.out.println("The value of an element with selector type \"" + selectorType + "\" and selector value \"" + selectorValue+"\" should EQUAL the value from \"" + testData + "\".");
         try {
             By locator;
             locator = getLocator(selectorType, selectorValue);
@@ -513,12 +505,12 @@ public class Keywords extends Base {
             String oldValue = prop.getProperty(testData);
 
             if (oldValue.equals(newValue)) {
-                sendPassedResult(row, tcResultColumnIndex, tcSheet);
+                // pass, nothing to do
             } else {
-                sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, "Expected \"" + newValue + "\" to equal to \"" + oldValue + "\"");
+                throw new Exception("Expected \"" + newValue + "\" to equal to \"" + oldValue + "\"");
             }
         }catch (Exception e){
-            sendFailedResult(row, tcResultColumnIndex, tcCommentColumnIndex, tcSheet, e.getMessage());
+            throw e;
         }
     }
 
@@ -603,22 +595,22 @@ public class Keywords extends Base {
         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(testData));
     }
 
-    private static void sendFailedResult(int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet, String errorMsg) {
-        System.out.println("\n\n >>>>> Below error found <<<<< \n\n" + errorMsg +"\n\n");
-
-        // Mark test case as failed
-        Main.tc_failed = true;
-
-        // Close browser
-        closeBrowser();
-
-        //Send fail result to Result column
-        tcSheet.getRow(row).createCell(tcResultColumnIndex).setCellValue("Failed");
-        //Send error message to Comment column
-        tcSheet.getRow(row).createCell(tcCommentColumnIndex).setCellValue(errorMsg);
-    }
-
-    private static void sendPassedResult(int row, int tcResultColumnIndex, XSSFSheet tcSheet) {
-        tcSheet.getRow(row).createCell(tcResultColumnIndex).setCellValue("Passed");
-    }
+//    private static void sendFailedResult(int row, int tcResultColumnIndex, int tcCommentColumnIndex, XSSFSheet tcSheet, String errorMsg) {
+//        System.out.println("\n\n >>>>> Below error found <<<<< \n\n" + errorMsg +"\n\n");
+//
+//        // Mark test case as failed
+//        Main.tc_failed = true;
+//
+//        // Close browser
+//        closeBrowser();
+//
+//        //Send fail result to Result column
+//        tcSheet.getRow(row).createCell(tcResultColumnIndex).setCellValue("Failed");
+//        //Send error message to Comment column
+//        tcSheet.getRow(row).createCell(tcCommentColumnIndex).setCellValue(errorMsg);
+//    }
+//
+//    private static void sendPassedResult(int row, int tcResultColumnIndex, XSSFSheet tcSheet) {
+//        tcSheet.getRow(row).createCell(tcResultColumnIndex).setCellValue("Passed");
+//    }
 }
