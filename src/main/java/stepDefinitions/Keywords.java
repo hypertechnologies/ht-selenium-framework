@@ -300,6 +300,7 @@ public class Keywords extends Base {
             waitForVisible(locator);
             driver.findElement(locator).sendKeys(testData);
         }catch (Exception e){
+            throw e;
         }
     }
 

@@ -1,4 +1,4 @@
-Feature: Just testing a feature with plain keywords
+Feature: Testing a feature with plain keywords
 
   Scenario: Search for a vehicle
     Given Open the "chrome"

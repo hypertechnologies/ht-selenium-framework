@@ -1,4 +1,4 @@
-Feature: Just testing a feature with custom keywords
+Feature: Testing a feature with custom keywords
 
   Scenario: Search for a vehicle
     # Custom

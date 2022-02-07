@@ -12,7 +12,7 @@ public class GoogleSearchCustom {
 
     @Then("Search for {string}")
     public void searchFor(String text) {
-        Keywords.type("cssSelector", "input[name='q']", text);
+        Keywords.type(text,"cssSelector", "input[name='q']");
         try {
             Keywords.wait("2000");
         } catch (InterruptedException e) {
