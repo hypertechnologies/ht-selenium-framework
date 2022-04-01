@@ -39,6 +39,8 @@ jobs:
     - uses: actions/checkout@v1
     - name: test
       run: |
-        cd .. && mvn clean install
+        ls |
+        ls pom.xml |
+        mvn clean install
         
   
