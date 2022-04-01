@@ -34,7 +34,6 @@ jobs:
     steps:
     - name: test
       run: |
-        cd .. |
-        mvn clean install
+        cd .. && mvn clean install
         
   
