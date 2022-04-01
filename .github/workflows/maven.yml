@@ -35,7 +35,7 @@ jobs:
     - name: Build with Maven
       run: |
         mvn -B package --file pom.xml |
-        docker run -d -p 4444:4444 --shm-size="2g" selenium/standalone-chrome:4.1.3-20220327 |
+        docker run -d -p 4444:4444 --shm-size="2g" selenium/standalone-chrome:4.1.3-20220327
 
   run-test:
     needs: [build_and_grid]
