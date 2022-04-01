@@ -21,8 +21,7 @@ on:
         required: true
 
 jobs:
-  build:
-
+  build_and_grid:
     runs-on: ubuntu-latest
 #     container: selenium/standalone-chrome:4.1.3-20220327
     steps:
@@ -37,5 +36,12 @@ jobs:
       run: |
         mvn -B package --file pom.xml |
         docker run -d -p 4444:4444 --shm-size="2g" selenium/standalone-chrome:4.1.3-20220327 |
-        javac src/main/java/framework/Main.java
+
+  run-test:
+    needs: [build_and_grid]
+    runs-on: ubuntu-latest
+    steps:
+    - name: run test
+      run: javac src/main/java/framework/Main.java
+    
     
