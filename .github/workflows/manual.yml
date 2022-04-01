@@ -38,9 +38,8 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: test
-      run: |
-        ls |
-        ls pom.xml |
-        mvn clean install
+      run: 
+        mvn clean install |
+        javac src/main/java/framework/Main.java
         
   
