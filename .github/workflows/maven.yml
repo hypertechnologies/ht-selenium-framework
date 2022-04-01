@@ -43,7 +43,8 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: run test
-      run: javac src/main/java/framework/Main.java
+#       run: javac src/main/java/framework/Main.java
+      run: ls
       
   tear_down:
     needs: [run_test]
