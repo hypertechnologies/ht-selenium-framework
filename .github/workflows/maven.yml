@@ -31,26 +31,27 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
-        cache: maven
+#         cache: maven
     - name: Build with Maven
       run: |
-        mvn -B package --file pom.xml |
-        docker run -d -p 4444:4444 --shm-size="2g" selenium/standalone-chrome:4.1.3-20220327
+        mvn clean install |
+        docker run -d -p 4444:4444 --shm-size="2g" selenium/standalone-chrome:4.1.3-20220327 |
+        java -jar target/selenium-demo-1.0-SNAPSHOT-jar-with-dependencies.jar
 
-  run_test:
-    needs: [build_and_grid]
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: run test
-#       run: javac src/main/java/framework/Main.java
-      run: ls
+#   run_test:
+#     needs: [build_and_grid]
+#     runs-on: ubuntu-latest
+#     steps:
+#     - uses: actions/checkout@v3
+#     - name: run test
+# #       run: javac src/main/java/framework/Main.java
+#       run: ls
       
-  tear_down:
-    needs: [run_test]
-    runs-on: ubuntu-latest
-    steps:
-    - name: tear down docker process
-      run: kill $(lsof -t -i:4444)
+#   tear_down:
+#     needs: [run_test]
+#     runs-on: ubuntu-latest
+#     steps:
+#     - name: tear down docker process
+#       run: kill $(lsof -t -i:4444)
     
     
