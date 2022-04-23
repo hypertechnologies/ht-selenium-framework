@@ -3,6 +3,7 @@ A framework to automate website using different action based keywords.
 
 # Commands
 
+    mvn clean test
     brew install allure
     allure serve src/test/resources/reports/allure-results
 
