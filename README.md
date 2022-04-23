@@ -1,10 +1,17 @@
 # Selenium keyword Driven Framework
 A framework to automate website using different action based keywords.
 
-# Commands
+# Run Test
 
     mvn clean test
+
+# View Allure Report
+First install allure
+
     brew install allure
+
+Then to view report
+
     allure serve src/test/resources/reports/allure-results
 
 
