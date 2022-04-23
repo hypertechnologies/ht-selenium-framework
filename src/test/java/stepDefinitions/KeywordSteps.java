@@ -31,7 +31,7 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
-public class Keywords extends Base {
+public class KeywordSteps extends Base {
     static WebDriver driver;
 
     @Given("Open the {string}")
