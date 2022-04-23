@@ -4,6 +4,7 @@ A framework to automate website using different action based keywords.
 # Commands
 
     brew install allure
+    allure serve src/test/resources/reports/allure-results
 
 
 ## Keywords
