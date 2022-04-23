@@ -6,6 +6,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.bonigarcia.wdm.config.DriverManagerType;
+import io.qameta.allure.Attachment;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -23,6 +24,7 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ public class Keywords extends Base {
     static WebDriver driver;
 
     @Given("Open the {string}")
+    @Attachment(value = "Page screenshot", type = "image/png")
     public static void openBrowser(String browser) {
         switch (browser.trim().toLowerCase()){
             case "chrome":
