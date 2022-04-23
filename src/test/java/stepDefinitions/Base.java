@@ -1,4 +1,4 @@
-package framework;
+package stepDefinitions;
 
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.*;
