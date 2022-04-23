@@ -1,12 +1,10 @@
 package stepDefinitions;
 
-import framework.Base;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.bonigarcia.wdm.config.DriverManagerType;
-import io.qameta.allure.Attachment;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -36,7 +34,6 @@ public class Keywords extends Base {
     static WebDriver driver;
 
     @Given("Open the {string}")
-    @Attachment(value = "Page screenshot", type = "image/png")
     public static void openBrowser(String browser) {
         switch (browser.trim().toLowerCase()){
             case "chrome":
@@ -558,12 +555,12 @@ public class Keywords extends Base {
     }
 
     private static void waitForAttributeToMatch(By locator, String attrName, String attrValue) {
-        WebDriverWait wait = new WebDriverWait(driver,explicitWaitTimeout/1000);
+        WebDriverWait wait = new WebDriverWait(driver,3);
         wait.until(ExpectedConditions.attributeContains(locator, attrName, attrValue));
     }
 
     private static void waitForiFrameToBeAvailableAndSwitchToIt(String testData) {
-        WebDriverWait wait = new WebDriverWait(driver,explicitWaitTimeout/1000);
+        WebDriverWait wait = new WebDriverWait(driver,3);
         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(testData));
     }
 
