@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Properties;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 public class KeywordSteps extends Base {
@@ -77,7 +76,8 @@ public class KeywordSteps extends Base {
             default:
                 System.out.println("Browser name \"" + browser + "\" is not recognized!");
         }
-        driver.manage().timeouts().implicitlyWait(implicitWaitTimeout, TimeUnit.MILLISECONDS);
+//        driver.manage().timeouts().implicitlyWait(implicitWaitTimeout, TimeUnit.MILLISECONDS);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(implicitWaitTimeout));
     }
 
     @And("Close browser")
@@ -449,7 +449,7 @@ public class KeywordSteps extends Base {
             WebElement element = driver.findElement(locator);
             String newValue = element.getText();
 
-            Properties prop = getProperties("src/main/resources/tmp/data.properties");
+            Properties prop = getProperties("src/test/resources/tmp/data.properties");
             String oldValue = prop.getProperty(testData);
 
             if (newValue.contains(oldValue)) {
@@ -471,7 +471,7 @@ public class KeywordSteps extends Base {
             WebElement element = driver.findElement(locator);
             String newValue = element.getText();
 
-            Properties prop = getProperties("src/main/resources/tmp/data.properties");
+            Properties prop = getProperties("src/test/resources/tmp/data.properties");
             String oldValue = prop.getProperty(testData);
 
             if (oldValue.equals(newValue)) {
@@ -521,47 +521,47 @@ public class KeywordSteps extends Base {
     }
 
     private static void waitForPresence(By locator) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitTimeout/1000));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitTimeout));
         wait.until(ExpectedConditions.presenceOfElementLocated(locator));
     }
 
     private static void waitForNotVisible(By locator) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitTimeout/1000));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitTimeout));
         wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
     }
 
     private static void waitForVisible(By locator) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitTimeout/1000));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitTimeout));
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
     private static void waitForClickable(By locator) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitTimeout/1000));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitTimeout));
         wait.until(ExpectedConditions.elementToBeClickable(locator));
     }
 
     private static void waitForUrlToContainText(String testData) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitTimeout/1000));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitTimeout));
         wait.until(ExpectedConditions.urlContains(testData));
     }
 
     private static void waitForTitleToContainText(String testData) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitTimeout/1000));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitTimeout));
         wait.until(ExpectedConditions.titleContains(testData));
     }
 
     private static void waitForTextToMatch(By locator, String testData) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitTimeout/1000));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitTimeout));
         wait.until(ExpectedConditions.textMatches(locator, Pattern.compile(testData.trim())));
     }
 
     private static void waitForAttributeToMatch(By locator, String attrName, String attrValue) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitTimeout/1000));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitTimeout));
         wait.until(ExpectedConditions.attributeContains(locator, attrName, attrValue));
     }
 
     private static void waitForiFrameToBeAvailableAndSwitchToIt(String testData) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitTimeout/1000));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitTimeout));
         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(testData));
     }
 
