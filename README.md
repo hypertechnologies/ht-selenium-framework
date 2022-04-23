@@ -1,6 +1,11 @@
 # Selenium keyword Driven Framework
 A framework to automate website using different action based keywords.
 
+# Commands
+
+    brew install allure
+
+
 ## Keywords
 * **GoToURL** - To navigate to a url (E.g., http://google.com)
     
