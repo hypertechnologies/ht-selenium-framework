@@ -32,7 +32,7 @@ import java.util.Properties;
 import java.util.regex.Pattern;
 
 public class KeywordSteps extends Base{
-   static WebDriver driver;
+    static WebDriver driver;
 
     @Before()
     public static void openBrowser() {
