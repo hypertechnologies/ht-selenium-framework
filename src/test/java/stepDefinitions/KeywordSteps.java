@@ -35,12 +35,8 @@ public class KeywordSteps extends Base{
 
    static WebDriver driver;
 
-    static int explicitWaitTimeout = Integer.parseInt(getProperties("src/test/resources/selenium.properties").getProperty("explicitWaitTimeout"));
-    static int implicitWaitTimeout = Integer.parseInt(getProperties("src/test/resources/selenium.properties").getProperty("implicitWaitTimeout"));
-
     @Before()
     public static void openBrowser() {
-        String browser = getProperties("src/test/resources/selenium.properties").getProperty("browser");
         switch (browser.trim().toLowerCase()){
             case "chrome":
                 WebDriverManager.getInstance(DriverManagerType.CHROME).setup();
