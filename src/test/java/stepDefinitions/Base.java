@@ -4,9 +4,6 @@ import java.io.*;
 import java.util.Properties;
 
 public class Base {
-    protected static int implicitWaitTimeout = 3;
-    protected static int explicitWaitTimeout = 3;
-
     protected static Properties getProperties(String propertiesFilePath) {
         // Set path of the properties file
         File file = new File(propertiesFilePath);

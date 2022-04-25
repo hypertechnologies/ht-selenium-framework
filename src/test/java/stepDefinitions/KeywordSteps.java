@@ -1,7 +1,8 @@
 package stepDefinitions;
 
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.bonigarcia.wdm.config.DriverManagerType;
@@ -30,11 +31,16 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.regex.Pattern;
 
-public class KeywordSteps extends Base {
-    static WebDriver driver;
+public class KeywordSteps extends Base{
 
-    @Given("Open the {string}")
-    public static void openBrowser(String browser) {
+   static WebDriver driver;
+
+    static int explicitWaitTimeout = Integer.parseInt(getProperties("src/test/resources/selenium.properties").getProperty("explicitWaitTimeout"));
+    static int implicitWaitTimeout = Integer.parseInt(getProperties("src/test/resources/selenium.properties").getProperty("implicitWaitTimeout"));
+
+    @Before()
+    public static void openBrowser() {
+        String browser = getProperties("src/test/resources/selenium.properties").getProperty("browser");
         switch (browser.trim().toLowerCase()){
             case "chrome":
                 WebDriverManager.getInstance(DriverManagerType.CHROME).setup();
@@ -76,11 +82,10 @@ public class KeywordSteps extends Base {
             default:
                 System.out.println("Browser name \"" + browser + "\" is not recognized!");
         }
-//        driver.manage().timeouts().implicitlyWait(implicitWaitTimeout, TimeUnit.MILLISECONDS);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(implicitWaitTimeout));
     }
 
-    @And("Close browser")
+    @After
     public static void closeBrowser() {
         if(driver != null){
             driver.quit();
