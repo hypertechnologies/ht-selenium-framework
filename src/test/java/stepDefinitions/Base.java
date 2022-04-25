@@ -4,9 +4,9 @@ import java.io.*;
 import java.util.Properties;
 
 public class Base {
-    public static String browser = getProperties("src/test/resources/selenium.properties").getProperty("browser");
-    public static int explicitWaitTimeout = Integer.parseInt(getProperties("src/test/resources/selenium.properties").getProperty("explicitWaitTimeout"));
-    public static int implicitWaitTimeout = Integer.parseInt(getProperties("src/test/resources/selenium.properties").getProperty("implicitWaitTimeout"));
+    protected static String browser = getProperties("src/test/resources/selenium.properties").getProperty("browser");
+    protected static int explicitWaitTimeout = Integer.parseInt(getProperties("src/test/resources/selenium.properties").getProperty("explicitWaitTimeout"));
+    protected static int implicitWaitTimeout = Integer.parseInt(getProperties("src/test/resources/selenium.properties").getProperty("implicitWaitTimeout"));
 
     protected static Properties getProperties(String propertiesFilePath) {
         // Set path of the properties file
