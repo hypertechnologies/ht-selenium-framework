@@ -34,4 +34,4 @@ jobs:
       run: mvn package -Dmaven.test.skip
 
     - name: Run test
-      run: mvn clean verify -Dtesting.dtd.http=true
+      run: mvn test -Dtesting.dtd.http=true
