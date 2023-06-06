@@ -36,8 +36,10 @@ public class KeywordSteps extends Base {
     public static void openBrowser() {
         switch (browser.trim().toLowerCase()){
             case "chrome":
-                WebDriverManager.getInstance(DriverManagerType.CHROME).setup();
+                WebDriverManager.chromedriver().setup();
+//                WebDriverManager.getInstance(DriverManagerType.CHROME).setup();
                 ChromeOptions chromeOptions = new ChromeOptions();
+                chromeOptions.addArguments("--headless");
                 driver = new ChromeDriver(chromeOptions);
                 break;
 
