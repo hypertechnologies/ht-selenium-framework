@@ -37,30 +37,30 @@ public class KeywordSteps extends Base {
         switch (browser.trim().toLowerCase()){
             case "chrome":
                 WebDriverManager.chromedriver().setup();
-//                WebDriverManager.getInstance(DriverManagerType.CHROME).setup();
                 ChromeOptions chromeOptions = new ChromeOptions();
                 chromeOptions.addArguments("--headless");
                 driver = new ChromeDriver(chromeOptions);
                 break;
 
             case "firefox":
-                WebDriverManager.getInstance(DriverManagerType.FIREFOX).setup();
+                WebDriverManager.firefoxdriver().setup();
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
                 driver = new FirefoxDriver(firefoxOptions);
                 break;
 
             case "safari":
-                WebDriverManager.getInstance(DriverManagerType.SAFARI).setup();
+                WebDriverManager.safaridriver().setup();
                 driver = new SafariDriver();
                 break;
 
             case "edge":
-                WebDriverManager.getInstance(DriverManagerType.EDGE).setup();
+                WebDriverManager.edgedriver().setup();
                 driver = new EdgeDriver();
                 break;
 
             case "ieexplorer":
-                WebDriverManager.getInstance(DriverManagerType.IEXPLORER).setup();
+                WebDriverManager.iedriver().setup();
+                WebDriverManager.operadriver().setup();
                 driver = new InternetExplorerDriver();
                 break;
 

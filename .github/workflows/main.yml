@@ -4,6 +4,22 @@ on:
   push:
     branches: [ "*" ]
 
+  workflow_dispatch:
+    inputs:
+      browser:
+        description: 'Browser name'
+        required: true
+        default: 'chrome'
+          type: choice
+          options:
+            - chrome
+            - firefox
+            - safari
+            - edge
+            - ie
+            - unit
+
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
