@@ -5,23 +5,11 @@ on:
     branches: [ "*" ]
 
 jobs:
-  build:
-
+  build and test:
     runs-on: ubuntu-latest
-
-#    services:
-#      selenium:
-#        image: selenium/standalone-chrome:latest
-#        ports:
-#          - 4444:4444
-#        options: --shm-size="2g"
 
     steps:
     - uses: actions/checkout@v3
-#
-#    - name: Get IP Address
-#      run: ifconfig eth0 | grep 'inet [0-9\.]* ' -o | sed 's/[^0-9\.]//g'
-#      id: ip_addr
 
     - name: Set up JDK
       uses: actions/setup-java@v3
