@@ -3,8 +3,6 @@ name: Run Cucumber selenium tests
 on:
   push:
     branches: [ "*" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
   build:
@@ -31,5 +29,9 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
+
+    - name: Install maven
+      run: mvn package -Dmaven.test.skip
+
     - name: Run test
       run: mvn clean verify -Dtesting.dtd.http=true
