@@ -28,8 +28,8 @@ jobs:
     - name: Set up JDK
       uses: actions/setup-java@v3
       with:
-        java-version: '8'
+        java-version: '11'
         distribution: 'temurin'
         cache: maven
     - name: Run test
-      run: mvn clean test
+      run: mvn clean verify -Dtesting.dtd.http=true
