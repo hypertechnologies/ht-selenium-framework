@@ -10,14 +10,14 @@ on:
         description: 'Browser name'
         required: true
         default: 'chrome'
-          type: choice
-          options:
-            - chrome
-            - firefox
-            - safari
-            - edge
-            - ie
-            - unit
+        type: choice
+        options:
+          - chrome
+          - firefox
+          - safari
+          - edge
+          - ie
+          - unit
 
 
 jobs:
