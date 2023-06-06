@@ -5,19 +5,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <properties>
-        <selenium.java.version>4.1.1</selenium.java.version>
-        <webdrivermanager.version>5.1.1</webdrivermanager.version>
-        <htmlunit-driver.version>3.60.0</htmlunit-driver.version>
+        <selenium.java.version>4.9.1</selenium.java.version>
+        <webdrivermanager.version>5.3.3</webdrivermanager.version>
+        <htmlunit-driver.version>4.9.1</htmlunit-driver.version>
         <junit.version>4.13.2</junit.version>
-        <cucumber.version>7.3.1</cucumber.version>
+        <cucumber.version>7.12.0</cucumber.version>
         <allure-cucumber-jvm.version>2.17.3</allure-cucumber-jvm.version>
         <allure-junit.version>2.17.3</allure-junit.version>
         <aspectj.version>1.9.9.1</aspectj.version>
-        <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
+        <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
-        <maven-surefire-plugin.version>3.0.0-M6</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.1.0</maven-surefire-plugin.version>
         <poi-ooxml.version>5.2.2</poi-ooxml.version>
         <json-simple.version>1.1.1</json-simple.version>
+        <selenium-devtools.version>4.0.0-rc-1</selenium-devtools.version>
     </properties>
 
     <groupId>com.selenium</groupId>
@@ -173,6 +174,14 @@
             <version>${allure-junit.version}</version>
             <scope>test</scope>
         </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.seleniumhq.selenium</groupId>-->
+<!--            <artifactId>selenium-devtools</artifactId>-->
+<!--            <version>${selenium-devtools.version}</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
+
 
     </dependencies>
 

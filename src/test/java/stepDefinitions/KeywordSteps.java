@@ -17,8 +17,6 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.opera.OperaDriver;
-import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -64,12 +62,6 @@ public class KeywordSteps extends Base {
                 driver = new InternetExplorerDriver();
                 break;
 
-            case "opera":
-                WebDriverManager.getInstance(DriverManagerType.OPERA).setup();
-                OperaOptions operaOptions = new OperaOptions();
-                driver = new OperaDriver(operaOptions);
-                break;
-
             case "unit":
                 driver = new HtmlUnitDriver();
                 break;
@@ -77,7 +69,8 @@ public class KeywordSteps extends Base {
             default:
                 System.out.println("Browser name \"" + browser + "\" is not recognized!");
         }
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(implicitWaitTimeout));
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(implicitWaitTimeout));
+        driver.manage().window().maximize();
     }
 
     @After
@@ -87,7 +80,7 @@ public class KeywordSteps extends Base {
         }
     }
 
-    @And("Navigate to the url {string}")
+    @And("I navigate to the url {string}")
     public static void gotToURL(String url) {
         try {
             driver.navigate().to(url);
@@ -96,7 +89,7 @@ public class KeywordSteps extends Base {
         }
     }
 
-    @And("Check URL contains {string}")
+    @And("I check URL contains {string}")
     public static void assertURL(String testData) {
         try {
             waitForUrlToContainText(testData);
@@ -105,7 +98,7 @@ public class KeywordSteps extends Base {
         }
     }
 
-    @And("Disable a checkbox with an element with selector type {string} and selector value {string}")
+    @And("I disable a checkbox with an element with selector type {string} and selector value {string}")
     public static void disableCheckBox(String selectorType, String selectorValue) throws Exception {
         try {
             By locator;
@@ -126,7 +119,7 @@ public class KeywordSteps extends Base {
         }
     }
 
-    @And("Enable a checkbox with an element with selector type {string} and selector value {string}")
+    @And("I enable a checkbox with an element with selector type {string} and selector value {string}")
     public static void enableCheckBox(String selectorType, String selectorValue) throws Exception {
         try {
             By locator;
@@ -147,7 +140,7 @@ public class KeywordSteps extends Base {
         }
     }
 
-    @And("Select index {string} item from a dropdown with an element with selector type {string} and selector value {string}")
+    @And("I select index {string} item from a dropdown with an element with selector type {string} and selector value {string}")
     public static void selectByIndex(String testData, String selectorType, String selectorValue) {
         try {
             By locator;
@@ -164,7 +157,7 @@ public class KeywordSteps extends Base {
         }
     }
 
-    @And("Select {string} from dropdown with an element with selector type {string} and selector value {string}")
+    @And("I select {string} from dropdown with an element with selector type {string} and selector value {string}")
     public static void selectByVisibleTextString (String testData, String selectorType, String selectorValue) {
         try {
             By locator;
@@ -181,7 +174,7 @@ public class KeywordSteps extends Base {
         }
     }
 
-    @And("Check presence of an element with selector type {string} and selector value {string}")
+    @And("I check presence of an element with selector type {string} and selector value {string}")
     public static void checkPresence(String selectorType, String selectorValue) {
         try {
             By locator;
@@ -192,7 +185,7 @@ public class KeywordSteps extends Base {
         }
     }
 
-    @And("Check invisibility of an element with selector type {string} and selector value {string}")
+    @And("I check invisibility of an element with selector type {string} and selector value {string}")
     public static void checkNotVisible(String selectorType, String selectorValue) {
         try {
             By locator;
@@ -203,7 +196,7 @@ public class KeywordSteps extends Base {
         }
     }
 
-    @And("Check visibility of an element with selector type {string} and selector value {string}")
+    @And("I check visibility of an element with selector type {string} and selector value {string}")
     public static void checkVisibility(String selectorType, String selectorValue) {
         try {
             By locator;
@@ -214,7 +207,7 @@ public class KeywordSteps extends Base {
         }
     }
 
-    @And("Refresh the page")
+    @And("I refresh the page")
     public static void refreshPage() {
         try {
             driver.navigate().refresh();
@@ -223,7 +216,7 @@ public class KeywordSteps extends Base {
         }
     }
 
-    @And("Check page title contains {string}")
+    @And("I check page title contains {string}")
     public static void assertTitle(String testData) {
         try {
             waitForTitleToContainText(testData);
@@ -232,7 +225,7 @@ public class KeywordSteps extends Base {
         }
     }
 
-    @And("Verify text of on element with selector type {string} and selector value {string} is {string}")
+    @And("I verify text of on element with selector type {string} and selector value {string} is {string}")
     public static void assertText(String selectorType, String selectorValue, String testData) {
         try {
             By locator;
@@ -244,7 +237,7 @@ public class KeywordSteps extends Base {
         }
     }
 
-    @And("Verify attribute of on element with selector type {string} and selector value {string} is {string}")
+    @And("I verify attribute of on element with selector type {string} and selector value {string} is {string}")
     public static void assertAttribute(String selectorType, String selectorValue, String testData) {
         String attrName = testData.split("==")[0].trim();
         String attrValue = testData.split("==")[1].trim();
@@ -259,7 +252,7 @@ public class KeywordSteps extends Base {
         }
     }
 
-    @And("Verify css of on element with selector type {string} and selector value {string} is {string}")
+    @And("I verify css of on element with selector type {string} and selector value {string} is {string}")
     public static void assertCssValue(String selectorType, String selectorValue, String testData) throws Exception {
         String cssName = testData.split("==")[0].trim();
         String expectedCssValue = testData.split("==")[1].trim();
@@ -280,7 +273,7 @@ public class KeywordSteps extends Base {
         }
     }
 
-    @And("Click on an element with selector type {string} and selector value {string}")
+    @And("I click on an element with selector type {string} and selector value {string}")
     public static void click(String selectorType, String selectorValue) {
         try {
             By locator;
@@ -293,7 +286,7 @@ public class KeywordSteps extends Base {
         }
     }
 
-    @Then("Type {string} into an element with selector type {string} and selector value {string}")
+    @Then("I type {string} into an element with selector type {string} and selector value {string}")
     public static void type(String testData, String selectorType, String selectorValue) {
         try {
             By locator;
@@ -305,7 +298,7 @@ public class KeywordSteps extends Base {
         }
     }
 
-    @Then("Upload a file located in {string} into an element with selector type {string} and selector value {string}")
+    @Then("I upload a file located in {string} into an element with selector type {string} and selector value {string}")
     public static void uploadFile(String testData, String selectorType, String selectorValue) {
         try {
             By locator;
@@ -317,7 +310,7 @@ public class KeywordSteps extends Base {
         }
     }
 
-    @Then("Mouse hover on an element with selector type {string} and selector value {string}")
+    @Then("I mouse hover on an element with selector type {string} and selector value {string}")
     public static void mouseHover(String selectorType, String selectorValue) {
         try {
             By locator;
@@ -331,7 +324,7 @@ public class KeywordSteps extends Base {
         }
     }
 
-    @Then("Switch to an iFrame with ID {string}")
+    @Then("i switch to an iFrame with ID {string}")
     public static void switchToiFrame( String testData) {
         try {
             waitForiFrameToBeAvailableAndSwitchToIt(testData);
@@ -340,7 +333,7 @@ public class KeywordSteps extends Base {
         }
     }
 
-    @Then("Switch to default frame")
+    @Then("I switch to default frame")
     public static void switchToDefaultFrame() {
         try {
             driver.switchTo().defaultContent();
@@ -349,7 +342,7 @@ public class KeywordSteps extends Base {
         }
     }
 
-    @Then("Switch browser tab to index {string}")
+    @Then("I switch browser tab with index {string}")
     public static void switchTab( String testData) {
         try {
             ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
@@ -359,7 +352,7 @@ public class KeywordSteps extends Base {
         }
     }
 
-    @Then("Hit browser forward button")
+    @Then("I hit browser forward button")
     public static void browserForward() {
         try {
             driver.navigate().forward();
@@ -368,7 +361,7 @@ public class KeywordSteps extends Base {
         }
     }
 
-    @Then("Hit browser backward button")
+    @Then("I hit browser backward button")
     public static void browserBackward() {
         try {
             driver.navigate().back();
@@ -377,7 +370,7 @@ public class KeywordSteps extends Base {
         }
     }
 
-    @Then("Drag and drop two elements with selector type {string} and selector value {string}")
+    @Then("I drag and drop two elements with selector type {string} and selector value {string}")
     public static void dragAndDrop(String selectorType, String selectorValue) throws Exception {
         String errMsg = "To dragAndDrop there should be two comma separated selector_type and two comma separated selector_value";
         if(selectorType.split(",").length < 2 || selectorValue.split(",").length < 2){
@@ -407,7 +400,7 @@ public class KeywordSteps extends Base {
         }
     }
 
-    @And("Wait for {string} milliseconds")
+    @And("I wait for {string} milliseconds")
     public static void wait( String testData) throws InterruptedException {
         try {
             Thread.sleep(Long.parseLong(testData));
@@ -416,7 +409,7 @@ public class KeywordSteps extends Base {
         }
     }
 
-    @Then("Get value from an element with selector type {string} and selector value {string} and save under {string} variable")
+    @Then("i get value from an element with selector type {string} and selector value {string} and save under {string} variable")
     public static void saveValue(String selectorType, String selectorValue, String testData) throws IOException {
         try {
             By locator;
@@ -440,7 +433,7 @@ public class KeywordSteps extends Base {
         }
     }
 
-    @Then("The value of an element with selector type {string} and selector value {string} should contain {string}")
+    @Then("I verify the value of an element with selector type {string} and selector value {string} should contain {string}")
     public static void compareValueContains(String selectorType, String selectorValue, String testData) throws Exception {
         try {
             By locator;
@@ -462,7 +455,7 @@ public class KeywordSteps extends Base {
         }
     }
 
-    @Then("The value of an element with selector type {string} and selector value {string} should EQUAL the value from {string}")
+    @Then("I verify the value of an element with selector type {string} and selector value {string} should EQUAL the value from {string}")
     public static void compareValueEquals(String selectorType, String selectorValue, String testData) throws Exception {
         try {
             By locator;
@@ -521,47 +514,47 @@ public class KeywordSteps extends Base {
     }
 
     private static void waitForPresence(By locator) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitTimeout));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(explicitWaitTimeout));
         wait.until(ExpectedConditions.presenceOfElementLocated(locator));
     }
 
     private static void waitForNotVisible(By locator) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitTimeout));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(explicitWaitTimeout));
         wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
     }
 
     private static void waitForVisible(By locator) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitTimeout));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(explicitWaitTimeout));
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
     private static void waitForClickable(By locator) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitTimeout));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(explicitWaitTimeout));
         wait.until(ExpectedConditions.elementToBeClickable(locator));
     }
 
     private static void waitForUrlToContainText(String testData) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitTimeout));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(explicitWaitTimeout));
         wait.until(ExpectedConditions.urlContains(testData));
     }
 
     private static void waitForTitleToContainText(String testData) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitTimeout));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(explicitWaitTimeout));
         wait.until(ExpectedConditions.titleContains(testData));
     }
 
     private static void waitForTextToMatch(By locator, String testData) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitTimeout));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(explicitWaitTimeout));
         wait.until(ExpectedConditions.textMatches(locator, Pattern.compile(testData.trim())));
     }
 
     private static void waitForAttributeToMatch(By locator, String attrName, String attrValue) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitTimeout));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(explicitWaitTimeout));
         wait.until(ExpectedConditions.attributeContains(locator, attrName, attrValue));
     }
 
     private static void waitForiFrameToBeAvailableAndSwitchToIt(String testData) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitTimeout));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(explicitWaitTimeout));
         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(testData));
     }
 
