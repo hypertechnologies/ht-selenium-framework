@@ -3,7 +3,7 @@ A framework to automate websites.
 
 # How to run
 
-### Fork teh repo
+### Fork the repo
 First, fork this repository into your github account
 
 https://github.com/hypertechnologies/ht-selenium-framework/fork
