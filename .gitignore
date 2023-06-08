@@ -1,5 +1,5 @@
 .idea/
 .DS_Store
 target/
-src/main/java/reports
+src/test/resources/reports/
 ht-selenium-framework.iml

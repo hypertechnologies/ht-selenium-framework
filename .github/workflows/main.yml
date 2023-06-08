@@ -1,0 +1,50 @@
+name: Run Cucumber selenium tests
+
+on:
+  push:
+    branches: [ "*" ]
+
+  workflow_dispatch:
+    inputs:
+      browser:
+        description: 'Browser name'
+        required: true
+        default: 'chrome'
+        type: choice
+        options:
+          - chrome
+          - firefox
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set configuration env vars
+      id: vars
+      env:
+        DEFAULT_BROWSER: chrome
+      run: |
+        echo "BROWSER_NAME=${{ github.event.inputs.browser || env.DEFAULT_BROWSER }}" >> $GITHUB_ENV
+
+    - name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Install maven
+      run: mvn package -Dmaven.test.skip
+
+    - name: Run test
+      run: mvn test -Dbrowser='${{ env.BROWSER_NAME }}' -Dheadless=true
+
+    - name: Upload HTML Report
+      uses: actions/upload-artifact@v3
+      with:
+        name: "HTML-Report"
+        path: src/test/resources/reports/htmlReport/cucumber-html-report.html
+        retention-days: 14
+
