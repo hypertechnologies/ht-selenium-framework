@@ -28,7 +28,7 @@ By default, test will run on chrome
 By default, test will run in headed mode.
 To run headless (run without opening the browser) -
 
-    mvn test -Dheadless=true
+    mvn clean test -Dheadless=true
 
 ***Note:*** Only works on chrome and firefox
 

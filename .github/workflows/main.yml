@@ -40,7 +40,7 @@ jobs:
       run: mvn package -Dmaven.test.skip
 
     - name: Run test
-      run: mvn test -Dbrowser='${{ env.BROWSER_NAME }}' -Dheadless=true
+      run: mvn clean test -Dbrowser='${{ env.BROWSER_NAME }}' -Dheadless=true
 
     - name: Upload HTML Report
       uses: actions/upload-artifact@v3
