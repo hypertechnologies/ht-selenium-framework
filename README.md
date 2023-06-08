@@ -3,9 +3,17 @@ A framework to automate websites.
 
 # How to run
 
+### Fork teh repo
+First, fork this repository into your github account
+
+https://github.com/hypertechnologies/ht-selenium-framework/fork
+
 ### Clone the repository
 
-    git clone git@github.com:hypertechnologies/ht-selenium-framework.git
+    git clone <YOUR_REPO_CLONE_URL_HERE>
+
+### Open the project
+Open the project in IntelliJ or Eclipse and open terminal.
 
 ### Install maven dependencies
 Always run this if you have any updates to pom.xml
@@ -14,7 +22,7 @@ Always run this if you have any updates to pom.xml
 
 ### Run cucumber tests
 
-    mvn test
+    mvn clean test
 
 ### Run on specific browser
 chrome, firefox, safari, edge and ieexplorer are acceptable browsers.
