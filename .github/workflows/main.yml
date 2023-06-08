@@ -1,4 +1,4 @@
-name: Run Cucumber selenium tests
+name: Cucumber Selenium Tests
 
 on:
   push:
@@ -17,6 +17,7 @@ on:
 
 jobs:
   build-and-test:
+    name: Build and test - ${{ github.event.inputs.browser }}
     runs-on: ubuntu-latest
 
     steps:
