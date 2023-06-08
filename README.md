@@ -28,7 +28,7 @@ Always run this if you have any updates to pom.xml
 chrome, firefox, safari, edge and ieexplorer are acceptable browsers.
 By default, test will run on chrome
 
-    mvn test -Dbrowser=firefox
+    mvn clean test -Dbrowser=firefox
 
 ***Note:*** To run on safari, you must enable the 'Allow Remote Automation' option in Safari's Develop menu
 
@@ -42,7 +42,7 @@ To run headless (run without opening the browser) -
 
 ### Combine browser and headless
 
-    mvn test -Dbrowser=firefox -Dheadless=true
+    mvn clean test -Dbrowser=firefox -Dheadless=true
 
 
 # View HTML Report
