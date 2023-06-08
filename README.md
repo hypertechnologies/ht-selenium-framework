@@ -1,30 +1,33 @@
 # Selenium Cucumber Framework
 A framework to automate websites.
 
-# How to run
+# Setup
 
-### Fork the repo
+#### Fork the repo:
 First, fork this repository into your github account
 
 https://github.com/hypertechnologies/ht-selenium-framework/fork
 
-### Clone the repository
+#### Clone the repository:
+Clone the repository into your local machine
 
     git clone <YOUR_REPO_CLONE_URL_HERE>
 
-### Open the project
+#### Open the project:
 Open the project in IntelliJ or Eclipse and open terminal.
 
-### Install maven dependencies
+# How to run
+
+#### Install maven dependencies:
 Always run this if you have any updates to pom.xml
 
     mvn clean install -Dmaven.test.skip
 
-### Run cucumber tests
+#### Run cucumber tests:
 
     mvn clean test
 
-### Run on specific browser
+#### Run on specific browser:
 chrome, firefox, safari, edge and ieexplorer are acceptable browsers.
 By default, test will run on chrome
 
@@ -32,7 +35,7 @@ By default, test will run on chrome
 
 ***Note:*** To run on safari, you must enable the 'Allow Remote Automation' option in Safari's Develop menu
 
-### Run in headless mode
+#### Run in headless mode:
 By default, test will run in headed mode.
 To run headless (run without opening the browser) -
 
@@ -40,7 +43,7 @@ To run headless (run without opening the browser) -
 
 ***Note:*** Only works on chrome and firefox
 
-### Combine browser and headless
+#### Combine browser and headless:
 
     mvn clean test -Dbrowser=firefox -Dheadless=true
 
@@ -49,13 +52,13 @@ To run headless (run without opening the browser) -
 HTML report will be generated under `src/test/resources/reports/htmlReport`
 
 # Selenium configurations
-You can change browser name, implicit and explicit wait time from `src/test/resources/selenium.properties` file
+You can change implicit and explicit wait time from `src/test/resources/selenium.properties` file
 
 # Cucumber configurations
 You can publish the HTML report to the cucumber cloud
-by changing `cucumber.publish.enabled` to true in the `src/test/resources/cucumber.properties` file
+by changing `cucumber.publish.enabled` to `true` in the `src/test/resources/cucumber.properties` file
 
-## Keywords
+# Keywords
 You can use these keywords to perform different actions on the page.
 
 * **GoToURL** - To navigate to a url (E.g., http://google.com)
