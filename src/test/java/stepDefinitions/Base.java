@@ -4,7 +4,6 @@ import java.io.*;
 import java.util.Properties;
 
 public class Base {
-    protected static String browser = getProperties("src/test/resources/selenium.properties").getProperty("browser");
     protected static int explicitWaitTimeout = Integer.parseInt(getProperties("src/test/resources/selenium.properties").getProperty("explicitWaitTimeout"));
     protected static int implicitWaitTimeout = Integer.parseInt(getProperties("src/test/resources/selenium.properties").getProperty("implicitWaitTimeout"));
 

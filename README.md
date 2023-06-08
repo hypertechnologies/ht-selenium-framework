@@ -16,6 +16,27 @@ Always run this if you have any updates to pom.xml
 
     mvn test
 
+### Run on specific browser
+chrome, firefox, safari, edge and ieexplorer are acceptable browsers.
+By default, test will run on chrome
+
+    mvn test -Dbrowser=firefox
+
+***Note:*** To run on safari, you must enable the 'Allow Remote Automation' option in Safari's Develop menu
+
+### Run in headless mode
+By default, test will run in headed mode.
+To run headless (run without opening the browser) -
+
+    mvn test -Dheadless=true
+
+***Note:*** Only works on chrome and firefox
+
+### Combine browser and headless
+
+    mvn test -Dbrowser=firefox -Dheadless=true
+
+
 # View HTML Report
 HTML report will be generated under `src/test/resources/reports/htmlReport`
 

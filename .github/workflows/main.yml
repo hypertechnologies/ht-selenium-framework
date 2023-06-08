@@ -14,14 +14,17 @@ on:
         options:
           - chrome
           - firefox
-          - safari
-          - edge
-          - ie
-          - unit
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+
+    - name: Set configuration env vars
+        id: vars
+        env:
+          DEFAULT_BROWSER: chrome
+        run: |
+          echo "BROWSER_NAME=${{ github.event.inputs.browser || env.DEFAULT_BROWSER }}" >> $GITHUB_ENV
 
     steps:
     - uses: actions/checkout@v3
@@ -37,10 +40,7 @@ jobs:
       run: mvn package -Dmaven.test.skip
 
     - name: Run test
-      run: mvn test -Dtesting.dtd.http=true
-
-    - name: Run cli
-      run: ls -R
+      run: mvn test -Dbrowser='${{ env.BROWSER_NAME }}' -Dheadless=true
 
     - name: Upload HTML Report
       uses: actions/upload-artifact@v3

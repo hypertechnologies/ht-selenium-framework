@@ -18,6 +18,7 @@ import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.safari.SafariOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -34,17 +35,26 @@ public class KeywordSteps extends Base {
 
     @Before()
     public static void openBrowser() {
-        switch (browser.trim().toLowerCase()){
+        Boolean headless = Boolean.valueOf(System.getProperty("headless"));
+        // Set default browser to chrome
+        String browserName = System.getProperty("browser") != null ? System.getProperty("browser") : "chrome";
+
+        switch (browserName.trim().toLowerCase()){
             case "chrome":
                 WebDriverManager.chromedriver().setup();
                 ChromeOptions chromeOptions = new ChromeOptions();
-                chromeOptions.addArguments("--headless");
+                if(headless){
+                    chromeOptions.addArguments("--headless");
+                }
                 driver = new ChromeDriver(chromeOptions);
                 break;
 
             case "firefox":
                 WebDriverManager.firefoxdriver().setup();
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
+                if(headless){
+                    firefoxOptions.addArguments("--headless");
+                }
                 driver = new FirefoxDriver(firefoxOptions);
                 break;
 
@@ -69,7 +79,7 @@ public class KeywordSteps extends Base {
                 break;
 
             default:
-                System.out.println("Browser name \"" + browser + "\" is not recognized!");
+                System.out.println("Browser name \"" + browserName + "\" is not recognized!");
         }
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(implicitWaitTimeout));
         driver.manage().window().maximize();
