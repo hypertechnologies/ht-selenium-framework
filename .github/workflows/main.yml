@@ -39,6 +39,9 @@ jobs:
     - name: Run test
       run: mvn test -Dtesting.dtd.http=true
 
+    - name: Run cli
+      run: ls -R
+
     - name: Upload HTML Report
       uses: actions/upload-artifact@v3
       with:
