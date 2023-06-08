@@ -19,7 +19,6 @@ on:
           - ie
           - unit
 
-
 jobs:
   build-and-test:
     runs-on: ubuntu-latest

@@ -1,21 +1,34 @@
-# Selenium keyword Driven Framework
-A framework to automate website using different action based keywords.
+# Selenium Cucumber Framework
+A framework to automate websites.
 
-# Run Test
+# How to run
 
-    mvn clean test
+### Clone the repository
 
-# View Allure Report
-First install allure
+    git clone git@github.com:hypertechnologies/ht-selenium-framework.git
 
-    brew install allure
+### Install maven dependencies
+Always run this if you have any updates to pom.xml
 
-Then to view report
+    mvn clean install -Dmaven.test.skip
 
-    allure serve src/test/resources/reports/allure-results
+### Run cucumber tests
 
+    mvn test
+
+# View HTML Report
+HTML report will be generated under `src/test/resources/reports/htmlReport`
+
+# Selenium configurations
+You can change browser name, implicit and explicit wait time from `src/test/resources/selenium.properties` file
+
+# Cucumber configurations
+You can publish the HTML report to the cucumber cloud
+by changing `cucumber.publish.enabled` to true in the `src/test/resources/cucumber.properties` file
 
 ## Keywords
+You can use these keywords to perform different actions on the page.
+
 * **GoToURL** - To navigate to a url (E.g., http://google.com)
     
     * **Required params**:
