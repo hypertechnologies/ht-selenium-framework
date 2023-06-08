@@ -40,9 +40,9 @@ jobs:
       run: mvn test -Dtesting.dtd.http=true
 
     - name: Upload HTML Report
-        uses: actions/upload-artifact@v3
-        with:
-          name: "HTML-Report"
-          path: reports/htmlReport/cucumber-html-report.html
-          retention-days: 14
+      uses: actions/upload-artifact@v3
+      with:
+        name: "HTML-Report"
+        path: reports/htmlReport/cucumber-html-report.html
+        retention-days: 14
 
