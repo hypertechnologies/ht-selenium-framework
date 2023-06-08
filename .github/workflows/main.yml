@@ -19,15 +19,14 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
-    - name: Set configuration env vars
-        id: vars
-        env:
-          DEFAULT_BROWSER: chrome
-        run: |
-          echo "BROWSER_NAME=${{ github.event.inputs.browser || env.DEFAULT_BROWSER }}" >> $GITHUB_ENV
-
     steps:
     - uses: actions/checkout@v3
+    - name: Set configuration env vars
+      id: vars
+      env:
+        DEFAULT_BROWSER: chrome
+      run: |
+        echo "BROWSER_NAME=${{ github.event.inputs.browser || env.DEFAULT_BROWSER }}" >> $GITHUB_ENV
 
     - name: Set up JDK
       uses: actions/setup-java@v3
