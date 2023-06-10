@@ -21,7 +21,7 @@ Open the project in IntelliJ or Eclipse and open terminal.
 #### Install maven dependencies:
 Always run this if you have any updates to pom.xml
 
-    mvn clean install -Dmaven.test.skip
+    mvn clean install -DskipTests
 
 #### Run cucumber tests:
 
